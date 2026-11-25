@@ -1,0 +1,28 @@
+// Use observed cards with one selected market, vintage, and snapshot.
+Product Count =
+CALCULATE(MAX(commercial_kpi[products]), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "promotion")
+
+Median Listed Price =
+CALCULATE(MAX(commercial_kpi[median_price]), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "promotion")
+
+Promotion Share =
+DIVIDE(
+    CALCULATE(SUM(commercial_kpi[flagged]), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "promotion"),
+    CALCULATE(SUM(commercial_kpi[known]), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "promotion")
+)
+
+Median Matched Gap = MEDIAN(price_comparison[percent_gap])
+
+Simulated Net Revenue = SUM(fact_simulated_finance[net_revenue])
+
+Simulated Gross Profit = SUM(fact_simulated_finance[gross_profit])
+
+Simulated Gross Margin = DIVIDE([Simulated Gross Profit], [Simulated Net Revenue])
+
+Simulated Contribution = SUM(fact_simulated_finance[contribution])
+
+Simulated Operating Profit = SUM(fact_simulated_finance[operating_profit])
+
+Simulated Operating Margin = DIVIDE([Simulated Operating Profit], [Simulated Net Revenue])
+
+Simulated Promo ROI = SELECTEDVALUE(fact_simulated_promotion[roi])

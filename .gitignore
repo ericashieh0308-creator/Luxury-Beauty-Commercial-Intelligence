@@ -221,3 +221,21 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+.idea/
+venv/
+*.zip
+*.sqlite*
+data/raw/
+data/processed/
+data/external/*
+!data/external/benchmark_template.csv
+output/
+.env*
+.streamlit/secrets.toml
+config/*.local.json
+.pytest_cache/
+*.log
+product_info.csv
+reviews_*.csv
+sephora-sample*

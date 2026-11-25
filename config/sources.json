@@ -1,0 +1,19 @@
+{
+  "historical": {"snapshot": null},
+  "recent": {
+    "snapshot": null,
+    "file_pattern": "\\.csv$",
+    "columns": {
+      "product": "product_id", "sku": "sku_id", "brand": "brand", "name": "product_name",
+      "category": "category", "subcategory": "subcategory", "size": "size", "variant": "variant",
+      "market": "market", "currency": "currency", "snapshot": "snapshot_date",
+      "price": "list_price", "sale": "sale_price", "rating": "rating", "engagement": "review_count",
+      "bestseller": "is_bestseller", "new_arrival": "is_new_arrival", "promotion": "is_on_sale",
+      "out_of_stock": "out_of_stock", "exclusive": "exclusive", "online": "online_only",
+      "limited": "limited_edition"
+    }
+  },
+  "comparable_ids": false,
+  "fx_usd_per_cad": {},
+  "cpi_us": {}
+}
