@@ -17,7 +17,11 @@ def keyed(rows, key):
 
 def eligible(row):
     return (row["currency"] == {"US": "USD", "CA": "CAD"}.get(row["market"])
-            and row["market"] in {"US", "CA"} and row["price"] is not None and row["price"] > 0)
+            and row["market"] in {"US", "CA"} and row["price"] is not None and row["price"] > 0
+            and (row["price_max"] is None or row["price_max"] >= row["price"]))
+
+def point_price(row):
+    return row["price_max"] is None or row["price_max"] == row["price"]
 
 def identity(row):
     return tuple(normalize(row[k]) for k in ("brand", "name", "size", "variant"))
@@ -105,7 +109,8 @@ def materialize(cursor, config):
             price = r["price"]
             tier = assign(price, cuts) if cuts else "Insufficient cohort"
             tiers[r["id"]] = tier
-            depth = 1-r["sale"]/price if r["sale"] is not None and r["sale"] <= price else None
+            depth = (1-r["sale"]/price if r["sale"] is not None and r["sale"] <= price
+                     and point_price(r) else None)
             rank = (sum(p < price for p in prices) + .5*prices.count(price))/len(prices)
             exclusive = r["exclusive"]
             score = 100*(.8*rank+.2*exclusive) if exclusive is not None else None
@@ -121,7 +126,7 @@ def materialize(cursor, config):
             if status == "accepted" and kind == "cross_market" and a["snapshot"] != b["snapshot"]:
                 status = "manual_review"
             cursor.execute("INSERT INTO bridge_product_match VALUES (?,?,?,?,?)", (a["id"],b["id"],kind,method,status))
-            if status != "accepted" or not eligible(a) or not eligible(b):
+            if status != "accepted" or not all(eligible(record) and point_price(record) for record in (a, b)):
                 continue
             fx_date, fx = fx_for(b["snapshot"], config.get("fx_usd_per_cad",{})) if kind=="cross_market" else (None,1)
             converted = b["price"]*fx if fx else None
@@ -161,7 +166,8 @@ def materialize(cursor, config):
                          len(engagements),f,len(flags),sum(flags),mean(flags) if flags else None))
 
     cursor.execute("""CREATE TABLE portfolio AS SELECT vintage,market,snapshot,brand,category,
-               COUNT(*) AS products,AVG(CASE WHEN (market='US' AND currency='USD') OR (market='CA' AND currency='CAD') THEN price END) AS mean_price,AVG(rating) AS mean_rating,
+               COUNT(*) AS products,AVG(CASE WHEN ((market='US' AND currency='USD') OR (market='CA' AND currency='CAD'))
+                   AND price>0 AND (price_max IS NULL OR price_max>=price) THEN price END) AS mean_price,AVG(rating) AS mean_rating,
                SUM(bestseller) AS bestsellers,COUNT(bestseller) AS bestseller_known,
                SUM(new_arrival) AS new_arrivals,COUNT(new_arrival) AS new_arrival_known,
                SUM(exclusive) AS exclusive_products,COUNT(exclusive) AS exclusive_known
@@ -171,8 +177,10 @@ def materialize(cursor, config):
     cursor.executescript("""
         CREATE VIEW sku_portfolio AS
         SELECT vintage,market,snapshot,brand,category,COUNT(DISTINCT json_array(product,sku)) AS skus,
-        MIN(price) AS min_sku_price,MAX(price) AS max_sku_price
-        FROM fact_sku_snapshot JOIN source ON source.id=source_id
+        MIN(eligible_price) AS min_sku_price,MAX(eligible_price) AS max_sku_price
+        FROM (SELECT *, CASE WHEN price>0 AND (price_max IS NULL OR price_max>=price)
+                              THEN price END AS eligible_price FROM fact_sku_snapshot)
+        JOIN source ON source.id=source_id
         WHERE (market='US' AND currency='USD') OR (market='CA' AND currency='CAD')
         GROUP BY vintage,market,snapshot,brand,category;
         CREATE VIEW product_position AS SELECT f.id,s.vintage,f.market,f.snapshot,f.category,

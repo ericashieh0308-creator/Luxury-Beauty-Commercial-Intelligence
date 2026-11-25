@@ -3,7 +3,7 @@ import argparse
 from collections import Counter
 from contextlib import closing, contextmanager
 import csv
-from datetime import date
+from datetime import date, datetime
 from hashlib import sha256
 from io import TextIOWrapper
 import json
@@ -18,7 +18,12 @@ from zipfile import ZipFile
 ROOT = Path(__file__).resolve().parents[1]
 FLAGS = "exclusive online limited bestseller new_arrival promotion out_of_stock".split()
 FIELDS = """snapshot market currency product sku brand name category subcategory size variant price sale
-rating engagement exclusive online limited bestseller new_arrival promotion out_of_stock""".split()
+rating engagement exclusive online limited bestseller new_arrival promotion out_of_stock
+collected_at country_raw country_name price_max price_text variation_type variant_count
+variant_sku_ids product_url image_url""".split()
+MARKETS = {"US": "USD", "CA": "CAD"}
+COUNTRY_CODES = {"us": "US", "u.s.": "US", "usa": "US", "u.s.a.": "US", "united states": "US",
+                 "united states of america": "US", "ca": "CA", "can": "CA", "canada": "CA"}
 HISTORICAL = dict(product="product_id", brand="brand_name", name="product_name",
                   category="primary_category", subcategory="secondary_category", size="size",
                   price="price_usd", sale="sale_price_usd", rating="rating", engagement="reviews",
@@ -70,6 +75,41 @@ def flag(value):
 def calendar(value):
     return date.fromisoformat(value[:10]).isoformat()
 
+def timestamp(value):
+    # fromisoformat also accepts date-only values. This field requires a time.
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}[Tt ]\d{2}:\d{2}(?::\d{2}(?:[.,]\d+)?)?(?:[Zz]|[+-](?:[01]\d|2[0-3]):?[0-5]\d)?", value):
+        raise ValueError("Expected an ISO collection timestamp")
+    return datetime.fromisoformat(value.replace("z", "Z")).isoformat()
+
+def market_code(country, country_name, default, issues):
+    code = COUNTRY_CODES.get(normalize(country))
+    name_code = COUNTRY_CODES.get(normalize(country_name))
+    if country and code is None:
+        issues["country", "unsupported_retained"] += 1
+        return "UNKNOWN"
+    if code and name_code and code != name_code:
+        issues["country", "conflicting_country_name"] += 1
+        return "UNKNOWN"
+    if country_name and name_code is None:
+        issues["country_name", "unsupported_retained"] += 1
+    return code or name_code or (default if not country_name else None) or "UNKNOWN"
+
+def prices(get, issues):
+    price, maximum, sale = (get(key, number) for key in ("price", "price_max", "sale"))
+    if price is not None and (price == 0 or price > 2000):
+        issues["price", "anomaly_retained"] += 1
+    if maximum is not None:
+        if price is None:
+            issues["price_max", "without_base_price"] += 1
+        elif maximum < price:
+            issues["price_max", "below_base_price"] += 1
+    if sale is not None:
+        if price is None:
+            issues["sale", "without_base_price"] += 1
+        elif sale > price:
+            issues["sale", "exceeds_list"] += 1
+    return price, maximum, sale
+
 def parse(row, column, converter, issues):
     value = (row.get(column) or "").strip()
     if not value:
@@ -96,6 +136,8 @@ def ingest_file(cursor, vintage, member, opener, cfg, review):
         mapping = {"product": "product_id", "rating": "rating", "date": "submission_time",
                    "review": "review_text"} if review else cfg["columns"]
         required = ["product", "rating", "date", "review"] if review else ["product", "brand", "name", "price"]
+        if not review and "collected_at" in mapping:
+            required += ["collected_at", "market", "currency"]
         absent = [mapping.get(key, key) for key in required if mapping.get(key) not in headers]
         if absent or len(set(headers)) != len(headers):
             raise ValueError(f"{member}: missing required columns {absent} or duplicate headers. Inspect and configure the source mapping.")
@@ -132,29 +174,34 @@ def ingest_file(cursor, vintage, member, opener, cfg, review):
                 record = (source_id, ix, product, rating, get("date", calendar),
                           (sentiment > 0)-(sentiment < 0) if review_text else None)
             else:
-                market = (get("market") or cfg.get("market") or "UNKNOWN").upper()
+                country, country_name = get("market"), get("country_name")
+                market = market_code(country, country_name, cfg.get("market"), issues)
                 currency = (get("currency") or cfg.get("currency") or "").upper()
-                expected = {"US": "USD", "CA": "CAD"}.get(market)
-                if not expected or currency != expected:
+                if market not in MARKETS or currency != MARKETS[market]:
                     issues["currency", "unknown_or_mismatch"] += 1
-                price, sale = get("price", number), get("sale", number)
-                if price is not None and (price == 0 or price > 2000):
-                    issues["price", "anomaly_retained"] += 1
-                if price is not None and sale is not None and sale > price:
-                    issues["sale", "exceeds_list"] += 1
-                snapshot = get("snapshot", calendar) or cfg.get("snapshot")
+                price, maximum, sale = prices(get, issues)
+                collected_at = get("collected_at", timestamp)
+                if "collected_at" in mapping:
+                    snapshot = collected_at[:10] if collected_at else None
+                else:
+                    snapshot = get("snapshot", calendar) or cfg.get("snapshot")
                 sku = get("sku")
                 key = (snapshot, market, product, sku)
                 if key in seen:
                     issues["sku" if sku else "product", "duplicate_key_retained"] += 1
                 seen.add(key)
                 flags = {k: get(k, flag) for k in FLAGS}
-                if flags["promotion"] is None and price is not None and sale is not None and sale <= price:
+                if (cfg.get("infer_promotion", True) and flags["promotion"] is None
+                        and price is not None and sale is not None and sale <= price
+                        and (maximum is None or maximum == price)):
                     flags["promotion"] = int(sale < price)
                 record = (source_id, ix, snapshot, market, currency or None, product, sku,
                           get("brand", normalize), get("name"), get("category", normalize),
                           get("subcategory", normalize), get("size", normalize), get("variant", normalize),
-                          price, sale, rating, get("engagement", integer), *(flags[k] for k in FLAGS))
+                          price, sale, rating, get("engagement", integer), *(flags[k] for k in FLAGS),
+                          collected_at, country, country_name, maximum, get("price_text"),
+                          get("variation_type"), get("variant_count", integer), get("variant_sku_ids"),
+                          get("product_url"), get("image_url"))
             batch.append(record)
             if len(batch) == 5000:
                 cursor.executemany(sql, batch)
@@ -214,6 +261,64 @@ def build(paths, config, output, benchmark=None):
         for artifact in Path(tmp).iterdir():
             artifact.replace(output / artifact.name)
 
+def diagnose(path, cfg):
+    """Summarize recent source values without exporting product records."""
+    mapping = cfg["columns"]
+    results = []
+    with source_members(path) as members:
+        for member, opener in members:
+            if not re.search(cfg.get("file_pattern", r"\.csv$"), member):
+                continue
+            with TextIOWrapper(opener(), encoding="utf-8-sig", newline="") as source:
+                reader = csv.DictReader(source)
+                headers = reader.fieldnames or []
+                selected = ("market", "country_name", "currency", *FLAGS)
+                values = {mapping[key]: Counter() for key in selected if key in mapping}
+                numeric = {key: {"count": 0, "min": None, "max": None} for key in ("price", "price_max", "sale")}
+                issues = Counter()
+                dates = Counter()
+                markets = Counter()
+                rows = 0
+                for row in reader:
+                    rows += 1
+                    for column, counts in values.items():
+                        if column in headers:
+                            counts[(row.get(column) or "").strip() or "<blank>"] += 1
+
+                    def get(key, converter=text):
+                        column = mapping.get(key)
+                        return parse(row, column, converter, issues) if column in headers else None
+
+                    market = market_code(get("market"), get("country_name"), cfg.get("market"), issues)
+                    currency = (get("currency") or cfg.get("currency") or "").upper()
+                    markets[market] += 1
+                    if market not in MARKETS or currency != MARKETS[market]:
+                        issues["currency", "unknown_or_mismatch"] += 1
+                    collected_at = get("collected_at", timestamp)
+                    day = collected_at[:10] if collected_at else get("snapshot", calendar)
+                    dates[day or "<unavailable>"] += 1
+                    for key in FLAGS:
+                        get(key, flag)
+                    for (key, stats), value in zip(numeric.items(), prices(get, issues)):
+                        if value is None:
+                            continue
+                        stats["count"] += 1
+                        stats["min"] = value if stats["min"] is None else min(stats["min"], value)
+                        stats["max"] = value if stats["max"] is None else max(stats["max"], value)
+                results.append({
+                    "member": member, "rows": rows, "headers": headers,
+                    "missing_mapped_columns": sorted(set(mapping.values()) - set(headers)),
+                    "source_values_top_20": {column: dict(counts.most_common(20)) for column, counts in values.items()},
+                    "normalized_markets": dict(markets), "snapshot_dates": dict(dates),
+                    "prices": {mapping[key]: stats for key, stats in numeric.items() if key in mapping},
+                    "issues": [{"field": field, "issue": issue, "count": count}
+                               for (field, issue), count in sorted(issues.items())],
+                })
+    if not results:
+        raise ValueError(f"No recent product CSV selected: {path}")
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--historical", type=Path)
@@ -222,6 +327,7 @@ def main():
     parser.add_argument("--benchmark", type=Path)
     parser.add_argument("--output", type=Path, default=ROOT/"data/processed")
     parser.add_argument("--inspect", type=Path, help="Print CSV member names and headers only")
+    parser.add_argument("--diagnose", type=Path, help="Summarize recent country, currency, date, price and flag values")
     args = parser.parse_args()
     if args.inspect:
         with source_members(args.inspect) as members:
@@ -229,10 +335,14 @@ def main():
                 with TextIOWrapper(opener(), encoding="utf-8-sig", newline="") as f:
                     print(name, next(csv.reader(f), []))
         return
+    if args.diagnose:
+        config = json.loads(args.config.read_text(encoding="utf-8-sig"))
+        print(json.dumps(diagnose(args.diagnose, config["recent"]), indent=2, ensure_ascii=True))
+        return
     paths = {key: path for key, path in (("historical", args.historical), ("recent", args.recent)) if path}
     if not paths:
-        parser.error("Provide --historical, --recent, or --inspect")
-    build(paths, json.loads(args.config.read_text(encoding="utf-8")), args.output, args.benchmark)
+        parser.error("Provide --historical, --recent, --inspect, or --diagnose")
+    build(paths, json.loads(args.config.read_text(encoding="utf-8-sig")), args.output, args.benchmark)
 
 if __name__ == "__main__":
     main()

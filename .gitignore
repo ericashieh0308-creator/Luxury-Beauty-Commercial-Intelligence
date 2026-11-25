@@ -239,3 +239,5 @@ config/*.local.json
 product_info.csv
 reviews_*.csv
 sephora-sample*
+
+sephora_sample*.csv

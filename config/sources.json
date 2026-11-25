@@ -2,15 +2,19 @@
   "historical": {"snapshot": null},
   "recent": {
     "snapshot": null,
-    "file_pattern": "\\.csv$",
+    "file_pattern": "(^|/)sephora_sample_2026-11-13\\.csv$",
+    "infer_promotion": false,
     "columns": {
-      "product": "product_id", "sku": "sku_id", "brand": "brand", "name": "product_name",
-      "category": "category", "subcategory": "subcategory", "size": "size", "variant": "variant",
-      "market": "market", "currency": "currency", "snapshot": "snapshot_date",
-      "price": "list_price", "sale": "sale_price", "rating": "rating", "engagement": "review_count",
-      "bestseller": "is_bestseller", "new_arrival": "is_new_arrival", "promotion": "is_on_sale",
-      "out_of_stock": "out_of_stock", "exclusive": "exclusive", "online": "online_only",
-      "limited": "limited_edition"
+      "product": "product_id", "sku": "sku_id", "brand": "brand", "name": "name",
+      "market": "country", "country_name": "country_name", "currency": "currency",
+      "collected_at": "collected_at", "category": "top_category",
+      "price": "price", "price_max": "price_max", "sale": "sale_price", "price_text": "price_text",
+      "rating": "rating", "engagement": "review_count",
+      "variation_type": "variation_type", "variant_count": "variant_count",
+      "variant_sku_ids": "variant_sku_ids",
+      "bestseller": "is_bestseller", "new_arrival": "is_new",
+      "limited": "is_limited_edition", "exclusive": "is_sephora_exclusive",
+      "online": "is_online_only", "product_url": "product_url", "image_url": "image_url"
     }
   },
   "comparable_ids": false,

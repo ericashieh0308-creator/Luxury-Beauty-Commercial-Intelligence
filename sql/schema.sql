@@ -9,7 +9,10 @@ CREATE TABLE fact_product_snapshot (
  snapshot TEXT, market TEXT NOT NULL, currency TEXT, product TEXT NOT NULL, sku TEXT, brand TEXT,
  name TEXT, category TEXT, subcategory TEXT, size TEXT, variant TEXT, price REAL, sale REAL,
  rating REAL, engagement INTEGER, exclusive INTEGER, online INTEGER, limited INTEGER,
- bestseller INTEGER, new_arrival INTEGER, promotion INTEGER, out_of_stock INTEGER, UNIQUE(source_id,line)
+ bestseller INTEGER, new_arrival INTEGER, promotion INTEGER, out_of_stock INTEGER,
+ collected_at TEXT, country_raw TEXT, country_name TEXT, price_max REAL, price_text TEXT,
+ variation_type TEXT, variant_count INTEGER, variant_sku_ids TEXT, product_url TEXT, image_url TEXT,
+ UNIQUE(source_id,line)
 );
 CREATE TABLE fact_review (
  source_id INTEGER NOT NULL REFERENCES source, line INTEGER NOT NULL, product TEXT NOT NULL,

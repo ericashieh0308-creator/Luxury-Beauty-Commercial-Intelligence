@@ -26,6 +26,10 @@ def fixture(tmp_path):
                       "r,x,Serum,50,US,USD,2026-11-01,30 ml\n"
                       "c,x,Serum,70,CA,CAD,2026-11-01,30 ml\n")
     cfg = json.loads((ROOT/"config/sources.json").read_text())
+    cfg["recent"] = {"file_pattern": r"\.csv$", "columns": {
+        "product": "product_id", "brand": "brand", "name": "product_name", "price": "list_price",
+        "market": "market", "currency": "currency", "snapshot": "snapshot_date", "size": "size",
+    }}
     cfg["historical"]["snapshot"] = "2023-02-01"
     cfg["fx_usd_per_cad"] = {"2026-10-30": .75}
     cfg["cpi_us"] = {"2023-02": 100,"2026-11": 110}
@@ -90,7 +94,7 @@ def test_invalid_schema_and_zip(tmp_path):
     with pytest.raises(ValueError,match="Unsafe ZIP"):
         with source_members(archive):
             pass
-    bad = tmp_path/"bad.csv"
+    bad = tmp_path/"sephora_sample_2026-11-13.csv"
     bad.write_text("wrong_column\n2\n")
     cfg = json.loads((ROOT/"config/sources.json").read_text())
     with pytest.raises(ValueError,match="missing required"):

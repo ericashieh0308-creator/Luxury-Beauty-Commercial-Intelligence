@@ -78,6 +78,14 @@ Read `quality_report.csv` and `duplicate_keys.csv` before using any KPI. Text no
 
 The lexicon baseline counts positive minus negative term presence. Zero represents neutral or unscored language. Topic counts support qualitative triage. Before reporting sentiment rates, have a second reviewer independently label a permitted local sample. Record criterion, agreement, precision/recall, negation errors and neutral-class coverage. Historical review findings only describe the historical review pool.
 
+## Cartpie November 2026 mapping
+
+The mapping selects the reported `sephora_sample_2026-11-13.csv` member. Run `python -m beauty.pipeline --diagnose <archive>` locally to review raw country, currency and flag counts, normalized markets and dates, numerical ranges and validation issues. The timestamp uses its source calendar day for snapshot grouping, retaining its offset when provided. Country codes and names map to US or CA. A conflicting code and name retains the row under an unknown market. USD/CAD is checked independently against market.
+
+The pipeline stores `price` as the reported base price, `price_max` as the reported upper endpoint, and `sale_price` as the reported sale field. Numeric values must be finite and nonnegative. An upper bound below base or a sale above base is retained and logged for review. Pricing summaries exclude reversed ranges and use the reported base for valid ranges. Price-pair comparisons and discount-depth calculations require a point price (equal endpoints or no reported maximum). Confirm these source definitions locally before interpreting the pricing results. Cartpie promotion stays blank even when a lower sale price is reported.
+
+Product and explicit SKU rows retain their source identities. `variant_count`, `variant_sku_ids` and `variation_type` are descriptive inputs. They do not generate SKU rows or populate the verified size or variant fields. Subcategory and availability also stay blank. A recent row without verified size remains in the manual-review pool when a name or identifier provides a match candidate.
+
 ## Product comparison
 
 Candidates are blocked by normalized brand. Auto-acceptance requires reciprocal uniqueness within the paired snapshot, exact normalized brand/name/size/variant and known dates. Comparable identifiers can identify exact SKU or exact product-plus-variant matches. Enable `comparable_ids` only after confirming identifier semantics. Missing SKU variants and fuzzy name matches go to manual review. Review packaging, reformulation, units and list-price semantics before interpreting accepted pairs. Cross-market comparisons require the same snapshot day and correct local currency. Report accepted and eligible pair counts, source denominators, directional gaps and coverage by category. Missing sample items have unknown disposition. Sample selection, survival and matched-product coverage limit generalization.

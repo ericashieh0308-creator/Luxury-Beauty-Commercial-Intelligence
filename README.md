@@ -26,15 +26,32 @@ Open the [15-sheet Excel workbook](models/excel/Luxury_Beauty_Commercial_Financi
 
 ## Run with licensed source files
 
-Place the archives inside the ignored `data/raw` folder. The pipeline reads ZIP members directly and also accepts extracted directories. Inspect recent CSV member names and headers first, compare them with the mapping in `config/sources.json`, and record confirmed collection dates, currencies, and price definitions in a local copy. Follow the source terms before processing or publishing derived exports.
+Place the licensed archives in the ignored `data/raw/` folder. The pipeline reads ZIP members directly and also accepts extracted directories. The default configuration selects `sephora_sample_2026-11-13.csv` and maps its reported columns. The diagnostic prints aggregate counts and ranges for local review.
 
 ```powershell
-Copy-Item config/sources.json config/sources.local.json
-.\.venv\Scripts\python.exe -m beauty.pipeline --inspect 'data/raw/sephora-sample-2026-11.zip'
-.\.venv\Scripts\python.exe -m beauty.pipeline --historical 'data/raw/archive (1).zip' --recent 'data/raw/sephora-sample-2026-11.zip' --config config/sources.local.json --benchmark data/external/benchmark_template.csv
+$python = '.\.venv\Scripts\python.exe'
+$recent = 'data/raw/sephora-sample-2026-11.zip'
+& $python -m beauty.pipeline --diagnose $recent
+& $python -m beauty.pipeline --historical 'data/raw/archive (1).zip' --recent $recent --benchmark 'data/external/benchmark_template.csv'
 ```
 
-Without verified dates or reference rates, the affected comparison fields stay blank. The recent mapping is a template. Check market values are US or CA and currency values are USD or CAD. Import `data/processed` and `output/finance` following the [Power BI Desktop guide](dashboard/powerbi/README.md).
+If you already have `config/sources.local.json`, refresh its recent schema from the tracked configuration and keep your verified historical, FX, and CPI settings:
+
+```powershell
+$defaults = Get-Content 'config/sources.json' -Raw | ConvertFrom-Json
+$localPath = 'config/sources.local.json'
+if (Test-Path $localPath) {
+    $local = Get-Content $localPath -Raw | ConvertFrom-Json
+    $local | Add-Member -NotePropertyName recent -NotePropertyValue $defaults.recent -Force
+    $local | ConvertTo-Json -Depth 20 | Set-Content $localPath -Encoding UTF8
+} else {
+    Copy-Item 'config/sources.json' $localPath
+}
+& $python -m beauty.pipeline --diagnose $recent --config $localPath
+& $python -m beauty.pipeline --historical 'data/raw/archive (1).zip' --recent $recent --config $localPath --benchmark 'data/external/benchmark_template.csv'
+```
+
+The recent snapshot date comes from the date in each ISO collection timestamp, retaining its supplied offset when present. Missing or invalid recent timestamps leave the snapshot date blank. Size, subcategory, observed promotion, and stockout are unavailable in the reported schema. Verify price definitions, actual value distributions, and dates locally before interpreting the results. Keep raw data, diagnostics saved under `output/`, and `data/processed/` local. Import exports following the [Power BI Desktop guide](dashboard/powerbi/README.md).
 
 ## Methodology and portfolio
 
