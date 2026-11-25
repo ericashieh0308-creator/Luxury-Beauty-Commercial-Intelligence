@@ -120,7 +120,11 @@ def build(path):
         ["Required uplift",None,'=IF(OR(C8="",B2=0),"",C8/B2-1)'],
         ["Margin dilution",None,'=IF(OR(B3=0,C3=0),"",C4/C3-B4/B3)'],
         ["Incremental units",None,"=C2-B2"],["Incremental revenue",None,"=C3-B3"],
-        ["Incremental gross profit",None,"=C4-B4"],["Campaign cost",None,f"={a(17)}"]])
+        ["Incremental gross profit",None,"=C4-B4"],["Campaign cost",None,f"={a(17)}"],
+        ["Breakeven discount",None,f'=IFERROR(IF(AND(ISNUMBER(C16),C16>=0,C16<=1),C16,""),"")'],
+        ["Unbounded discount solution",None,
+         f'=IF(C2*{a(2)}*(1-{a(6)})*{keep}<=0,"",(C2*{unit_contribution("0")}-{a(12)}-{a(17)}-B5)/(C2*{a(2)}*(1-{a(6)})*{keep}))']])
+    sheets[9].row_dimensions[16].hidden = True
     put(10,["Illustrative shared SKU","Budget units","Actual units","Budget net USD","Actual net USD",
             "Price","Volume","Mix"],[
         [f"={ref(4,f'A{r}')}",f"=SUM({ref(7,'D2:D13')})*{ref(4,f'B{r}')}",
@@ -177,7 +181,7 @@ def build(path):
                 cell.number_format = PERCENT
     for r in (5,6,7,9,10,14,15,16):
         sheets[2][f"B{r}"].number_format = PERCENT
-    for pos in ("C7","C9","C10"):
+    for pos in ("C7","C9","C10","C15","C16"):
         sheets[9][pos].number_format = PERCENT
     for pos in ("B4","B5"):
         sheets[13][pos].number_format = PERCENT
