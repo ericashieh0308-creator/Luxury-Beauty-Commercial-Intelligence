@@ -66,8 +66,8 @@ def fx_for(snapshot, rates):
         return day, value
     return None, None
 
-def materialize(db, config):
-    db.executescript("""
+def materialize(cursor, config):
+    cursor.executescript("""
         CREATE VIEW catalog_snapshot AS SELECT f.*,s.vintage FROM fact_product_snapshot f JOIN source s ON f.source_id=s.id;
         CREATE VIEW quality_report AS SELECT vintage,member,field,issue,count FROM quality JOIN source ON source_id=id;
         CREATE VIEW duplicate_keys AS SELECT vintage,snapshot,market,product,sku,COUNT(*) AS records
@@ -83,7 +83,7 @@ def materialize(db, config):
         fx_date TEXT,fx REAL,fx_low_gap REAL,fx_high_gap REAL,real_change REAL,
         left_tier TEXT,right_tier TEXT,right_tier_at_left_thresholds TEXT,left_promotion INTEGER,right_promotion INTEGER);
     """)
-    rows = list(db.execute("SELECT f.*, vintage FROM fact_product_snapshot f JOIN source s ON f.source_id=s.id"))
+    rows = list(cursor.execute("SELECT f.*, vintage FROM fact_product_snapshot f JOIN source s ON f.source_id=s.id"))
     key = lambda r: tuple(r[k] for k in ("vintage","market","snapshot","product"))
     unique = []
     for group in keyed(rows, key).values():
@@ -110,7 +110,7 @@ def materialize(db, config):
             exclusive = r["exclusive"]
             score = 100*(.8*rank+.2*exclusive) if exclusive is not None else None
             alternative = 100*(.95*rank+.05*exclusive) if exclusive is not None else None
-            db.execute("INSERT INTO pricing VALUES (?,?,?,?,?,?,?)", (r["id"],tier,midpoint,price-midpoint,depth,score,alternative))
+            cursor.execute("INSERT INTO pricing VALUES (?,?,?,?,?,?,?)", (r["id"],tier,midpoint,price-midpoint,depth,score,alternative))
     cross_inputs = []
     for kind, left, right in [
         ("longitudinal", [r for r in rows if r["vintage"]=="historical" and r["market"]=="US"],
@@ -120,7 +120,7 @@ def materialize(db, config):
         for a,b,method,status in match(left,right,config.get("comparable_ids",False)):
             if status == "accepted" and kind == "cross_market" and a["snapshot"] != b["snapshot"]:
                 status = "manual_review"
-            db.execute("INSERT INTO bridge_product_match VALUES (?,?,?,?,?)", (a["id"],b["id"],kind,method,status))
+            cursor.execute("INSERT INTO bridge_product_match VALUES (?,?,?,?,?)", (a["id"],b["id"],kind,method,status))
             if status != "accepted" or not eligible(a) or not eligible(b):
                 continue
             fx_date, fx = fx_for(b["snapshot"], config.get("fx_usd_per_cad",{})) if kind=="cross_market" else (None,1)
@@ -133,18 +133,18 @@ def materialize(db, config):
             real = (1+gap)*old/new-1 if kind=="longitudinal" and gap is not None and old>0 and new>0 else None
             cuts = boundaries.get((a["market"],a["snapshot"],a["vintage"],a["category"]),[])
             migration = assign(b["price"],cuts) if kind=="longitudinal" and cuts and a["category"]==b["category"] else None
-            db.execute("INSERT INTO price_comparison VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            cursor.execute("INSERT INTO price_comparison VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (a["id"],b["id"],kind,a["price"],b["price"],converted,delta,gap,fx_date,fx,
                  (converted*.95/a["price"]-1) if fx_date else None,(converted*1.05/a["price"]-1) if fx_date else None,
                  real,tiers.get(a["id"]),tiers.get(b["id"]),migration,a["promotion"],b["promotion"]))
             if gap is not None:
                 cross_inputs.append((kind,a,b,gap))
-    db.execute("CREATE TABLE comparison_summary (comparison, left_date,right_date,dimension,segment,matched_records,median_gap)")
+    cursor.execute("CREATE TABLE comparison_summary (comparison, left_date,right_date,dimension,segment,matched_records,median_gap)")
     for dim in ("brand","category","overall"):
         for k, group in keyed(cross_inputs,lambda t:(t[0],t[1]["snapshot"],t[2]["snapshot"],t[1][dim] if dim!="overall" else "All")).items():
-            db.execute("INSERT INTO comparison_summary VALUES (?,?,?,?,?,?,?)",(*k[:3],dim,k[3],len(group),median(t[3] for t in group)))
-    db.execute("CREATE TABLE match_coverage AS SELECT comparison,status,method,COUNT(*) AS candidate_pairs,COUNT(DISTINCT left_id) AS left_records,COUNT(DISTINCT right_id) AS right_records FROM bridge_product_match GROUP BY comparison,status,method")
-    db.execute("CREATE TABLE commercial_kpi (vintage,market,snapshot,dimension,segment,products,brands,priced,mean_price,median_price,min_price,max_price,assortment_share,mean_rating,rated,engagement_total,engagement_known,metric,known,flagged,share)")
+            cursor.execute("INSERT INTO comparison_summary VALUES (?,?,?,?,?,?,?)",(*k[:3],dim,k[3],len(group),median(t[3] for t in group)))
+    cursor.execute("CREATE TABLE match_coverage AS SELECT comparison,status,method,COUNT(*) AS candidate_pairs,COUNT(DISTINCT left_id) AS left_records,COUNT(DISTINCT right_id) AS right_records FROM bridge_product_match GROUP BY comparison,status,method")
+    cursor.execute("CREATE TABLE commercial_kpi (vintage,market,snapshot,dimension,segment,products,brands,priced,mean_price,median_price,min_price,max_price,assortment_share,mean_rating,rated,engagement_total,engagement_known,metric,known,flagged,share)")
     for cohort, cohort_rows in keyed(unique,lambda r:(r["vintage"],r["market"],r["snapshot"])).items():
         for dim in ("overall","brand","category","subcategory","tier"):
             for label, group in keyed(cohort_rows,lambda r: ("All" if dim=="overall" else tiers.get(r["id"]) if dim=="tier" else r[dim])).items():
@@ -153,14 +153,14 @@ def materialize(db, config):
                 engagements = [r["engagement"] for r in group if r["engagement"] is not None]
                 for f in FLAGS:
                     flags = [r[f] for r in group if r[f] is not None]
-                    db.execute("INSERT INTO commercial_kpi VALUES ("+",".join(["?"]*21)+")",
+                    cursor.execute("INSERT INTO commercial_kpi VALUES ("+",".join(["?"]*21)+")",
                         (*cohort,dim,label,len(group),len({r["brand"] for r in group if r["brand"]}),len(prices),
                          mean(prices) if prices else None,median(prices) if prices else None,
                          min(prices,default=None),max(prices,default=None),len(group)/len(cohort_rows),
                          mean(ratings) if ratings else None,len(ratings),sum(engagements) if engagements else None,
                          len(engagements),f,len(flags),sum(flags),mean(flags) if flags else None))
 
-    db.execute("""CREATE TABLE portfolio AS SELECT vintage,market,snapshot,brand,category,
+    cursor.execute("""CREATE TABLE portfolio AS SELECT vintage,market,snapshot,brand,category,
                COUNT(*) AS products,AVG(CASE WHEN (market='US' AND currency='USD') OR (market='CA' AND currency='CAD') THEN price END) AS mean_price,AVG(rating) AS mean_rating,
                SUM(bestseller) AS bestsellers,COUNT(bestseller) AS bestseller_known,
                SUM(new_arrival) AS new_arrivals,COUNT(new_arrival) AS new_arrival_known,
@@ -168,7 +168,7 @@ def materialize(db, config):
                FROM fact_product_snapshot f JOIN source s ON f.source_id=s.id WHERE f.id IN (SELECT value FROM json_each(?))
                GROUP BY vintage,market,snapshot,brand,category""",
                ("[" + ",".join(str(r["id"]) for r in unique) + "]",))
-    db.executescript("""
+    cursor.executescript("""
         CREATE VIEW sku_portfolio AS
         SELECT vintage,market,snapshot,brand,category,COUNT(DISTINCT json_array(product,sku)) AS skus,
         MIN(price) AS min_sku_price,MAX(price) AS max_sku_price
@@ -196,16 +196,16 @@ def materialize(db, config):
             except ValueError:
                 r_value = None
             relationships.extend((len(pairs),r_value))
-        db.execute("INSERT INTO category_diagnostics VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        cursor.execute("INSERT INTO category_diagnostics VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
                    (*cohort,len(group),cuts[0] if cuts else None,cuts[2] if cuts else None,
                     concentration,*relationships))
 
-def export(db, target):
+def export(cursor, target):
     for table in ("dim_brand","dim_category","dim_market","dim_date","dim_product","fact_product_snapshot","fact_sku_snapshot",
                   "pricing","commercial_kpi","comparison_summary","bridge_product_match","price_comparison",
                   "match_coverage","portfolio","sku_portfolio","product_position","category_diagnostics","review_summary","review_topic","fact_industry_benchmark","quality_report","duplicate_keys"):
         source = "catalog_snapshot" if table == "fact_product_snapshot" else table
-        cursor = db.execute(f"SELECT * FROM {source}")
+        cursor.execute(f"SELECT * FROM {source}")
         with (target/f"{table}.csv").open("w", newline="", encoding="utf-8-sig") as out:
             writer = csv.writer(out)
             writer.writerow([column[0] for column in cursor.description])

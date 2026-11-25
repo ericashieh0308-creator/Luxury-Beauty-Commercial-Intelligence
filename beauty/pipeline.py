@@ -1,7 +1,7 @@
 """Read ZIP members as streams. Restricted outputs belong under data/processed."""
 import argparse
 from collections import Counter
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 import csv
 from datetime import date
 from hashlib import sha256
@@ -84,7 +84,7 @@ def parse(row, column, converter, issues):
 def text(value):
     return value
 
-def ingest_file(db, vintage, member, opener, cfg, review):
+def ingest_file(cursor, vintage, member, opener, cfg, review):
     digest = sha256()
     with opener() as source:
         for block in iter(lambda: source.read(1 << 20), b""):
@@ -102,7 +102,7 @@ def ingest_file(db, vintage, member, opener, cfg, review):
         absent_optional = set(mapping.values()) - set(headers)
         for column in absent_optional:
             issues[column, "absent"] += 1
-        source_id = db.execute("INSERT INTO source(vintage,member,sha256,headers) VALUES (?,?,?,?)",
+        source_id = cursor.execute("INSERT INTO source(vintage,member,sha256,headers) VALUES (?,?,?,?)",
                                (vintage, member, digest.hexdigest(), json.dumps(headers))).lastrowid
         seen = set()
         topics = Counter()
@@ -157,22 +157,21 @@ def ingest_file(db, vintage, member, opener, cfg, review):
                           price, sale, rating, get("engagement", integer), *(flags[k] for k in FLAGS))
             batch.append(record)
             if len(batch) == 5000:
-                db.executemany(sql, batch)
+                cursor.executemany(sql, batch)
                 batch.clear()
-        db.executemany(sql, batch)
-        db.executemany("""INSERT INTO review_topic VALUES (?,?,?) ON CONFLICT(product,topic)
+        cursor.executemany(sql, batch)
+        cursor.executemany("""INSERT INTO review_topic VALUES (?,?,?) ON CONFLICT(product,topic)
           DO UPDATE SET mentions=mentions+excluded.mentions""", [(p,t,n) for (p,t),n in topics.items()])
-    db.executemany("INSERT INTO quality VALUES (?,?,?,?)", [(source_id,k,i,n) for (k,i),n in issues.items()])
+    cursor.executemany("INSERT INTO quality VALUES (?,?,?,?)", [(source_id,k,i,n) for (k,i),n in issues.items()])
 
 def build(paths, config, output, benchmark=None):
     output.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=output) as tmp:
         temporary = Path(tmp) / "commercial.sqlite"
-        db = sqlite3.connect(temporary)
-        db.row_factory = sqlite3.Row
-        try:
-            with db:
-                db.executescript((ROOT/"sql/schema.sql").read_text(encoding="utf-8"))
+        with closing(sqlite3.connect(temporary)) as db:
+            db.row_factory = sqlite3.Row
+            with db, closing(db.cursor()) as cursor:
+                cursor.executescript((ROOT/"sql/schema.sql").read_text(encoding="utf-8"))
                 for vintage, path in paths.items():
                     cfg = config.get(vintage, {}).copy()
                     if cfg.get("snapshot"):
@@ -189,7 +188,7 @@ def build(paths, config, output, benchmark=None):
                                 continue
                             if vintage == "recent" and not re.search(cfg.get("file_pattern", r"\.csv$"), name):
                                 continue
-                            ingest_file(db, vintage, name, opener, cfg, review)
+                            ingest_file(cursor, vintage, name, opener, cfg, review)
                             selected += not review
                         if not selected:
                             raise ValueError(f"No product CSV selected for {vintage}: {path}")
@@ -204,15 +203,14 @@ def build(paths, config, output, benchmark=None):
                             row["value"] = number(row["value"], -float("inf"))
                             for key in ("publication_date", "access_date"):
                                 row[key] = date.fromisoformat(row[key]).isoformat()
-                            db.execute("INSERT INTO fact_industry_benchmark VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                            cursor.execute("INSERT INTO fact_industry_benchmark VALUES (?,?,?,?,?,?,?,?,?,?,?)",
                                        [row[k] for k in BENCHMARK])
-                db.execute("INSERT INTO dim_brand SELECT DISTINCT brand FROM fact_product_snapshot WHERE brand IS NOT NULL")
-                db.execute("INSERT INTO dim_category SELECT DISTINCT category FROM fact_product_snapshot WHERE category IS NOT NULL")
+                cursor.execute("INSERT INTO dim_brand SELECT DISTINCT brand FROM fact_product_snapshot WHERE brand IS NOT NULL")
+                cursor.execute("INSERT INTO dim_category SELECT DISTINCT category FROM fact_product_snapshot WHERE category IS NOT NULL")
                 from .commercial import materialize, export
-                materialize(db, config)
-                export(db, Path(tmp))
-        finally:
-            db.close()
+                materialize(cursor, config)
+                export(cursor, Path(tmp))
+        # Close the SQLite transaction, cursor and file handle before publishing.
         for artifact in Path(tmp).iterdir():
             artifact.replace(output / artifact.name)
 

@@ -1,4 +1,4 @@
-import csv
+from contextlib import closing
 from dataclasses import replace
 import json
 from pathlib import Path
@@ -35,14 +35,14 @@ def test_pipeline_synthetic(tmp_path):
     hist,recent,cfg = fixture(tmp_path)
     output = tmp_path/"test_outputs"
     build({"historical": hist,"recent": recent},cfg,output,ROOT/"data/external/benchmark_template.csv")
-    with sqlite3.connect(output/"commercial.sqlite") as db:
-        assert db.execute("SELECT records FROM duplicate_keys").fetchone() == (2,)
-        assert db.execute("SELECT count FROM quality_report WHERE field='price_usd' AND issue='missing'").fetchone() == (1,)
-        assert db.execute("SELECT mentions FROM review_topic WHERE topic='packaging'").fetchone() == (1,)
-        gap, real = db.execute("SELECT percent_gap,real_change FROM price_comparison WHERE comparison='longitudinal'").fetchone()
+    with closing(sqlite3.connect(output/"commercial.sqlite")) as db, closing(db.cursor()) as cursor:
+        assert cursor.execute("SELECT records FROM duplicate_keys").fetchone() == (2,)
+        assert cursor.execute("SELECT count FROM quality_report WHERE field='price_usd' AND issue='missing'").fetchone() == (1,)
+        assert cursor.execute("SELECT mentions FROM review_topic WHERE topic='packaging'").fetchone() == (1,)
+        gap, real = cursor.execute("SELECT percent_gap,real_change FROM price_comparison WHERE comparison='longitudinal'").fetchone()
         assert gap == pytest.approx(.25)
         assert real == pytest.approx(1.25/1.1-1)
-        assert db.execute("SELECT percent_gap,fx_date FROM price_comparison WHERE comparison='cross_market'").fetchone() == (.05,"2026-10-30")
+        assert cursor.execute("SELECT percent_gap,fx_date FROM price_comparison WHERE comparison='cross_market'").fetchone() == (.05,"2026-10-30")
     assert "review_text" not in (output/"review_summary.csv").read_text()
 
 def test_missing_fx_and_ambiguous_matches(tmp_path):
@@ -51,14 +51,37 @@ def test_missing_fx_and_ambiguous_matches(tmp_path):
     output = tmp_path/"out"
     paths = {"historical": hist,"recent": recent}
     build(paths,cfg,output)
-    with sqlite3.connect(output/"commercial.sqlite") as db:
-        assert db.execute("SELECT percent_gap FROM price_comparison WHERE comparison='cross_market'").fetchone() == (None,)
+    with closing(sqlite3.connect(output/"commercial.sqlite")) as db, closing(db.cursor()) as cursor:
+        assert cursor.execute("SELECT percent_gap FROM price_comparison WHERE comparison='cross_market'").fetchone() == (None,)
     with recent.open("a") as f:
         f.write("second,x,Serum,52,US,USD,2026-11-01,30 ml\n")
     build(paths,cfg,output)
-    with sqlite3.connect(output/"commercial.sqlite") as db:
-        assert db.execute("SELECT DISTINCT status FROM bridge_product_match").fetchall() == [("manual_review",)]
-        assert db.execute("SELECT COUNT(*) FROM price_comparison").fetchone() == (0,)
+    with closing(sqlite3.connect(output/"commercial.sqlite")) as db, closing(db.cursor()) as cursor:
+        assert cursor.execute("SELECT DISTINCT status FROM bridge_product_match").fetchall() == [("manual_review",)]
+        assert cursor.execute("SELECT COUNT(*) FROM price_comparison").fetchone() == (0,)
+
+def test_repeated_database_replacement(tmp_path):
+    hist, recent, cfg = fixture(tmp_path)
+    paths = {"historical": hist, "recent": recent}
+    output = tmp_path / "output"
+    database = output / "commercial.sqlite"
+    original = recent.read_text(encoding="utf-8")
+
+    for price in (50, 55, 60):
+        recent.write_text(original.replace("Serum,50,US", f"Serum,{price},US"), encoding="utf-8")
+        build(paths, cfg, output)
+        with closing(sqlite3.connect(database)) as db, closing(db.cursor()) as cursor:
+            assert cursor.execute("PRAGMA integrity_check").fetchone() == ("ok",)
+            assert cursor.execute(
+                "SELECT right_native FROM price_comparison WHERE comparison='longitudinal'"
+            ).fetchall() == [(price,)]
+
+    published = database.read_bytes()
+    recent.write_text("invalid_header\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="missing required"):
+        build(paths, cfg, output)
+    assert database.read_bytes() == published
+
 
 def test_invalid_schema_and_zip(tmp_path):
     archive = tmp_path/"bad.zip"
