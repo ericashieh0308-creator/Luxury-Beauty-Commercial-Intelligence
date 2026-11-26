@@ -151,6 +151,8 @@ def test_streamlit():
     from streamlit.testing.v1 import AppTest
     app = AppTest.from_file(str(ROOT/"app.py")).run(timeout=30)
     assert not app.exception
+    app.sidebar.radio[0].set_value("Promotion & scenario simulator").run()
+    assert not app.exception
     assert app.metric[0].label == "Net revenue"
     assert app.metric[0].value == "$62,322"
     app.number_input[2].set_value(0).run()

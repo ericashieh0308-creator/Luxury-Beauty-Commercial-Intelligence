@@ -43,3 +43,19 @@ I built a beauty retail decision-support platform using Python, SQLite, Excel an
 The project owner previously confirmed licensed-archive ingestion on Windows for the preceding schema release. Current matching, quality and reference enhancements have synthetic regression evidence. Refer to the current local validation run before publishing any fresh claim about actual observations.
 
 **Publication sequence.** Validate the current commit in PowerShell, reconcile licensed counts and audit the match queues locally, then choose synthetic demonstrations or verify redistribution rights before sharing any derived catalog output. Build and validate the Power BI project in Desktop if a native dashboard is part of the portfolio. Use the [executive brief](../reports/portfolio-executive-brief.md) as a recruiter-readable entry point.
+
+## Version 1.0 application copy
+
+Use the bullet that matches the role and your own contribution. The processing scale below describes the owner-reported Windows run on the prior release.
+
+| Target role | Résumé bullet |
+|---|---|
+| Commercial Analyst | Built a retail intelligence workflow that profiles brand and category assortment, tracks SKU coverage, and shows the denominator behind each merchandising flag. |
+| Commercial Finance Analyst | Built an Excel and Python planning model that links revenue, COGS, returns, channel fees and promotion spend to contribution and operating profit. Reconciled three simulated scenarios. |
+| FP&A Analyst | Created 12-month Base, Bull and Bear plans, budget-to-actual variance bridges, and weighted margin checks for a simulated specialty retailer. |
+| Business Analyst | Documented and tested a Python/SQLite pipeline that processed more than one million historical review records in a local Windows validation, with source lineage and quality reporting. |
+| Pricing Analyst | Developed native-currency pricing and category tier views, with reviewable product matching that requires verified specifications before calculating a price gap. |
+| Retail Analyst | Paired brand/category assortment, bestseller and new-arrival flags, and historical review topic summaries with audited coverage and quality checks. |
+| Beauty and Luxury Analytics | Presented premium beauty assortment and pricing signals beside a separate promotion simulator, making the implications for positioning and contribution accessible to business stakeholders. |
+
+**LinkedIn Featured description:** Luxury & Beauty Commercial Intelligence is a Python, SQLite, Streamlit, Excel and Power BI portfolio case. Explore the synthetic catalog demo, inspect quality and pricing coverage, and test how discount and volume assumptions change simulated campaign contribution. The workbook reconciles three planning scenarios and the implementation kit documents how to build the Power BI report in Desktop.

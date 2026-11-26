@@ -1,16 +1,26 @@
 # Power BI Desktop implementation kit
 
-Prioritize pages 1 and 7. Import the observed CSVs from `data/processed` and the simulated facts from `output/finance` via **Get Data > Text/CSV**. Import [Ivory & Champagne](theme.json) from **View > Themes > Browse for themes**. This kit requires Windows Power BI Desktop to build and validate a native project.
+The public demo uses generated fictional catalog records and simulated finance tables. Native report creation and validation require Windows Power BI Desktop. The kit automates CSV selection, headers, blank normalization, and core type assignments through a reusable M loader.
+
+## Shortest Desktop workflow
+
+1. Run `python -m beauty.demo`. It writes the synthetic catalog to `output/demo/catalog` and simulated finance to `output/demo/finance`.
+2. In Desktop, open **Transform data > New source > Blank query > Advanced Editor**, paste [PortfolioTables.pq](PortfolioTables.pq), and replace the two folder paths with your absolute demo paths. Name the query `PortfolioTables` and disable **Enable load** for it.
+3. Create one blank query per table you want. In the formula bar, paste `= PortfolioTables[assortment_counts]` and name it `assortment_counts`. Repeat for `portfolio`, `discount_summary`, `comparison_coverage`, `quality_report`, and `fact_simulated_finance` for the first two pages. Add other tables from the record as needed. Select **Close & Apply**.
+4. Import [Ivory & Champagne](theme.json). Under **Modeling > New measure**, paste the measures for the loaded tables from [measures.dax](measures.dax). For a first executive page, add source and distinct-product cards, a **Portfolio** category bar, and comparison availability. Use a single vintage, market, and snapshot for each visual. For finance, add a scenario slicer, monthly line chart, operating profit and weighted gross margin.
+5. Review the [KPI definitions](../../docs/methodology.md) and add the star-schema tables and relationships below when you extend beyond the first two pages. Validate filters against the synthetic CSVs and the workbook, then save in Desktop.
+
+The M loader is source text. It has not been executed in Power Query Desktop here. The release includes no PBIX or PBIP.
 
 ## Model and Power Query
 
-1. Create `ObservedPath` and `FinancePath` text parameters. Use `Csv.Document(File.Contents(ObservedPath & "\\fact_product_snapshot.csv"),[Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv])` and promote headers. Repeat for the tables selected below.
+1. Create `ObservedPath` and `FinancePath` text parameters. Use the loader with the desired catalog and finance folders. Keep a separate Desktop file for the public synthetic demo and any licensed local work.
 2. Set IDs and counts to whole numbers, prices to decimal, dates to date, flags to nullable whole numbers, and categories to text. Preserve blank flags and prices. Set format for USD and CAD explicitly or show the native currency beside every price visual.
 3. Load `dim_brand`, `dim_category`, `dim_market`, and `dim_date`. Create one-to-many single-direction relationships from each key to `fact_product_snapshot`. Reject duplicate dimension keys. Link snapshot `id` to `pricing.id` with a unique ID relationship. Treat each comparison endpoint as a separate role if loading endpoint slicers. Leave preaggregated commercial and QA tables disconnected and give them local slicers.
 4. Model scenario and month as separate dimensions for the simulated facts. Expose finance measures independently of observational market and SKU filters. Place the evidence label prominently on each financial page.
 5. Paste measures individually from [measures.dax](measures.dax). Check one market/vintage/date at a time for precomputed KPIs. Restrict portfolio shares to the same cohort and deduplicate repeated flag metrics.
 6. Configure tab order, alt text, titles and accessible contrasting labels. Test slicers, currency cues, zero denominators, totals and export rights in Desktop before distributing.
-7. Compare view results with SQLite/CSV for observed data and the workbook for finance. Validate Base annual net revenue $700,824.23 and operating profit $155,492.93 with unchanged defaults. Restrict sample exports to approved aggregates.
+7. Compare visual results with SQLite/CSV for observed data and the workbook for finance. Validate Base annual net revenue $700,824.23 and operating profit $155,492.93 with unchanged defaults. Restrict sample exports to approved aggregates.
 
 ## Page specifications and wireframes
 

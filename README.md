@@ -1,14 +1,36 @@
 # Luxury & Beauty Commercial Intelligence Platform
 
-**Advanced Commercial Decision Intelligence** is an independent portfolio case study on US premium beauty retail, using Sephora catalog snapshots as the intended observational evidence. It pairs commercial pricing and merchandising analytics with an illustrative retailer P&L and decision simulator.
+**Version 1.0 · Retail assortment, pricing, and commercial finance**
 
-| Decision | Deliverable |
+A retailer can see what is listed, priced, or reviewed in a catalog without knowing what sold. This project keeps those signals separate from a simulated P&L so a commercial team can assess assortment and pricing, then test whether a promotion justifies its campaign spend.
+
+| Business question | Deliverable |
 |---|---|
-| Where does an assortment sit on the price ladder? | SQLite pipeline, category quartiles, brand portfolio and price-position exports |
-| How did comparable list prices differ? | Reciprocal match audit, longitudinal price bridge, and US/Canada comparison with dated FX |
-| Is an incremental promotion worth funding? | Formula-driven Excel workbook and interactive USD contribution simulator |
-| How should results be presented? | Power BI implementation kit and executive report framework |
+| What is represented in the catalog? | Product/SKU counts, brand and category coverage, review topics, and field-level quality |
+| Where does the assortment sit on the price ladder? | Native-currency category tiers, brand positioning, eligible discount depth, and auditable match evidence |
+| Is a campaign worth funding? | Formula-driven Excel P&L, budget variance, SKU and channel profitability, and interactive promotion breakeven |
+| How can stakeholders reproduce it? | Python and SQLite pipeline, Streamlit public demo, and a Power BI Desktop implementation kit |
 
+## Dashboard previews
+
+Screenshots captured from the running Streamlit app. Catalog data are synthetic and all financial inputs and outputs are simulated.
+
+[![Streamlit executive overview with synthetic assortment and comparison coverage](assets/streamlit-commercial-demo.png)](assets/streamlit-commercial-demo.png)
+
+[![Streamlit simulated Bull-case financial dashboard](assets/streamlit-finance-demo.png)](assets/streamlit-finance-demo.png)
+
+## Architecture
+
+```mermaid
+flowchart LR
+    A[Licensed local files or synthetic generator] --> B[Python validation and normalization]
+    B --> C[SQLite lineage and facts]
+    C --> D[Commercial CSVs and quality reports]
+    D --> E[Streamlit catalog views or Power BI Desktop]
+    F[Simulated planning assumptions] --> G[Python P&L and scenarios]
+    F --> H[Formula-driven Excel workbook]
+    G --> E
+```
 ## Windows and PyCharm
 
 Open the repository folder in PyCharm. Use PowerShell in the project root and select `.venv\Scripts\python.exe` as the project interpreter.
@@ -18,7 +40,7 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe -m pytest -q
 .\.venv\Scripts\python.exe -m beauty.workbook
-.\.venv\Scripts\python.exe -m beauty.finance_export
+.\.venv\Scripts\python.exe -m beauty.demo
 .\.venv\Scripts\python.exe -m streamlit run app.py
 ```
 
@@ -67,3 +89,11 @@ The checkout contains synthetic test fixtures and simulated retailer planning as
 ## Release validation
 
 Start with `quality_completeness.csv`, `quality_report.csv`, `assortment_counts.csv`, and `comparison_coverage.csv`. Those tables distinguish source records, usable field coverage, distinct items, and comparable price pairs. Use the [external reference guide](docs/external-references.md) to add reviewed FX, CPI and industry inputs and the [executive brief](reports/portfolio-executive-brief.md) for the publication checklist. The project owner's earlier Windows run confirmed licensed-archive ingestion on the prior schema release. The current audit changes use synthetic regression data.
+
+## Evidence and publication
+
+The owner’s Windows validation of the preceding release passed 22 tests and processed both licensed archives. The Version 1.0 suite covers the synthetic generator, dashboard navigation and native-currency switching alongside pipeline and finance regressions. The workbook uses simulated assumptions, and catalog coverage measures presence in the sourced sample. Cross-market and longitudinal price gaps are unavailable on the supplied archive validation. Confidence labels do not certify product specifications.
+
+The public Streamlit startup uses fictional records only. To explore private outputs on your own machine, set `$env:BEAUTY_LOCAL_CATALOG_DIR = (Resolve-Path 'data/processed').Path` and launch Streamlit with `--server.address 127.0.0.1`. Before running a public demo, clear that variable with `Remove-Item Env:BEAUTY_LOCAL_CATALOG_DIR -ErrorAction SilentlyContinue`. Keep licensed raw files, derived exports, private databases and local configuration out of the repo and release assets.
+
+The [release checklist](docs/release-checklist.md) covers the final Windows check, Desktop workflow, and GitHub release review.
