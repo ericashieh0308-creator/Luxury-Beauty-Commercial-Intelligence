@@ -1,5 +1,5 @@
 PRAGMA foreign_keys=ON;
-CREATE TABLE source (id INTEGER PRIMARY KEY, vintage TEXT NOT NULL, member TEXT NOT NULL, sha256 TEXT NOT NULL, headers TEXT NOT NULL);
+CREATE TABLE source (id INTEGER PRIMARY KEY, vintage TEXT NOT NULL, member TEXT NOT NULL, sha256 TEXT NOT NULL, headers TEXT NOT NULL, records INTEGER NOT NULL DEFAULT 0);
 CREATE TABLE dim_brand (brand TEXT PRIMARY KEY);
 CREATE TABLE dim_category (category TEXT PRIMARY KEY);
 CREATE TABLE dim_market (market TEXT PRIMARY KEY, currency TEXT NOT NULL);
@@ -24,10 +24,19 @@ CREATE TABLE quality (source_id INTEGER NOT NULL REFERENCES source, field TEXT N
  issue TEXT NOT NULL, count INTEGER NOT NULL, PRIMARY KEY(source_id,field,issue));
 CREATE TABLE bridge_product_match (
  left_id INTEGER NOT NULL REFERENCES fact_product_snapshot, right_id INTEGER NOT NULL REFERENCES fact_product_snapshot,
- comparison TEXT NOT NULL, method TEXT NOT NULL, status TEXT NOT NULL, PRIMARY KEY(left_id,right_id,comparison));
+ comparison TEXT NOT NULL, method TEXT NOT NULL, status TEXT NOT NULL, confidence TEXT NOT NULL, reason TEXT NOT NULL,
+ name_similarity REAL, same_product_id INTEGER NOT NULL, same_sku_id INTEGER NOT NULL,
+ verified_size INTEGER NOT NULL, verified_variant INTEGER NOT NULL, trusted_identifier_scope INTEGER NOT NULL, identifier_scope_evidence TEXT,
+ PRIMARY KEY(left_id,right_id,comparison));
 CREATE TABLE fact_industry_benchmark (
  organization TEXT, title TEXT, publication_date TEXT, measurement_period TEXT, geography TEXT,
  metric TEXT, value REAL, units TEXT, url TEXT, access_date TEXT, limitations TEXT);
 CREATE VIEW fact_sku_snapshot AS SELECT * FROM fact_product_snapshot WHERE sku IS NOT NULL;
 CREATE VIEW dim_product AS SELECT DISTINCT market,product,brand,name FROM fact_product_snapshot;
 CREATE VIEW dim_date AS SELECT DISTINCT snapshot FROM fact_product_snapshot WHERE snapshot IS NOT NULL;
+CREATE TABLE quality_profile (
+ source_id INTEGER NOT NULL REFERENCES source, field TEXT NOT NULL, denominator INTEGER NOT NULL,
+ present INTEGER NOT NULL, valid INTEGER NOT NULL, PRIMARY KEY(source_id,field));
+CREATE TABLE quality_raw_value (
+ source_id INTEGER NOT NULL REFERENCES source, line INTEGER NOT NULL, field TEXT NOT NULL,
+ raw_value TEXT NOT NULL, PRIMARY KEY(source_id,line,field));

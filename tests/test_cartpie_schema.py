@@ -27,7 +27,7 @@ def archive(tmp_path):
         dict(parent, sku_id="s2", price="90", price_max="90", sale_price=""),
         dict(parent, country="can", country_name="Canada", currency="CAD", sku_id="s1",
              price="75", price_max="70", sale_price="80", collected_at="2026-11-13T08:00:00Z", is_new="unknown"),
-        dict(parent, product_id="p2", country="", country_name="Canada", currency="cad", price="NaN",
+        dict(parent, product_id="p2", country="", country_name="Canada", currency="cad", price="NaN", rating="0",
              sale_price="-1", collected_at="2026-11-13Tnot-a-time"),
         dict(parent, product_id="p3", country="US", country_name="Canada", price="60"),
     ]
@@ -43,7 +43,7 @@ def archive(tmp_path):
 def test_cartpie_snapshot_and_quality(tmp_path):
     cfg = json.loads((ROOT / "config/sources.json").read_text(encoding="utf-8"))
     cfg["historical"]["snapshot"] = "2023-02-01"
-    cfg["comparable_ids"] = True
+    cfg["identifier_scopes"] = {"longitudinal": {"evidence": "Synthetic fixture scope only"}}
     hist = tmp_path / "product_info.csv"
     hist.write_text("product_id,brand_name,product_name,price_usd,size\np1,X,Serum,40,30 ml\n", encoding="utf-8")
     output = tmp_path / "processed"
@@ -76,6 +76,26 @@ def test_cartpie_snapshot_and_quality(tmp_path):
                 ("is_new", "invalid")} <= issues
         assert cursor.execute("""SELECT DISTINCT status FROM bridge_product_match
             WHERE comparison='longitudinal'""").fetchall() == [("manual_review",)]
+        assert cursor.execute("""SELECT confidence,reason,same_product_id,verified_size,trusted_identifier_scope
+            FROM bridge_product_match AS m JOIN catalog_snapshot AS f ON f.id=m.right_id
+            WHERE m.comparison='longitudinal' AND f.sku IS NULL""").fetchall() == [
+            ("high_confidence", "size_unverified", 1, 0, 1)
+        ]
+        assert cursor.execute("SELECT raw_value FROM quality_raw_value WHERE field='rating' AND raw_value='0'").fetchall() == [("0",)]
+        assert cursor.execute("""SELECT denominator,present,valid FROM quality_completeness
+            WHERE vintage='recent' AND field='rating'""").fetchone() == (6, 6, 5)
+        assert cursor.execute("""SELECT classification,severity,count,denominator FROM quality_report
+            WHERE vintage='recent' AND field='promotion'""").fetchone() == ("unknown_or_unavailable", "info", 6, 6)
+        assert cursor.execute("""SELECT classification,severity FROM quality_report
+            WHERE vintage='recent' AND field='sale_price' AND issue='missing'""").fetchone() == (
+            "expected_optional_missing", "info"
+        )
+        assert cursor.execute("""SELECT source_records,distinct_products,distinct_product_skus
+            FROM assortment_counts WHERE vintage='recent' AND market='US'""").fetchone() == (3, 1, 2)
+        assert cursor.execute("""SELECT accepted_pairs, comparable_gaps, availability
+            FROM comparison_coverage WHERE comparison='longitudinal'""").fetchone() == (
+            0, 0, "Not available: no eligible accepted price pairs"
+        )
         assert cursor.execute("SELECT COUNT(*) FROM price_comparison").fetchone() == (0,)
         assert cursor.execute("""SELECT p.discount_depth FROM pricing p JOIN catalog_snapshot f USING(id)
             WHERE f.vintage='recent' AND f.market='US'""").fetchone() == (None,)
@@ -91,3 +111,4 @@ def test_cartpie_diagnostic_command(tmp_path, monkeypatch, capsys):
     assert summary["source_values_top_20"]["is_new"] == {"0": 5, "unknown": 1}
     assert summary["prices"]["price_max"] == {"count": 6, "min": 50, "max": 90}
     assert summary["missing_mapped_columns"] == []
+    assert summary["invalid_rating_values_top_20"] == {"0": 1}

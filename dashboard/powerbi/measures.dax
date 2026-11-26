@@ -26,3 +26,22 @@ Simulated Operating Profit = SUM(fact_simulated_finance[operating_profit])
 Simulated Operating Margin = DIVIDE([Simulated Operating Profit], [Simulated Net Revenue])
 
 Simulated Promo ROI = SELECTEDVALUE(fact_simulated_promotion[roi])
+
+// Use one selected vintage, market, and snapshot for these observation counts.
+Catalog Source Records = SUM(assortment_counts[source_records])
+
+Distinct Catalog Products = SELECTEDVALUE(assortment_counts[distinct_products])
+
+Distinct Product SKUs = SELECTEDVALUE(assortment_counts[distinct_product_skus])
+
+Valid Discount Depth =
+DIVIDE(
+    SUMX(discount_summary, discount_summary[valid_discount_observations] * discount_summary[mean_discount_depth]),
+    SUM(discount_summary[valid_discount_observations])
+)
+
+Matched Gap Display =
+VAR Gap = [Median Matched Gap]
+RETURN IF(ISBLANK(Gap), "Not available", FORMAT(Gap, "0.0%"))
+
+Comparison Availability = SELECTEDVALUE(comparison_coverage[availability], "Select one comparison")

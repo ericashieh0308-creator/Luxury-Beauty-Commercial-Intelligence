@@ -26,3 +26,20 @@ I built a beauty retail decision-support platform using Python, SQLite, Excel an
 | Streamlit | AppTest baseline and zero-volume interaction | Interactive browser review is optional |
 | Power BI | Import files, model guide, measures, theme and wireframes | Build and validate a native project in Desktop |
 | Executive report | Structured template and separate simulated case | Produce paginated evidence-based report post-ingestion |
+
+## Recruiter-facing description
+
+**GitHub description:** Premium beauty retail analytics with auditable Python/SQLite ingestion, conservative product matching, and a simulated Excel and Streamlit planning model.
+
+**Role emphasis**
+
+| Role | Demonstrate |
+|---|---|
+| Commercial Analyst or Retail Analyst | Catalog and flag denominators, category and brand portfolio analysis, and observed pricing checks |
+| Commercial Finance or FP&A Analyst | 12-month scenario forecast, channel contribution, variance bridges, promotion economics, and weighted margins |
+| Pricing Analyst | Scope-aware match evidence, consistent currency treatment, valid ranges and discount eligibility |
+| Business Analyst or Beauty and Luxury Analytics | Source-to-report lineage, privacy-aware data handling, and decision communication |
+
+The project owner previously confirmed licensed-archive ingestion on Windows for the preceding schema release. Current matching, quality and reference enhancements have synthetic regression evidence. Refer to the current local validation run before publishing any fresh claim about actual observations.
+
+**Publication sequence.** Validate the current commit in PowerShell, reconcile licensed counts and audit the match queues locally, then choose synthetic demonstrations or verify redistribution rights before sharing any derived catalog output. Build and validate the Power BI project in Desktop if a native dashboard is part of the portfolio. Use the [executive brief](../reports/portfolio-executive-brief.md) as a recruiter-readable entry point.

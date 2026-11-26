@@ -17,7 +17,7 @@
       "online": "is_online_only", "product_url": "product_url", "image_url": "image_url"
     }
   },
-  "comparable_ids": false,
+  "identifier_scopes": {},
   "fx_usd_per_cad": {},
   "cpi_us": {}
 }

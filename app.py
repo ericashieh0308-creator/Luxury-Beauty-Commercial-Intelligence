@@ -33,9 +33,9 @@ baseline = pnl(d)
 case = promotion(d,promoted,response,marketing)
 after = case["after"]
 def money(x):
-    return f"${x:,.0f}" if x is not None else "Unavailable"
+    return f"${x:,.0f}" if x is not None else "Not available"
 def pct(x):
-    return f"{x:.1%}" if x is not None else "Unavailable"
+    return f"{x:.1%}" if x is not None else "Not available"
 cols = st.columns(5)
 for col, label, value in zip(cols, ["Net revenue", "Gross profit", "Gross margin", "Contribution", "Operating profit"],
                             [money(after["net_revenue"]),money(after["gross_profit"]),pct(after["gross_margin"]),
@@ -43,7 +43,7 @@ for col, label, value in zip(cols, ["Net revenue", "Gross profit", "Gross margin
     col.metric(label,value)
 st.write(f"Promotion ROI {pct(case['roi'])} · Profit impact {money(after['operating_profit']-baseline['operating_profit'])} · "
          f"Required uplift {pct(case['required_uplift'])} · Breakeven discount {pct(case['breakeven_discount'])}")
-st.write(f"Breakeven units {case['breakeven_units']:,.1f}" if case["breakeven_units"] is not None else "Breakeven units unavailable")
+st.write(f"Breakeven units {case['breakeven_units']:,.1f}" if case["breakeven_units"] is not None else "Breakeven units not available")
 tabs = st.tabs(["Forecast","Discount sensitivity","Inventory & positioning"])
 with tabs[0]:
     projections = pd.DataFrame({name: [row["operating_profit"] for _,row,_ in forecast(

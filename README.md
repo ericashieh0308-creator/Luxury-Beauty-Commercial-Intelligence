@@ -63,3 +63,7 @@ The recent snapshot date comes from the date in each ISO collection timestamp, r
 - [Portfolio copy and verification checklist](docs/portfolio.md)
 
 The checkout contains synthetic test fixtures and simulated retailer planning assumptions. Real-source acquisition, licensing, date and schema checks, benchmark verification, and Power BI Desktop publication belong to the observed-data validation workflow. Sephora, LVMH, and Cartpie have no affiliation with this case study.
+
+## Release validation
+
+Start with `quality_completeness.csv`, `quality_report.csv`, `assortment_counts.csv`, and `comparison_coverage.csv`. Those tables distinguish source records, usable field coverage, distinct items, and comparable price pairs. Use the [external reference guide](docs/external-references.md) to add reviewed FX, CPI and industry inputs and the [executive brief](reports/portfolio-executive-brief.md) for the publication checklist. The project owner's earlier Windows run confirmed licensed-archive ingestion on the prior schema release. The current audit changes use synthetic regression data.

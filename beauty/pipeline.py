@@ -15,6 +15,8 @@ import tempfile
 import unicodedata
 from zipfile import ZipFile
 
+from .references import FIELDS as BENCHMARK, load as load_references
+
 ROOT = Path(__file__).resolve().parents[1]
 FLAGS = "exclusive online limited bestseller new_arrival promotion out_of_stock".split()
 FIELDS = """snapshot market currency product sku brand name category subcategory size variant price sale
@@ -32,7 +34,6 @@ HISTORICAL = dict(product="product_id", brand="brand_name", name="product_name",
 TOPICS = {"irritation": {"irritation", "burning", "rash"}, "scent": {"scent", "fragrance", "smell"},
           "texture": {"sticky", "greasy", "texture"}, "packaging": {"pump", "packaging", "leak"},
           "value": {"expensive", "affordable", "overpriced"}}
-BENCHMARK = "organization title publication_date measurement_period geography metric value units url access_date limitations".split()
 
 def normalize(value):
     if not value:
@@ -147,17 +148,32 @@ def ingest_file(cursor, vintage, member, opener, cfg, review):
         source_id = cursor.execute("INSERT INTO source(vintage,member,sha256,headers) VALUES (?,?,?,?)",
                                (vintage, member, digest.hexdigest(), json.dumps(headers))).lastrowid
         seen = set()
+        evaluated, present, valid = Counter(), Counter(), Counter()
+        raw_audit = []
+        source_rows = 0
         topics = Counter()
         batch = []
         table = "fact_review" if review else "fact_product_snapshot"
         sql = ("INSERT INTO fact_review VALUES (?,?,?,?,?,?)" if review else
                f"INSERT INTO {table}(source_id,line,{','.join(FIELDS)}) VALUES ({','.join('?' for _ in range(2+len(FIELDS)))})")
         for ix, row in enumerate(reader, start=2):
+            source_rows += 1
             if None in row or any(value is None for value in row.values()):
                 issues["row", "field_count_mismatch"] += 1
             def get(key, converter=text):
                 column = mapping.get(key)
-                return parse(row, column, converter, issues) if column in headers else None
+                if column not in headers:
+                    return None
+                evaluated[column] += 1
+                raw = row.get(column)
+                value = parse(row, column, converter, issues)
+                if raw and raw.strip():
+                    present[column] += 1
+                    if value is not None:
+                        valid[column] += 1
+                    if value is None or (not review and key in {"rating", "price", "price_max", "sale"}):
+                        raw_audit.append((source_id, ix, column, raw))
+                return value
             product = get("product")
             if not product:
                 issues["product", "row_excluded_missing_identifier"] += 1
@@ -206,7 +222,21 @@ def ingest_file(cursor, vintage, member, opener, cfg, review):
             if len(batch) == 5000:
                 cursor.executemany(sql, batch)
                 batch.clear()
+                cursor.executemany("INSERT INTO quality_raw_value VALUES (?,?,?,?)", raw_audit)
+                raw_audit.clear()
         cursor.executemany(sql, batch)
+        cursor.executemany("INSERT INTO quality_raw_value VALUES (?,?,?,?)", raw_audit)
+        cursor.execute("UPDATE source SET records=? WHERE id=?", (source_rows, source_id))
+        cursor.executemany("INSERT INTO quality_profile VALUES (?,?,?,?,?)", [
+            (source_id, column, evaluated[column] if column in headers else source_rows,
+             present[column], valid[column]) for column in sorted(set(mapping.values()))
+        ])
+        if not review:
+            for key in ("size", "subcategory", "promotion", "out_of_stock"):
+                if key not in mapping and not (key == "promotion" and cfg.get("infer_promotion", True)):
+                    issues[key, "unavailable"] += source_rows
+                    cursor.execute("INSERT OR IGNORE INTO quality_profile VALUES (?,?,?,0,0)",
+                                   (source_id, key, source_rows))
         cursor.executemany("""INSERT INTO review_topic VALUES (?,?,?) ON CONFLICT(product,topic)
           DO UPDATE SET mentions=mentions+excluded.mentions""", [(p,t,n) for (p,t),n in topics.items()])
     cursor.executemany("INSERT INTO quality VALUES (?,?,?,?)", [(source_id,k,i,n) for (k,i),n in issues.items()])
@@ -239,23 +269,11 @@ def build(paths, config, output, benchmark=None):
                             selected += not review
                         if not selected:
                             raise ValueError(f"No product CSV selected for {vintage}: {path}")
-                if benchmark:
-                    with benchmark.open(encoding="utf-8-sig", newline="") as source:
-                        reader = csv.DictReader(source)
-                        if reader.fieldnames != BENCHMARK:
-                            raise ValueError("Benchmark headers do not match template")
-                        for row in reader:
-                            if any(not row[k] for k in BENCHMARK) or not row["url"].startswith("https://"):
-                                raise ValueError("Incomplete benchmark record")
-                            row["value"] = number(row["value"], -float("inf"))
-                            for key in ("publication_date", "access_date"):
-                                row[key] = date.fromisoformat(row[key]).isoformat()
-                            cursor.execute("INSERT INTO fact_industry_benchmark VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-                                       [row[k] for k in BENCHMARK])
+                references = load_references(cursor, benchmark, config)
                 cursor.execute("INSERT INTO dim_brand SELECT DISTINCT brand FROM fact_product_snapshot WHERE brand IS NOT NULL")
                 cursor.execute("INSERT INTO dim_category SELECT DISTINCT category FROM fact_product_snapshot WHERE category IS NOT NULL")
                 from .commercial import materialize, export
-                materialize(cursor, config)
+                materialize(cursor, {**config, **references})
                 export(cursor, Path(tmp))
         # Close the SQLite transaction, cursor and file handle before publishing.
         for artifact in Path(tmp).iterdir():
@@ -276,6 +294,7 @@ def diagnose(path, cfg):
                 values = {mapping[key]: Counter() for key in selected if key in mapping}
                 numeric = {key: {"count": 0, "min": None, "max": None} for key in ("price", "price_max", "sale")}
                 issues = Counter()
+                invalid_ratings = Counter()
                 dates = Counter()
                 markets = Counter()
                 rows = 0
@@ -297,6 +316,10 @@ def diagnose(path, cfg):
                     collected_at = get("collected_at", timestamp)
                     day = collected_at[:10] if collected_at else get("snapshot", calendar)
                     dates[day or "<unavailable>"] += 1
+                    rating = get("rating", lambda x: number(x, 1, 5))
+                    raw_rating = (row.get(mapping.get("rating")) or "").strip()
+                    if raw_rating and rating is None:
+                        invalid_ratings[raw_rating] += 1
                     for key in FLAGS:
                         get(key, flag)
                     for (key, stats), value in zip(numeric.items(), prices(get, issues)):
@@ -310,6 +333,7 @@ def diagnose(path, cfg):
                     "missing_mapped_columns": sorted(set(mapping.values()) - set(headers)),
                     "source_values_top_20": {column: dict(counts.most_common(20)) for column, counts in values.items()},
                     "normalized_markets": dict(markets), "snapshot_dates": dict(dates),
+                    "invalid_rating_values_top_20": dict(invalid_ratings.most_common(20)),
                     "prices": {mapping[key]: stats for key, stats in numeric.items() if key in mapping},
                     "issues": [{"field": field, "issue": issue, "count": count}
                                for (field, issue), count in sorted(issues.items())],

@@ -3,11 +3,10 @@ from collections import defaultdict
 import csv
 from datetime import date
 from difflib import SequenceMatcher
-from math import isfinite
 from statistics import correlation
 from statistics import mean, median, quantiles
 
-from .pipeline import FLAGS, normalize
+from .pipeline import FLAGS, ROOT, normalize
 
 def keyed(rows, key):
     groups = defaultdict(list)
@@ -26,54 +25,85 @@ def point_price(row):
 def identity(row):
     return tuple(normalize(row[k]) for k in ("brand", "name", "size", "variant"))
 
-def match(left, right, comparable_ids=False):
-    by_brand = keyed(right, lambda r: r["brand"])
+def match(left, right, comparable_ids=False, *, same_day=False):
+    by_brand = keyed(right, lambda row: row["brand"])
+    by_product = keyed(right, lambda row: row["product"])
+    by_sku = keyed((row for row in right if row["sku"]), lambda row: row["sku"])
     candidates = []
+    scope = lambda row: (row["snapshot"], row["market"], row["product"], row["sku"])
+    left_keys, right_keys = keyed(left, scope), keyed(right, scope)
     for a in left:
-        for b in by_brand[a["brand"]]:
-            brand, name, size, variant = identity(a)
-            comparable = (brand and name and size and identity(a) == identity(b)
-                          and (variant is not None or (a["sku"] is None and b["sku"] is None)))
-            same_sku = a["sku"] and a["sku"] == b["sku"] and a["product"] == b["product"]
+        brand, name, size, variant = identity(a)
+        peers = (*by_brand[brand], *by_product[a["product"]], *by_sku.get(a["sku"], ()))
+        for b in {row["id"]: row for row in peers}.values():
+            b_brand, b_name, b_size, b_variant = identity(b)
             same_product = a["product"] == b["product"]
-            if comparable:
-                method = ("identifier_sku" if comparable_ids and same_sku else
-                          "identifier_variant" if comparable_ids and same_product else "attributes")
-            elif (comparable_ids and (same_sku or same_product)) or (
-                    name and b["name"] and SequenceMatcher(None, name, normalize(b["name"])).ratio() >= .84):
-                method = "manual_candidate"
-            else:
+            same_sku = bool(a["sku"] and a["sku"] == b["sku"])
+            similarity = SequenceMatcher(None, name, b_name).ratio() if name and b_name else None
+            if not (same_product or same_sku or (brand and brand == b_brand and similarity and similarity >= .84)):
                 continue
-            candidates.append((a, b, method))
-    exact = [c for c in candidates if c[2] != "manual_candidate"]
-    left_counts = keyed(exact, lambda c: (c[0]["id"], c[1]["snapshot"]))
-    right_counts = keyed(exact, lambda c: (c[1]["id"], c[0]["snapshot"]))
-    rank = {"identifier_sku": 0, "identifier_variant": 1, "attributes": 2}
-    def top(group, method):
-        scores = sorted(rank[c[2]] for c in group)
-        return scores[0] == rank[method] and (len(scores) == 1 or scores[1] > scores[0])
+            size_ok = bool(size and size == b_size)
+            variant_ok = bool(variant and variant == b_variant)
+            method = "manual_candidate"
+            confidence, reason = "manual_review", "identity_unverified"
+            if brand and b_brand and brand != b_brand:
+                confidence, reason = "rejected", "brand_conflict"
+            elif (size and b_size and size != b_size) or (variant and b_variant and variant != b_variant):
+                confidence, reason = "rejected", "specification_conflict"
+            elif same_day and a["snapshot"] and b["snapshot"] and a["snapshot"] != b["snapshot"]:
+                confidence, reason = "rejected", "snapshot_date_conflict"
+            elif brand and brand == b_brand and name and name == b_name:
+                has_sku = bool(a["sku"] or b["sku"])
+                same_grain = bool(a["sku"]) == bool(b["sku"])
+                specs_ok = size_ok and same_grain and (variant_ok or (not has_sku and not variant and not b_variant))
+                if not specs_ok:
+                    confidence = "high_confidence" if same_product or same_sku else "manual_review"
+                    reason = ("grain_mismatch" if not same_grain else
+                              "size_unverified" if not size_ok else "variant_unverified")
+                elif not a["snapshot"] or not b["snapshot"]:
+                    confidence, reason = "high_confidence", "snapshot_date_unavailable"
+                elif len(left_keys[scope(a)]) > 1 or len(right_keys[scope(b)]) > 1:
+                    confidence, reason = "ambiguous", "duplicate_business_key"
+                else:
+                    confidence, reason = "exact", "verified_attributes"
+                    method = ("identifier_sku" if comparable_ids and same_product and same_sku else
+                              "identifier_variant" if comparable_ids and same_product else "attributes")
+            candidates.append((a, b, method, confidence, reason, similarity,
+                               int(same_product), int(same_sku), int(size_ok), int(variant_ok)))
+    # A duplicate business key remains a competing candidate for its peer.
+    verified = [pair for pair in candidates if pair[3] == "exact" or pair[4] == "duplicate_business_key"]
+    left_counts = keyed(verified, lambda c: (c[0]["id"], c[1]["snapshot"]))
+    right_counts = keyed(verified, lambda c: (c[1]["id"], c[0]["snapshot"]))
+    for a, b, method, confidence, reason, *evidence in candidates:
+        status = "rejected" if confidence == "rejected" else "manual_review"
+        if confidence == "exact":
+            if len(left_counts[a["id"], b["snapshot"]]) == len(right_counts[b["id"], a["snapshot"]]) == 1:
+                status = "accepted"
+            else:
+                confidence, reason = "ambiguous", "non_unique_reciprocal_pair"
+        yield a, b, method, status, confidence, reason, *evidence, int(comparable_ids)
 
-    for a, b, method in candidates:
-        accepted = (method != "manual_candidate" and a["snapshot"] and b["snapshot"]
-                    and top(left_counts[a["id"], b["snapshot"]], method)
-                    and top(right_counts[b["id"], a["snapshot"]], method))
-        yield a, b, method, "accepted" if accepted else "manual_review"
 
 def fx_for(snapshot, rates):
     if not snapshot:
         return None, None
     target = date.fromisoformat(snapshot)
-    dated = [(abs((date.fromisoformat(day)-target).days), day, value)
-             for day, value in rates.items() if isfinite(value) and value > 0]
-    if dated and min(dated)[0] <= 4:
-        _, day, value = min(dated)
-        return day, value
+    dated = [day for day in rates if 0 <= (target-date.fromisoformat(day)).days <= 4]
+    if dated:
+        day = max(dated)
+        return day, rates[day]
     return None, None
 
 def materialize(cursor, config):
+    cursor.executescript((ROOT / "sql/quality.sql").read_text(encoding="utf-8"))
     cursor.executescript("""
+        CREATE VIEW assortment_counts AS
+        SELECT vintage,market,snapshot,COUNT(*) AS source_records, COUNT(DISTINCT product) AS distinct_products,
+               COUNT(sku) AS sku_records,
+               COUNT(DISTINCT CASE WHEN sku IS NOT NULL THEN json_array(product,sku) END) AS distinct_product_skus
+        FROM fact_product_snapshot JOIN source ON source_id=source.id
+        GROUP BY vintage,market,snapshot;
         CREATE VIEW catalog_snapshot AS SELECT f.*,s.vintage FROM fact_product_snapshot f JOIN source s ON f.source_id=s.id;
-        CREATE VIEW quality_report AS SELECT vintage,member,field,issue,count FROM quality JOIN source ON source_id=id;
         CREATE VIEW duplicate_keys AS SELECT vintage,snapshot,market,product,sku,COUNT(*) AS records
         FROM fact_product_snapshot JOIN source ON source_id=source.id
         GROUP BY vintage,snapshot,market,product,sku HAVING COUNT(*)>1;
@@ -117,15 +147,20 @@ def materialize(cursor, config):
             alternative = 100*(.95*rank+.05*exclusive) if exclusive is not None else None
             cursor.execute("INSERT INTO pricing VALUES (?,?,?,?,?,?,?)", (r["id"],tier,midpoint,price-midpoint,depth,score,alternative))
     cross_inputs = []
+    cursor.execute("""CREATE TABLE comparison_coverage (
+        comparison, left_source_records, right_source_records, candidate_pairs, left_candidates,
+        right_candidates, accepted_pairs, left_accepted, right_accepted, priced_pairs, comparable_gaps,
+        left_accepted_share, right_accepted_share, availability)""")
     for kind, left, right in [
         ("longitudinal", [r for r in rows if r["vintage"]=="historical" and r["market"]=="US"],
          [r for r in rows if r["vintage"]=="recent" and r["market"]=="US"]),
         ("cross_market", [r for r in rows if r["vintage"]=="recent" and r["market"]=="US"],
          [r for r in rows if r["vintage"]=="recent" and r["market"]=="CA"])]:
-        for a,b,method,status in match(left,right,config.get("comparable_ids",False)):
-            if status == "accepted" and kind == "cross_market" and a["snapshot"] != b["snapshot"]:
-                status = "manual_review"
-            cursor.execute("INSERT INTO bridge_product_match VALUES (?,?,?,?,?)", (a["id"],b["id"],kind,method,status))
+        scope = config.get("identifier_scopes", {}).get(kind)
+        trusted = bool(scope and isinstance(scope.get("evidence"), str) and scope["evidence"].strip())
+        for a, b, method, status, *audit in match(left, right, trusted, same_day=kind == "cross_market"):
+            cursor.execute("INSERT INTO bridge_product_match VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                           (a["id"], b["id"], kind, method, status, *audit, scope["evidence"] if trusted else None))
             if status != "accepted" or not all(eligible(record) and point_price(record) for record in (a, b)):
                 continue
             fx_date, fx = fx_for(b["snapshot"], config.get("fx_usd_per_cad",{})) if kind=="cross_market" else (None,1)
@@ -144,11 +179,25 @@ def materialize(cursor, config):
                  real,tiers.get(a["id"]),tiers.get(b["id"]),migration,a["promotion"],b["promotion"]))
             if gap is not None:
                 cross_inputs.append((kind,a,b,gap))
+        pair_counts = cursor.execute("""SELECT COUNT(*),COUNT(DISTINCT left_id),COUNT(DISTINCT right_id),
+            COUNT(CASE WHEN status='accepted' THEN 1 END),
+            COUNT(DISTINCT CASE WHEN status='accepted' THEN left_id END),
+            COUNT(DISTINCT CASE WHEN status='accepted' THEN right_id END)
+            FROM bridge_product_match WHERE comparison=?""", (kind,)).fetchone()
+        priced, gaps = cursor.execute("""SELECT COUNT(*),COUNT(percent_gap) FROM price_comparison
+                                      WHERE comparison=?""", (kind,)).fetchone()
+        availability = ("Available" if gaps else "Not available: FX required" if priced else
+                        "Not available: no eligible accepted price pairs" if left and right else
+                        "Not available: source cohort missing")
+        cursor.execute("INSERT INTO comparison_coverage VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                       (kind,len(left),len(right),*pair_counts,priced,gaps,
+                        pair_counts[4]/len(left) if left else None,
+                        pair_counts[5]/len(right) if right else None,availability))
     cursor.execute("CREATE TABLE comparison_summary (comparison, left_date,right_date,dimension,segment,matched_records,median_gap)")
     for dim in ("brand","category","overall"):
         for k, group in keyed(cross_inputs,lambda t:(t[0],t[1]["snapshot"],t[2]["snapshot"],t[1][dim] if dim!="overall" else "All")).items():
             cursor.execute("INSERT INTO comparison_summary VALUES (?,?,?,?,?,?,?)",(*k[:3],dim,k[3],len(group),median(t[3] for t in group)))
-    cursor.execute("CREATE TABLE match_coverage AS SELECT comparison,status,method,COUNT(*) AS candidate_pairs,COUNT(DISTINCT left_id) AS left_records,COUNT(DISTINCT right_id) AS right_records FROM bridge_product_match GROUP BY comparison,status,method")
+    cursor.execute("CREATE TABLE match_coverage AS SELECT comparison,status,method,COUNT(*) AS candidate_pairs,COUNT(DISTINCT left_id) AS left_records,COUNT(DISTINCT right_id) AS right_records,confidence,reason FROM bridge_product_match GROUP BY comparison,status,method,confidence,reason")
     cursor.execute("CREATE TABLE commercial_kpi (vintage,market,snapshot,dimension,segment,products,brands,priced,mean_price,median_price,min_price,max_price,assortment_share,mean_rating,rated,engagement_total,engagement_known,metric,known,flagged,share)")
     for cohort, cohort_rows in keyed(unique,lambda r:(r["vintage"],r["market"],r["snapshot"])).items():
         for dim in ("overall","brand","category","subcategory","tier"):
@@ -163,7 +212,7 @@ def materialize(cursor, config):
                          mean(prices) if prices else None,median(prices) if prices else None,
                          min(prices,default=None),max(prices,default=None),len(group)/len(cohort_rows),
                          mean(ratings) if ratings else None,len(ratings),sum(engagements) if engagements else None,
-                         len(engagements),f,len(flags),sum(flags),mean(flags) if flags else None))
+                         len(engagements),f,len(flags),sum(flags) if flags else None,mean(flags) if flags else None))
 
     cursor.execute("""CREATE TABLE portfolio AS SELECT vintage,market,snapshot,brand,category,
                COUNT(*) AS products,AVG(CASE WHEN ((market='US' AND currency='USD') OR (market='CA' AND currency='CAD'))
@@ -183,6 +232,12 @@ def materialize(cursor, config):
         JOIN source ON source.id=source_id
         WHERE (market='US' AND currency='USD') OR (market='CA' AND currency='CAD')
         GROUP BY vintage,market,snapshot,brand,category;
+        CREATE VIEW discount_summary AS
+        SELECT s.vintage,f.market,f.snapshot,f.category,COUNT(*) AS priced_product_representatives,
+               COUNT(p.discount_depth) AS valid_discount_observations,
+               AVG(p.discount_depth) AS mean_discount_depth
+        FROM fact_product_snapshot f JOIN pricing p USING(id) JOIN source s ON f.source_id=s.id
+        GROUP BY s.vintage,f.market,f.snapshot,f.category;
         CREATE VIEW product_position AS SELECT f.id,s.vintage,f.market,f.snapshot,f.category,
             f.brand,f.price,f.rating,f.engagement,p.tier,p.premium_proxy,p.price_heavy_proxy
             FROM fact_product_snapshot f JOIN pricing p USING(id) JOIN source s ON s.id=f.source_id;
@@ -211,7 +266,7 @@ def materialize(cursor, config):
 def export(cursor, target):
     for table in ("dim_brand","dim_category","dim_market","dim_date","dim_product","fact_product_snapshot","fact_sku_snapshot",
                   "pricing","commercial_kpi","comparison_summary","bridge_product_match","price_comparison",
-                  "match_coverage","portfolio","sku_portfolio","product_position","category_diagnostics","review_summary","review_topic","fact_industry_benchmark","quality_report","duplicate_keys"):
+                  "match_coverage","comparison_coverage","assortment_counts","discount_summary","portfolio","sku_portfolio","product_position","category_diagnostics","review_summary","review_topic","fact_industry_benchmark","quality_report","quality_completeness","duplicate_keys"):
         source = "catalog_snapshot" if table == "fact_product_snapshot" else table
         cursor.execute(f"SELECT * FROM {source}")
         with (target/f"{table}.csv").open("w", newline="", encoding="utf-8-sig") as out:
