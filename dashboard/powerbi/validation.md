@@ -54,3 +54,7 @@ To repeat the official deserialization with a .NET 8 SDK, run this PowerShell co
 ```powershell
 dotnet run --project scripts/tmdl-parser -- 'dashboard/powerbi/Luxury_Beauty_Commercial_Intelligence.SemanticModel/definition'
 ```
+
+## Stability release
+
+The [release candidates](release-candidates.md) describe the restored Desktop baseline variation system, isolated fallback, and separate validation for each candidate. In the optimized build, direct snapshot dates retain their ISO format while hidden generated date tables retain their baseline metadata.

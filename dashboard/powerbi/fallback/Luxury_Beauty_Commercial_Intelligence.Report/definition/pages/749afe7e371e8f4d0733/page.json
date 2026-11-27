@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "749afe7e371e8f4d0733",
+  "displayName": "Customer Reviews & Product Intelligence",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "pageBinding": {
+    "name": "dd93e592073878be2b15",
+    "type": "Default",
+    "parameters": []
+  }
+}

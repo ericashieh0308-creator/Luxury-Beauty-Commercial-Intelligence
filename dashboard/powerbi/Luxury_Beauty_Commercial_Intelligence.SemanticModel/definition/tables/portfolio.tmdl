@@ -29,6 +29,11 @@ table portfolio
 		summarizeBy: none
 		sourceColumn: snapshot
 
+		variation Variation
+			isDefault
+			relationship: c66d3bf8-6e39-4633-a528-3ad4ab7b7f0d
+			defaultHierarchy: LocalDateTable_1bb60f14-eb4a-4541-bc92-fda6c4b6cdcf.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date

@@ -2,7 +2,7 @@
 
 **Release state:** Ready for Desktop verification. Confirm refresh and rendering before publishing the native report as a finished portfolio artifact.
 
-The audit covered all 10 existing pages, 67 original visuals, 27 starting tables, and 29 starting measures. The final project contains **10 pages, 76 visuals, 28 tables, and 32 measures**. All original page and visual IDs remain. The three hidden date-support tables remain defined. Automatic date hierarchy creation and the two active date variations were disabled. Model and source query culture are en-US and every date column has an explicit yyyy-MM-dd format.
+The audit covered all 10 existing pages, 67 original visuals, 27 starting tables, and 29 starting measures. The final project contains **10 pages, 76 visuals, 28 tables, and 32 measures**. All original page and visual IDs remain. The three hidden date-support tables remain defined. The subsequent stability release restored the baseline date variations and time-intelligence setting. The optimized report keeps ISO format on its direct snapshot dates. See the [release candidates](release-candidates.md).
 
 ## Page QA
 

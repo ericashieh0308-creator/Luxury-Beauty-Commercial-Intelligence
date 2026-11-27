@@ -7,7 +7,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation __PBI_TimeIntelligenceEnabled = 0
+annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_QueryOrder = ["DemoRoot", "PortfolioTables", "assortment_counts", "portfolio", "comparison_coverage", "fact_simulated_finance", "dim_market", "dim_category", "fact_product_snapshot", "product_position", "discount_summary", "commercial_kpi", "review_summary", "review_topic", "quality_report", "quality_completeness", "match_coverage", "price_comparison", "fact_simulated_sku", "fact_simulated_channel", "fact_simulated_promotion", "fact_simulated_variance", "fact_simulated_pvm", "dim_scenario", "dim_cohort", "dim_comparison", "dim_quality_vintage"]
 

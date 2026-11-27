@@ -4,6 +4,8 @@ Open [Luxury_Beauty_Commercial_Intelligence.pbip](Luxury_Beauty_Commercial_Intel
 
 ## Open and refresh on Windows
 
+For the stability-first workflow, see the [two release candidates](release-candidates.md). The launcher opens a prepared local copy with DemoRoot set. The manual workflow below is available for inspecting the repository PBIP directly.
+
 Run in PowerShell from the repository root with your project Python environment configured.
 
 ```powershell
@@ -18,7 +20,7 @@ Start-Process (Resolve-Path 'dashboard/powerbi/Luxury_Beauty_Commercial_Intellig
 
 Set the **DemoRoot** text parameter under **Transform data > Edit parameters** to the absolute folder printed above, then choose **Apply changes** or **Close & Apply** and refresh. Point to the folder containing both `catalog` and `finance`. This is the only source setting required. Save machine-specific settings in a separate untracked copy of the project or revert the parameter value before committing changes. Desktop must load the model on first open after setting this parameter.
 
-For repeat runs after updating the branch, run **scripts/open-powerbi.ps1** from PowerShell. It requires a clean worktree, performs a fast-forward-only pull, generates the demo, validates it, prints DemoRoot, and opens the PBIP.
+For repeat runs, the launcher can open either candidate in a new local working copy. Its optional Update switch uses a fast-forward-only pull and requires a clean worktree.
 
 Use the built-in report page tabs to navigate. No manual recreation of queries, relationships, measures, visuals, or theme import is required for this project. The separate [Power Query expression](PortfolioTables.pq) and [DAX reference](measures.dax) are for reuse or inspection.
 

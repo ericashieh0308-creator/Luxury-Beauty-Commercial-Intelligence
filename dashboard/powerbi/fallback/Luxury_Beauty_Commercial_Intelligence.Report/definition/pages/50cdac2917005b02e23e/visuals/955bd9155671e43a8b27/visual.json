@@ -1,0 +1,165 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "product_position"
+                    }
+                  },
+                  "Property": "market"
+                }
+              },
+              "queryRef": "product_position.market",
+              "nativeQueryRef": "market"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "product_position"
+                    }
+                  },
+                  "Property": "vintage"
+                }
+              },
+              "queryRef": "product_position.vintage",
+              "nativeQueryRef": "vintage"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "product_position"
+                    }
+                  },
+                  "Property": "snapshot"
+                }
+              },
+              "queryRef": "product_position.snapshot",
+              "nativeQueryRef": "snapshot"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "product_position"
+                    }
+                  },
+                  "Property": "category"
+                }
+              },
+              "queryRef": "product_position.category",
+              "nativeQueryRef": "category"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "product_position"
+                    }
+                  },
+                  "Property": "tier"
+                }
+              },
+              "queryRef": "product_position.tier",
+              "nativeQueryRef": "tier"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "product_position"
+                    }
+                  },
+                  "Property": "Native median list price"
+                }
+              },
+              "queryRef": "product_position.Native median list price",
+              "nativeQueryRef": "Native median list price"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "product_position"
+                    }
+                  },
+                  "Property": "Eligible priced products"
+                }
+              },
+              "queryRef": "product_position.Eligible priced products",
+              "nativeQueryRef": "Eligible priced products"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Eligible price positioning'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "955bd9155671e43a8b27",
+  "position": {
+    "x": 48,
+    "y": 646,
+    "z": 7,
+    "height": 362,
+    "width": 1128,
+    "tabOrder": 7
+  }
+}

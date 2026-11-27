@@ -53,6 +53,11 @@ table assortment_counts
 		summarizeBy: none
 		sourceColumn: snapshot
 
+		variation Variation
+			isDefault
+			relationship: a8f99832-c7ba-4852-abd5-f56991129f4a
+			defaultHierarchy: LocalDateTable_d8680fe1-76eb-4ba0-82ec-6454d75870da.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date

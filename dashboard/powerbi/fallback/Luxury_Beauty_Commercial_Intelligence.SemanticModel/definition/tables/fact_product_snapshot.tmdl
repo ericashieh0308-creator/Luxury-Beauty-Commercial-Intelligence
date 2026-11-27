@@ -1,0 +1,125 @@
+table fact_product_snapshot
+	lineageTag: 17f4a119-bf1e-5ea3-98a3-15658ecc63e4
+
+	column id
+		dataType: int64
+		lineageTag: e364426d-dbaa-576a-baf8-0827f2e74062
+		summarizeBy: none
+		sourceColumn: id
+
+	column snapshot
+		dataType: dateTime
+		lineageTag: 002749b9-06ab-5698-9dff-b1fd5675a346
+		summarizeBy: none
+		sourceColumn: snapshot
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column market
+		dataType: string
+		lineageTag: 8207dbf6-10aa-535c-9bf6-5ba7e9522d48
+		summarizeBy: none
+		sourceColumn: market
+
+	column currency
+		dataType: string
+		lineageTag: eef4c251-7daf-595b-8548-39e7285eb2cb
+		summarizeBy: none
+		sourceColumn: currency
+
+	column product
+		dataType: string
+		lineageTag: f71e6839-68e2-589b-bef2-3e3803db6ea6
+		summarizeBy: none
+		sourceColumn: product
+
+	column sku
+		dataType: string
+		lineageTag: 81271ccd-43ff-5a7f-805e-ca2eb823dd60
+		summarizeBy: none
+		sourceColumn: sku
+
+	column brand
+		dataType: string
+		lineageTag: c199aa8d-00c3-5831-80c8-aeff820126e5
+		summarizeBy: none
+		sourceColumn: brand
+
+	column name
+		dataType: string
+		lineageTag: 491e1975-5466-5f68-b159-76bc0148e4b6
+		summarizeBy: none
+		sourceColumn: name
+
+	column category
+		dataType: string
+		lineageTag: 12a841b0-acdf-5024-b7ef-dffda05b7233
+		summarizeBy: none
+		sourceColumn: category
+
+	column price
+		dataType: double
+		lineageTag: 088e2ed3-1144-5677-9add-dd46270b2a07
+		summarizeBy: none
+		sourceColumn: price
+
+	column rating
+		dataType: double
+		lineageTag: 36e6bb52-ef9b-528e-81b9-a057470e7af7
+		summarizeBy: none
+		sourceColumn: rating
+
+	column engagement
+		dataType: int64
+		lineageTag: d52e61ed-e6b5-5e00-a1f7-bf88a419bf43
+		summarizeBy: none
+		sourceColumn: engagement
+
+	column exclusive
+		dataType: int64
+		lineageTag: 64a5d55e-d27c-551f-af23-3046c8a6d59d
+		summarizeBy: none
+		sourceColumn: exclusive
+
+	column online
+		dataType: int64
+		lineageTag: d7e688dc-1e54-570d-9d8a-ea513201b2bd
+		summarizeBy: none
+		sourceColumn: online
+
+	column limited
+		dataType: int64
+		lineageTag: ead7e24f-f42a-5ab5-9f4a-94459adcceaa
+		summarizeBy: none
+		sourceColumn: limited
+
+	column bestseller
+		dataType: int64
+		lineageTag: 4bba94ab-02dd-59fb-9f61-a02a4c6806b6
+		summarizeBy: none
+		sourceColumn: bestseller
+
+	column new_arrival
+		dataType: int64
+		lineageTag: dc7d75a1-3cc8-5334-b385-3fbe7680cec3
+		summarizeBy: none
+		sourceColumn: new_arrival
+
+	column vintage
+		dataType: string
+		lineageTag: 7ade29f9-6adb-53b3-b81d-0a873d8c6877
+		summarizeBy: none
+		sourceColumn: vintage
+
+	column cohort_key
+		dataType: string
+		lineageTag: 8ce9c138-bf08-5860-9d31-7dd2d96e4e28
+		summarizeBy: none
+		sourceColumn: cohort_key
+
+	partition fact_product_snapshot = m
+		mode: import
+		source =
+				Table.SelectColumns(PortfolioTables[fact_product_snapshot], {"id","snapshot","market","currency","product","sku","brand","name","category","price","rating","engagement","exclusive","online","limited","bestseller","new_arrival","vintage","cohort_key"})
+
+	annotation PBI_ResultType = Table

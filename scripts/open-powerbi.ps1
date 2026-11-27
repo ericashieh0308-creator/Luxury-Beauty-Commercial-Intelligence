@@ -1,3 +1,9 @@
+param(
+    [ValidateSet('optimized', 'fallback')]
+    [string]$Candidate = 'optimized',
+    [switch]$Update
+)
+
 $ErrorActionPreference = 'Stop'
 
 function Assert-ExitCode([string]$Step) {
@@ -8,23 +14,23 @@ function Assert-ExitCode([string]$Step) {
 
 Push-Location (Split-Path $PSScriptRoot -Parent)
 try {
-    $changes = git status --porcelain
-    Assert-ExitCode 'Git status'
-    if ($changes) { throw 'Commit or set aside workspace changes before updating this project.' }
-
-    git switch build/commercial-intelligence-platform
-    Assert-ExitCode 'Branch switch'
-    git pull --ff-only origin build/commercial-intelligence-platform
-    Assert-ExitCode 'Git pull'
+    if ($Update) {
+        $changes = git status --porcelain
+        Assert-ExitCode 'Git status'
+        if ($changes) { throw 'Set aside workspace changes before updating.' }
+        git switch build/commercial-intelligence-platform
+        Assert-ExitCode 'Branch switch'
+        git pull --ff-only origin build/commercial-intelligence-platform
+        Assert-ExitCode 'Git pull'
+    }
 
     $python = '.\.venv\Scripts\python.exe'
-    & $python -m beauty.demo
-    Assert-ExitCode 'Synthetic demo generation'
-    & $python -m scripts.validate_powerbi
-    Assert-ExitCode 'Power BI validation'
-
-    Write-Host "DemoRoot = $((Resolve-Path 'output/demo').Path)"
-    Start-Process (Resolve-Path 'dashboard/powerbi/Luxury_Beauty_Commercial_Intelligence.pbip').Path
+    $result = & $python -m scripts.prepare_powerbi --candidate $Candidate
+    Assert-ExitCode 'Demo generation and candidate validation'
+    $session = $result | ConvertFrom-Json
+    Write-Host "Validated $Candidate ($($session.pages) pages, $($session.visuals) visuals)."
+    Write-Host "DemoRoot = $($session.demo_root)"
+    Start-Process -FilePath $session.pbip
 }
 finally {
     Pop-Location

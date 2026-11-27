@@ -1,0 +1,77 @@
+table quality_report
+	lineageTag: eaeea265-ca86-5f2f-a4d8-ec5a3770c42e
+
+	column vintage
+		dataType: string
+		lineageTag: 430b7700-1bcd-5e98-8f53-b0b6c48331c2
+		summarizeBy: none
+		sourceColumn: vintage
+
+	column member
+		dataType: string
+		lineageTag: b95d2600-497e-56dc-a3b4-003ac230b438
+		summarizeBy: none
+		sourceColumn: member
+
+	column field
+		dataType: string
+		lineageTag: 2c5e186d-2827-58a2-86a7-538fe2be1835
+		summarizeBy: none
+		sourceColumn: field
+
+	column issue
+		dataType: string
+		lineageTag: c05ec73f-6cff-5464-a640-d8df54b44bfc
+		summarizeBy: none
+		sourceColumn: issue
+
+	column count
+		dataType: int64
+		lineageTag: 0473b8f4-2b25-5244-8db4-1745cfa91e9f
+		summarizeBy: none
+		sourceColumn: count
+
+	column denominator
+		dataType: int64
+		lineageTag: 801e1e65-28b0-533d-9d5a-f419f8b73538
+		summarizeBy: none
+		sourceColumn: denominator
+
+	column issue_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 1dafd16d-06fd-55a6-ad9d-324d4296deb3
+		summarizeBy: none
+		sourceColumn: issue_rate
+
+	column completeness_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: daf8bb13-c3b4-567a-9f44-aaaa3afeb379
+		summarizeBy: none
+		sourceColumn: completeness_rate
+
+	column classification
+		dataType: string
+		lineageTag: 233d9127-51ae-5f9e-9efe-aee1a9d0285f
+		summarizeBy: none
+		sourceColumn: classification
+
+	column severity
+		dataType: string
+		lineageTag: 8bc6a382-dd02-5c4f-ac7f-6e08d1d5e5da
+		summarizeBy: none
+		sourceColumn: severity
+
+	column recommended_action
+		dataType: string
+		lineageTag: c26253ff-3d34-581d-92a2-e4f9d5a60dca
+		summarizeBy: none
+		sourceColumn: recommended_action
+
+	partition quality_report = m
+		mode: import
+		source =
+				PortfolioTables[quality_report]
+
+	annotation PBI_ResultType = Table

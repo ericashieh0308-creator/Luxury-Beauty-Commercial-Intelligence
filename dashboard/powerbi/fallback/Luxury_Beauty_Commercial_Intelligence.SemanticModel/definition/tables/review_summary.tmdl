@@ -1,0 +1,60 @@
+table review_summary
+	lineageTag: 721e27a5-5552-56c9-96a7-624c420b6b8f
+
+	measure 'Historical review records' = SUM(review_summary[reviews])
+		formatString: 0
+		lineageTag: db3fef3d-a55a-526c-953f-cc9a5998612d
+
+	measure 'Reviews missing source text' = SUM(review_summary[missing_text])
+		formatString: 0
+		lineageTag: 4c17d4bd-5936-5252-91f5-f5cef83a2327
+
+
+	column product
+		dataType: string
+		lineageTag: 1510027e-e594-56ee-b89a-aefef6f8c931
+		summarizeBy: none
+		sourceColumn: product
+
+	column reviews
+		dataType: int64
+		lineageTag: f656cfa7-d5d6-5346-85a4-02eb8c1dc069
+		summarizeBy: none
+		sourceColumn: reviews
+
+	column mean_rating
+		dataType: double
+		lineageTag: f3f74eb5-a210-5ac7-94ee-cfb14cb9e728
+		summarizeBy: none
+		sourceColumn: mean_rating
+
+	column positive
+		dataType: int64
+		lineageTag: 91657a7d-485b-5a91-a26d-c6a464cf1c28
+		summarizeBy: none
+		sourceColumn: positive
+
+	column negative
+		dataType: int64
+		lineageTag: 82f4d270-a0ba-5aaa-b777-1fff90a6bfbf
+		summarizeBy: none
+		sourceColumn: negative
+
+	column neutral_or_unscored
+		dataType: int64
+		lineageTag: 23070800-9fd5-5920-9ac7-3252fbd448ab
+		summarizeBy: none
+		sourceColumn: neutral_or_unscored
+
+	column missing_text
+		dataType: int64
+		lineageTag: d94e6280-b6e9-5d93-a39e-4f16b03f786c
+		summarizeBy: none
+		sourceColumn: missing_text
+
+	partition review_summary = m
+		mode: import
+		source =
+				PortfolioTables[review_summary]
+
+	annotation PBI_ResultType = Table

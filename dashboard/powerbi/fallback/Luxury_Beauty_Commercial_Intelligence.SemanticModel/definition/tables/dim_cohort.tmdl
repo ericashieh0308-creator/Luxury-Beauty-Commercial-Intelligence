@@ -1,0 +1,13 @@
+table dim_cohort
+	lineageTag: ee8de67e-d9d0-5291-b495-b921bffdd881
+
+	column cohort_key
+		dataType: string
+		lineageTag: 5694be0b-d6bd-5b1e-a5b3-18c8229a1f61
+		summarizeBy: none
+		sourceColumn: cohort_key
+
+	partition dim_cohort = m
+		mode: import
+		source =
+				Table.Distinct(Table.SelectColumns(PortfolioTables[assortment_counts], {"cohort_key"}))

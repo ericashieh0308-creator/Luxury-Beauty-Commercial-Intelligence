@@ -16,6 +16,7 @@ from scripts.check_tmdl import check_tmdl_tree
 
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT = ROOT / "dashboard/powerbi"
+CANDIDATES = {"optimized": PROJECT, "fallback": PROJECT / "fallback"}
 DECLARATION = re.compile(r"^\t(column|measure) (?:'([^']+)'|([\w-]+))(?= |=|\n|$)", re.M)
 DAX_REF = re.compile(r"(?:(?P<table>\b\w+|'[^']+')\s*)?\[(?P<field>[^]]+)\]")
 
@@ -36,14 +37,14 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def project_paths():
-    pbip = next(PROJECT.glob("*.pbip"))
+def project_paths(project=PROJECT):
+    pbip, = project.glob("*.pbip")
     relative_report, = (artifact["report"]["path"] for artifact in read_json(pbip)["artifacts"] if "report" in artifact)
     report = (pbip.parent / relative_report).resolve()
-    require(report.parent == PROJECT.resolve(), "PBIP report must reference a sibling folder")
+    require(report.parent == project.resolve(), "PBIP report must reference a sibling folder")
     relative_model = read_json(report/"definition.pbir")["datasetReference"]["byPath"]["path"]
     model = (report / relative_model).resolve()
-    require(model.parent == PROJECT.resolve(), "PBIR model must reference a sibling folder")
+    require(model.parent == project.resolve(), "PBIR model must reference a sibling folder")
     read_json(model/"definition.pbism")
     for path in (report/"definition").rglob("*.json"):
         read_json(path)
@@ -62,7 +63,7 @@ def project_paths():
     return report, model/"definition"
 
 
-def validate_model(model, demo):
+def validate_model(model, demo, *, optimized=True):
     check_tmdl_tree(model)
     fields = {}
     texts = {}
@@ -77,7 +78,7 @@ def validate_model(model, demo):
     model_text = (model/"model.tmdl").read_text(encoding="utf-8-sig")
     require("culture: en-US" in model_text and "sourceQueryCulture: en-US" in model_text,
             "Model and query cultures must be en-US")
-    require("__PBI_TimeIntelligenceEnabled = 0" in model_text, "Disable automatic date hierarchies")
+    require("__PBI_TimeIntelligenceEnabled = 1" in model_text, "Preserve the Desktop baseline date settings")
     refs = re.findall(r"^ref table (.+)$", model_text, re.M)
     require(Counter(refs) == Counter(fields.keys()), "Model table references differ from table definitions")
     tags = [t for text in texts.values() for t in re.findall(r"^\s*lineageTag: (.+)$", text, re.M)]
@@ -85,11 +86,11 @@ def validate_model(model, demo):
     measures = {m for f in fields.values() for m in f["measure"]}
     require(sum(len(x["measure"]) for x in fields.values()) == len(measures), "Measure names must be unique")
     for name, text in texts.items():
-        require(len(re.findall(r"^\s*dataType: dateTime$", text, re.M)) ==
+        if optimized and not name.startswith(("LocalDateTable_", "DateTableTemplate_")):
+            require(len(re.findall(r"^\s*dataType: dateTime$", text, re.M)) ==
                 len(re.findall(r"^\s*dataType: dateTime\n\s*formatString: yyyy-MM-dd$", text, re.M)),
                 f"{name}: date columns need an explicit ISO date format")
-        require("variation Variation" not in text, f"{name}: automatic date variation is still present")
-        if name.startswith("fact_simulated"):
+        if optimized and name.startswith("fact_simulated"):
             require('formatString: "$"' not in text, f"{name}: use an explicit USD currency label")
         for line in re.findall(r"^\tmeasure .*? = (.+)$", text, re.M):
             for match in DAX_REF.finditer(line):
@@ -135,7 +136,48 @@ def validate_model(model, demo):
     require(len(keys)==len(set(keys)), "Duplicate relationship IDs")
     for table, column in re.findall(r"(?:from|to)Column: ([^.\s]+)\.([^\s]+)", rels):
         require(column in fields[table]["column"], f"Unknown relationship field {table}.{column}")
+    validate_variations(texts, rels)
     return fields
+
+
+def validate_variations(tables, relationships):
+    links = {}
+    for block in relationships.strip().split("\n\n"):
+        header = re.search(r"^relationship (.+)$", block, re.M)
+        endpoints = dict(re.findall(r"^\t(fromColumn|toColumn): (.+)$", block, re.M))
+        if header:
+            links[header[1]] = endpoints
+    targets = set()
+    for table, text in tables.items():
+        column = None
+        lines = iter(text.splitlines())
+        for line in lines:
+            column_match = re.fullmatch(r"\tcolumn (\w+)(?: = .+)?", line)
+            if column_match:
+                column = column_match[1]
+            if not line.startswith("\t\tvariation "):
+                continue
+            properties = {}
+            for prop in lines:
+                if not prop.startswith("\t\t\t"):
+                    require(not prop.strip(), f"{table}.{column}: variation must be followed by a blank line")
+                    break
+                key, separator, value = prop.strip().partition(": ")
+                if separator:
+                    properties[key] = value
+            relationship = links.get(properties.get("relationship"))
+            require(relationship and relationship.get("fromColumn")==f"{table}.{column}",
+                    f"{table}.{column}: variation relationship has the wrong source")
+            hierarchy = properties.get("defaultHierarchy", "")
+            target, _, hierarchy_name = hierarchy.partition(".")
+            require(target in tables and relationship.get("toColumn", "").partition(".")[0] == target,
+                    f"{table}.{column}: variation relationship and hierarchy target disagree")
+            require(f"\thierarchy {hierarchy_name}" in tables[target].splitlines(),
+                    f"{table}.{column}: hierarchy {hierarchy} does not exist")
+            targets.add(target)
+    for table, text in tables.items():
+        if "\tshowAsVariationsOnly" in text.splitlines():
+            require(table in targets, f"{table}: ShowAsVariationsOnly has no incoming variation")
 
 
 def validate_bindings(node, fields, aliases=None):
@@ -155,7 +197,7 @@ def validate_bindings(node, fields, aliases=None):
             validate_bindings(item, fields, aliases)
 
 
-def validate_layout(report, fields):
+def validate_layout(report, fields, *, optimized=True):
     pages = report/"definition/pages"
     ordered = read_json(pages/"pages.json")
     page_ids = ordered["pageOrder"]
@@ -179,7 +221,7 @@ def validate_layout(report, fields):
             require(0<=x<x+w<=page["width"] and 0<=y<y+h<=page["height"], f"Out of bounds: {name}")
             validate_bindings(visual, fields)
             context = visual["visual"]
-            if context["visualType"] == "slicer":
+            if optimized and context["visualType"] == "slicer":
                 props = context["objects"]["data"][0]["properties"]
                 require(props["mode"]["expr"]["Literal"]["Value"] == "'Dropdown'", f"{name}: expected dropdown slicer")
                 require(h >= 100, f"{name}: slicer height too small")
@@ -271,7 +313,7 @@ def validate_schemas(report):
     print("Official theme schema passed for source and registered theme.", flush=True)
 
     registry = Registry(retrieve=retrieve)
-    paths = sorted((report/"definition").rglob("*.json")) + list(PROJECT.glob("*.pbip")) + [report/"definition.pbir"]
+    paths = sorted((report/"definition").rglob("*.json")) + list(report.parent.glob("*.pbip")) + [report/"definition.pbir"]
     validated = 0
     for path in paths:
         document = read_json(path)
@@ -290,12 +332,14 @@ def validate_schemas(report):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--candidate", choices=CANDIDATES, default="optimized")
     parser.add_argument("--demo", type=Path, default=ROOT/"output/demo")
     parser.add_argument("--schemas", action="store_true", help="Fetch declared JSON schemas and fail on unavailable schemas")
     args = parser.parse_args()
-    report, model = project_paths()
-    fields = validate_model(model,args.demo)
-    pages = validate_layout(report,fields)
+    report, model = project_paths(CANDIDATES[args.candidate])
+    optimized = args.candidate == "optimized"
+    fields = validate_model(model, args.demo, optimized=optimized)
+    pages = validate_layout(report, fields, optimized=optimized)
     validate_finance(args.demo)
     print("\n".join(f"{title}: {count} visuals" for title,count in pages))
     print(f"{len(fields)} tables, {sum(len(f['measure']) for f in fields.values())} measures, "
