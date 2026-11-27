@@ -6,7 +6,7 @@ table product_position
 		lineageTag: 854c5e82-d6b0-59fa-b7b2-9d3e4d4dc3fe
 
 	measure 'Eligible priced products' = COUNTROWS(product_position)
-		formatString: 0
+		formatString: #,0
 		lineageTag: 9cbbaeb3-3ddd-5d86-a872-117b0b341623
 
 
@@ -30,6 +30,7 @@ table product_position
 
 	column snapshot
 		dataType: dateTime
+		formatString: yyyy-MM-dd
 		lineageTag: 0e441c63-2430-5f96-83dd-f7772c052fc4
 		summarizeBy: none
 		sourceColumn: snapshot
@@ -56,6 +57,7 @@ table product_position
 
 	column rating
 		dataType: double
+		formatString: 0.0
 		lineageTag: 3556ddfd-3a18-5547-a293-4af5a769ab21
 		summarizeBy: none
 		sourceColumn: rating

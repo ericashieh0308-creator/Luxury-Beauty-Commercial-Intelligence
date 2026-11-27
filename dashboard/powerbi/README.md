@@ -18,6 +18,8 @@ Start-Process (Resolve-Path 'dashboard/powerbi/Luxury_Beauty_Commercial_Intellig
 
 Set the **DemoRoot** text parameter under **Transform data > Edit parameters** to the absolute folder printed above, then choose **Apply changes** or **Close & Apply** and refresh. Point to the folder containing both `catalog` and `finance`. This is the only source setting required. Save machine-specific settings in a separate untracked copy of the project or revert the parameter value before committing changes. Desktop must load the model on first open after setting this parameter.
 
+For repeat runs after updating the branch, run **scripts/open-powerbi.ps1** from PowerShell. It requires a clean worktree, performs a fast-forward-only pull, generates the demo, validates it, prints DemoRoot, and opens the PBIP.
+
 Use the built-in report page tabs to navigate. No manual recreation of queries, relationships, measures, visuals, or theme import is required for this project. The separate [Power Query expression](PortfolioTables.pq) and [DAX reference](measures.dax) are for reuse or inspection.
 
 ## Pages and verification
@@ -42,4 +44,4 @@ Use the built-in report page tabs to navigate. No manual recreation of queries, 
 - Reviews are historical aggregates. Quality completeness counts evaluated source fields. Match confidence describes candidates. The public demo has no eligible price gaps, verified FX, CPI, or industry benchmark inputs.
 - Keep licensed data, private exports, PBIX, and caches local. The native report's labels explicitly describe the generated synthetic catalog and simulated finance. Use a separate private working copy if adapting the report to licensed sources, and update evidence labels before any use.
 
-For visual defaults and mechanics, see the [theme formatting guide](theme-formatting.md). For reproducible checks and remaining Desktop verification, see the [validation report](validation.md).
+For visual defaults and mechanics, see the [theme formatting guide](theme-formatting.md). For reproducible checks and remaining Desktop verification, see the [final page-by-page QA report](final-qa-report.md) and [technical validation guide](validation.md).

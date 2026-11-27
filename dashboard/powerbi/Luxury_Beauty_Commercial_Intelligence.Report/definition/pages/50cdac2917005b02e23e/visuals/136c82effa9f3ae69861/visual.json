@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "discount_summary.category",
-              "nativeQueryRef": "category",
+              "nativeQueryRef": "Category",
               "active": true
             }
           ]
@@ -38,6 +38,29 @@
               },
               "queryRef": "discount_summary.Valid discount depth",
               "nativeQueryRef": "Valid discount depth"
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "discount_summary"
+                        }
+                      },
+                      "Property": "valid_discount_observations"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(discount_summary.valid_discount_observations)",
+              "nativeQueryRef": "Valid sale observations"
             }
           ]
         }

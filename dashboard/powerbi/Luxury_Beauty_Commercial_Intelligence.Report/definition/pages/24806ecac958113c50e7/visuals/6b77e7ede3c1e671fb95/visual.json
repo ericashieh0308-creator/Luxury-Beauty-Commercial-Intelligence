@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "fact_simulated_pvm.month",
-              "nativeQueryRef": "month"
+              "nativeQueryRef": "Month"
             },
             {
               "field": {
@@ -32,7 +32,7 @@
                 }
               },
               "queryRef": "fact_simulated_pvm.price",
-              "nativeQueryRef": "price"
+              "nativeQueryRef": "Price effect"
             },
             {
               "field": {
@@ -46,7 +46,7 @@
                 }
               },
               "queryRef": "fact_simulated_pvm.volume",
-              "nativeQueryRef": "volume"
+              "nativeQueryRef": "Volume effect"
             },
             {
               "field": {
@@ -60,7 +60,7 @@
                 }
               },
               "queryRef": "fact_simulated_pvm.mix",
-              "nativeQueryRef": "mix"
+              "nativeQueryRef": "Mix effect"
             },
             {
               "field": {
@@ -74,7 +74,7 @@
                 }
               },
               "queryRef": "fact_simulated_pvm.total",
-              "nativeQueryRef": "total"
+              "nativeQueryRef": "Total effect"
             },
             {
               "field": {
@@ -88,7 +88,7 @@
                 }
               },
               "queryRef": "fact_simulated_pvm.residual",
-              "nativeQueryRef": "residual"
+              "nativeQueryRef": "Residual"
             }
           ]
         }

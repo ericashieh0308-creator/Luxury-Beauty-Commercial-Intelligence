@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "SYNTHETIC CATALOG  |  Missing and invalid values remain separate. Completeness is field-level and source-specific.",
+                    "value": "SYNTHETIC CATALOG  |  Which data issues change the decision or limit confidence?",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

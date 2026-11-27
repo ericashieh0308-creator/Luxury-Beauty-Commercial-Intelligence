@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "product_position.market",
-              "nativeQueryRef": "market"
+              "nativeQueryRef": "Market"
             },
             {
               "field": {
@@ -32,7 +32,7 @@
                 }
               },
               "queryRef": "product_position.vintage",
-              "nativeQueryRef": "vintage"
+              "nativeQueryRef": "Snapshot period"
             },
             {
               "field": {
@@ -46,7 +46,7 @@
                 }
               },
               "queryRef": "product_position.snapshot",
-              "nativeQueryRef": "snapshot"
+              "nativeQueryRef": "Snapshot date"
             },
             {
               "field": {
@@ -60,7 +60,7 @@
                 }
               },
               "queryRef": "product_position.category",
-              "nativeQueryRef": "category"
+              "nativeQueryRef": "Category"
             },
             {
               "field": {
@@ -74,7 +74,7 @@
                 }
               },
               "queryRef": "product_position.tier",
-              "nativeQueryRef": "tier"
+              "nativeQueryRef": "Price tier"
             },
             {
               "field": {
@@ -88,7 +88,7 @@
                 }
               },
               "queryRef": "product_position.Native median list price",
-              "nativeQueryRef": "Native median list price"
+              "nativeQueryRef": "Median list price"
             },
             {
               "field": {
@@ -102,7 +102,7 @@
                 }
               },
               "queryRef": "product_position.Eligible priced products",
-              "nativeQueryRef": "Eligible priced products"
+              "nativeQueryRef": "Eligible priced records"
             }
           ]
         }

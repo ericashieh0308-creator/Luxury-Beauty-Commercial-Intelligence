@@ -27,7 +27,7 @@
                 }
               },
               "queryRef": "assortment_counts.Recent Product Record",
-              "nativeQueryRef": "Recent Product Record"
+              "nativeQueryRef": "Recent product records"
             }
           ]
         }

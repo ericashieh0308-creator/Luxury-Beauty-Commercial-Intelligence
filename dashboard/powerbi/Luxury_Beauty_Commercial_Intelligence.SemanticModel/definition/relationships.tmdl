@@ -92,3 +92,11 @@ relationship ac359857-913f-507b-a135-951ca47b1999
 relationship fd019935-d259-5a64-97cd-e5c806e3de03
 	fromColumn: price_comparison.comparison
 	toColumn: dim_comparison.comparison
+
+relationship a95a470f-5420-53e8-b7e5-207d63ed57bc
+	fromColumn: quality_report.vintage
+	toColumn: dim_quality_vintage.vintage
+
+relationship e56df862-ea43-53f8-9f29-7108dc057553
+	fromColumn: quality_completeness.vintage
+	toColumn: dim_quality_vintage.vintage

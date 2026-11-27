@@ -32,6 +32,7 @@ table commercial_kpi
 
 	column snapshot
 		dataType: dateTime
+		formatString: yyyy-MM-dd
 		lineageTag: 44944beb-4ad7-5d00-b920-bf5535dbde00
 		summarizeBy: none
 		sourceColumn: snapshot
@@ -100,6 +101,7 @@ table commercial_kpi
 
 	column mean_rating
 		dataType: double
+		formatString: 0.0
 		lineageTag: 71781d09-3bb0-5d5b-9c84-dd64708d4de0
 		summarizeBy: none
 		sourceColumn: mean_rating

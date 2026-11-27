@@ -11,7 +11,7 @@ import re
 from urllib.error import URLError
 from urllib.request import urlopen
 
-from beauty.finance import Drivers, SCENARIOS, forecast, promotion
+from beauty.finance import Drivers, SCENARIOS, channels, forecast, promotion, variance
 
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT = ROOT / "dashboard/powerbi"
@@ -28,6 +28,20 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def project_paths():
+    pbip = next(PROJECT.glob("*.pbip"))
+    relative_report, = (artifact["report"]["path"] for artifact in read_json(pbip)["artifacts"] if "report" in artifact)
+    report = (pbip.parent / relative_report).resolve()
+    require(report.parent == PROJECT.resolve(), "PBIP report must reference a sibling folder")
+    relative_model = read_json(report/"definition.pbir")["datasetReference"]["byPath"]["path"]
+    model = (report / relative_model).resolve()
+    require(model.parent == PROJECT.resolve(), "PBIR model must reference a sibling folder")
+    read_json(model/"definition.pbism")
+    for path in (report/"definition").rglob("*.json"):
+        read_json(path)
+    return report, model/"definition"
+
+
 def validate_model(model, demo):
     fields = {}
     texts = {}
@@ -40,6 +54,9 @@ def validate_model(model, demo):
         fields[name] = {k: {v for field_type, v in entries if field_type == k} for k in ("column", "measure")}
         texts[name] = text
     model_text = (model/"model.tmdl").read_text(encoding="utf-8-sig")
+    require("culture: en-US" in model_text and "sourceQueryCulture: en-US" in model_text,
+            "Model and query cultures must be en-US")
+    require("__PBI_TimeIntelligenceEnabled = 0" in model_text, "Disable automatic date hierarchies")
     refs = re.findall(r"^ref table (.+)$", model_text, re.M)
     require(Counter(refs) == Counter(fields.keys()), "Model table references differ from table definitions")
     tags = [t for text in texts.values() for t in re.findall(r"^\s*lineageTag: (.+)$", text, re.M)]
@@ -47,6 +64,12 @@ def validate_model(model, demo):
     measures = {m for f in fields.values() for m in f["measure"]}
     require(sum(len(x["measure"]) for x in fields.values()) == len(measures), "Measure names must be unique")
     for name, text in texts.items():
+        require(len(re.findall(r"^\s*dataType: dateTime$", text, re.M)) ==
+                len(re.findall(r"^\s*dataType: dateTime\n\s*formatString: yyyy-MM-dd$", text, re.M)),
+                f"{name}: date columns need an explicit ISO date format")
+        require("variation Variation" not in text, f"{name}: automatic date variation is still present")
+        if name.startswith("fact_simulated"):
+            require('formatString: "$"' not in text, f"{name}: use an explicit USD currency label")
         for line in re.findall(r"^\tmeasure .*? = (.+)$", text, re.M):
             for match in DAX_REF.finditer(line):
                 table, prop = match.group("table", "field")
@@ -63,6 +86,11 @@ def validate_model(model, demo):
                 reader = csv.DictReader(fp)
                 headers = set(reader.fieldnames or ())
                 rows = list(reader)
+            require(rows or name == "price_comparison", f"{name}: header-only input in the public demo")
+            if name in {"dim_market", "dim_category", "comparison_coverage"}:
+                key = {"dim_market": "market", "dim_category": "category", "comparison_coverage": "comparison"}[name]
+                values = [row[key] for row in rows]
+                require(all(values) and len(values)==len(set(values)), f"{name}: blank or duplicate dimension keys")
             catalog = candidates[0].parent.name == "catalog"
             if catalog and {"market","snapshot","vintage"} <= headers:
                 headers.add("cohort_key")
@@ -129,6 +157,11 @@ def validate_layout(report, fields):
             x,y,w,h = (box[k] for k in ("x","y","width","height"))
             require(0<=x<x+w<=page["width"] and 0<=y<y+h<=page["height"], f"Out of bounds: {name}")
             validate_bindings(visual, fields)
+            context = visual["visual"]
+            if context["visualType"] == "slicer":
+                props = context["objects"]["data"][0]["properties"]
+                require(props["mode"]["expr"]["Literal"]["Value"] == "'Dropdown'", f"{name}: expected dropdown slicer")
+                require(h >= 100, f"{name}: slicer height too small")
             visuals.append((name,(x,y,x+w,y+h),box["tabOrder"]))
         require(visuals and len({v[2] for v in visuals})==len(visuals), f"{page_id}: empty page or duplicate tab order")
         for (a,(x1,y1,x2,y2),_), (b,(u1,v1,u2,v2),_) in combinations(visuals,2):
@@ -141,24 +174,58 @@ def validate_finance(demo):
     def read_rows(table):
         with (demo/"finance"/f"{table}.csv").open(encoding="utf-8-sig", newline="") as fp:
             return list(csv.DictReader(fp))
+    def equivalent(row, expected, scope):
+        require(row["evidence"]=="SIMULATED", f"{scope}: evidence label mismatch")
+        for key, value in expected.items():
+            raw = row[key]
+            matches = isclose(float(raw),value,abs_tol=1e-8) if isinstance(value,(int,float)) and raw else raw == ("" if value is None else str(value))
+            require(matches, f"{scope}: {key} mismatch")
+
     finance = read_rows("fact_simulated_finance")
-    require(len(finance)==36 and len({(r["scenario"],r["month"]) for r in finance})==36, "Forecast grain mismatch")
-    for name, params in SCENARIOS.items():
-        actual = sorted((r for r in finance if r["scenario"]==name), key=lambda r: int(r["month"]))
-        reference = list(forecast(Drivers(),*params))
-        a_rev = sum(float(r["net_revenue"]) for r in actual)
-        a_gp = sum(float(r["gross_profit"]) for r in actual)
-        e_rev = sum(r["net_revenue"] for _,r,_ in reference)
-        e_gp = sum(r["gross_profit"] for _,r,_ in reference)
-        require(isclose(a_gp/a_rev,e_gp/e_rev), f"{name}: weighted margin mismatch")
-        for row,(month, expected, _) in zip(actual,reference,strict=True):
-            require(row["evidence"]=="SIMULATED" and int(row["month"])==month, f"{name}: evidence or month mismatch")
-            for field in ("net_revenue","cogs","gross_profit","contribution","operating_profit"):
-                require(isclose(float(row[field]),expected[field]), f"{name}/{month}: {field} mismatch")
+    forecast_keys = {(r["scenario"], int(r["month"])):r for r in finance}
+    require(len(finance)==len(forecast_keys)==36, "Forecast grain mismatch")
+    d = Drivers()
+    expected = {scenario:list(forecast(d,*drivers)) for scenario,drivers in SCENARIOS.items()}
+    sku = read_rows("fact_simulated_sku")
+    sku_index = {(r["scenario"],int(r["month"]),r["sku"]):r for r in sku}
+    require(len(sku)==len(sku_index)==72, "SKU grain mismatch")
+    for scenario, rows in expected.items():
+        actual = [forecast_keys[scenario, month] for month,_,_ in rows]
+        for (month,pnl,detail), row in zip(rows,actual,strict=True):
+            equivalent(row,pnl,f"{scenario}/{month}")
+            for sku_name, expected_sku in detail.items():
+                equivalent(sku_index[scenario,month,sku_name],expected_sku,f"{scenario}/{month}/{sku_name}")
+        for margin, profit in (("gross margin", "gross_profit"), ("operating margin", "operating_profit")):
+            actual_margin = sum(float(r[profit]) for r in actual)/sum(float(r["net_revenue"]) for r in actual)
+            expected_margin = sum(r[profit] for _,r,_ in rows)/sum(r["net_revenue"] for _,r,_ in rows)
+            require(isclose(actual_margin,expected_margin), f"{scenario}: weighted {margin} mismatch")
+    channel_rows = read_rows("fact_simulated_channel")
+    require(len(channel_rows)==len(channels(d)), "Channel grain mismatch")
+    for row in channel_rows:
+        equivalent(row,channels(d)[row["channel"]],row["channel"])
+    variance_rows = read_rows("fact_simulated_variance")
+    v_index = {(int(r["month"]),r["metric"]):r for r in variance_rows}
+    require(len(variance_rows)==len(v_index)==60, "Variance grain mismatch")
+    ytd = Counter()
+    for (month,budget,_),(_,bull,_) in zip(expected["Base"],expected["Bull"],strict=True):
+        for metric,(delta,pct,status) in variance(budget,bull).items():
+            ytd[metric] += delta
+            equivalent(v_index[month,metric],{"budget":budget[metric],"simulated_actual":bull[metric],
+                "variance":delta,"variance_pct":pct,"direction":status,"ytd_variance":ytd[metric]},f"variance/{month}/{metric}")
     pvm = read_rows("fact_simulated_pvm")
-    require(all(isclose(float(r["residual"]),0,abs_tol=1e-8) for r in pvm), "PVM residual mismatch")
-    promo = next(r for r in read_rows("fact_simulated_promotion") if float(r["discount"])==.15 and float(r["uplift"])==.2)
-    require(isclose(float(promo["roi"]),promotion(Drivers(),.15,.2,1500)["roi"]), "Promotion ROI mismatch")
+    require(len(pvm)==len({row["month"] for row in pvm})==12, "PVM monthly grain mismatch")
+    for row in pvm:
+        month = int(row["month"])
+        delta = expected["Bull"][month-1][1]["net_revenue"]-expected["Base"][month-1][1]["net_revenue"]
+        equivalent(row,{"total":delta,"residual":0},f"PVM/{month}")
+        bridge = sum(float(row[k]) for k in ("price","volume","mix","new","removed"))
+        require(isclose(bridge,delta,abs_tol=1e-8), f"PVM/{month}: components do not reconcile")
+    promotions = read_rows("fact_simulated_promotion")
+    require(len(promotions)==len({(r["discount"],r["uplift"]) for r in promotions})==35, "Promotion grain mismatch")
+    for row in promotions:
+        expected_promo = {key:value for key,value in promotion(d,float(row["discount"]),float(row["uplift"]),1500).items()
+                          if key not in {"before","after"}}
+        equivalent(row,expected_promo,f"promotion/{row['discount']}/{row['uplift']}")
 
 
 def validate_schemas(report):
@@ -205,8 +272,7 @@ def main():
     parser.add_argument("--demo", type=Path, default=ROOT/"output/demo")
     parser.add_argument("--schemas", action="store_true", help="Fetch declared JSON schemas and fail on unavailable schemas")
     args = parser.parse_args()
-    report = next(PROJECT.glob("*.Report"))
-    model = next(PROJECT.glob("*.SemanticModel"))/"definition"
+    report, model = project_paths()
     fields = validate_model(model,args.demo)
     pages = validate_layout(report,fields)
     validate_finance(args.demo)

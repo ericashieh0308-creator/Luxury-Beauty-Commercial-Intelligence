@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "SIMULATED FINANCE  |  SKU scenario defaults to Base. Channel economics and discount-uplift sensitivity use separate modeled assumptions.",
+                    "value": "SIMULATED FINANCE · USD  |  Which SKU, channel, or offer assumptions support contribution?",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

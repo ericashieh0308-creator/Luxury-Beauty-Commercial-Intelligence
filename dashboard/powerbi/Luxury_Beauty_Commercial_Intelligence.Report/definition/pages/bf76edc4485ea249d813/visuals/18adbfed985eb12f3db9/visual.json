@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "SYNTHETIC CATALOG  |  SIMULATED FINANCE  |  Coverage describes source records, not sales.",
+                    "value": "SYNTHETIC CATALOG  |  How much commercial evidence is available for a more detailed review?",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

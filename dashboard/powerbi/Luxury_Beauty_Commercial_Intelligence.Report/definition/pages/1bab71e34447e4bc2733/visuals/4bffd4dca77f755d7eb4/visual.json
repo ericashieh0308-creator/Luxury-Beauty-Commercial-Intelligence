@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "SYNTHETIC CATALOG  |  Source records are additive. Distinct products and SKU keys are scoped to one market, vintage and snapshot.",
+                    "value": "SYNTHETIC CATALOG  |  Which markets and snapshots supply enough evidence for an assortment review?",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

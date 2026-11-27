@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "SYNTHETIC CATALOG  |  Choose one market, vintage and snapshot for the representative-product charts. Flags use known-value denominators.",
+                    "value": "SYNTHETIC CATALOG  |  Where is the sampled assortment concentrated? Select one catalog cohort.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

@@ -7,7 +7,20 @@ table dim_cohort
 		summarizeBy: none
 		sourceColumn: cohort_key
 
+	column cohort_label
+		dataType: string
+		lineageTag: 22387de9-8bf1-5345-b352-cb7e9538e7ff
+		summarizeBy: none
+		sourceColumn: cohort_label
+
 	partition dim_cohort = m
 		mode: import
 		source =
-				Table.Distinct(Table.SelectColumns(PortfolioTables[assortment_counts], {"cohort_key"}))
+				Table.AddColumn(
+				    Table.Distinct(Table.SelectColumns(PortfolioTables[assortment_counts], {"cohort_key"})),
+				    "cohort_label",
+				    each let Parts = Text.Split([cohort_key], " | "), Market = Parts{0},
+				             Currency = if Market = "US" then " (USD)" else if Market = "CA" then " (CAD)" else ""
+				         in Market & Currency & " | " & Text.Proper(Parts{1}, "en-US") & " | " & Parts{2},
+				    type text
+				)

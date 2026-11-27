@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "assortment_counts.vintage",
-              "nativeQueryRef": "vintage",
+              "nativeQueryRef": "Snapshot period",
               "active": true
             }
           ]
@@ -37,7 +37,7 @@
                 }
               },
               "queryRef": "assortment_counts.Catalog records",
-              "nativeQueryRef": "Catalog records"
+              "nativeQueryRef": "Source records"
             }
           ]
         }

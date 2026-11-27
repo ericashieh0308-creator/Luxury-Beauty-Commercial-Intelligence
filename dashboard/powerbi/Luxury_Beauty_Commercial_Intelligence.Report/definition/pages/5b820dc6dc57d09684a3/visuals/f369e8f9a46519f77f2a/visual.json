@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "fact_simulated_sku.sku",
-              "nativeQueryRef": "sku",
+              "nativeQueryRef": "SKU",
               "active": true
             }
           ]

@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "portfolio.market",
-              "nativeQueryRef": "market"
+              "nativeQueryRef": "Market"
             },
             {
               "field": {
@@ -32,7 +32,7 @@
                 }
               },
               "queryRef": "portfolio.vintage",
-              "nativeQueryRef": "vintage"
+              "nativeQueryRef": "Snapshot period"
             },
             {
               "field": {
@@ -46,7 +46,7 @@
                 }
               },
               "queryRef": "portfolio.snapshot",
-              "nativeQueryRef": "snapshot"
+              "nativeQueryRef": "Snapshot date"
             },
             {
               "field": {
@@ -60,7 +60,7 @@
                 }
               },
               "queryRef": "portfolio.brand",
-              "nativeQueryRef": "brand"
+              "nativeQueryRef": "Brand"
             },
             {
               "field": {
@@ -74,7 +74,7 @@
                 }
               },
               "queryRef": "portfolio.category",
-              "nativeQueryRef": "category"
+              "nativeQueryRef": "Category"
             },
             {
               "field": {
@@ -88,7 +88,7 @@
                 }
               },
               "queryRef": "portfolio.products",
-              "nativeQueryRef": "products"
+              "nativeQueryRef": "Representative products"
             },
             {
               "field": {
@@ -102,7 +102,7 @@
                 }
               },
               "queryRef": "portfolio.bestsellers",
-              "nativeQueryRef": "bestsellers"
+              "nativeQueryRef": "Bestsellers"
             },
             {
               "field": {
@@ -116,7 +116,7 @@
                 }
               },
               "queryRef": "portfolio.bestseller_known",
-              "nativeQueryRef": "bestseller_known"
+              "nativeQueryRef": "Known bestseller status"
             },
             {
               "field": {
@@ -130,7 +130,7 @@
                 }
               },
               "queryRef": "portfolio.new_arrivals",
-              "nativeQueryRef": "new_arrivals"
+              "nativeQueryRef": "New arrivals"
             },
             {
               "field": {
@@ -144,7 +144,7 @@
                 }
               },
               "queryRef": "portfolio.new_arrival_known",
-              "nativeQueryRef": "new_arrival_known"
+              "nativeQueryRef": "Known arrival status"
             },
             {
               "field": {
@@ -158,7 +158,7 @@
                 }
               },
               "queryRef": "portfolio.exclusive_products",
-              "nativeQueryRef": "exclusive_products"
+              "nativeQueryRef": "Exclusives"
             },
             {
               "field": {
@@ -172,7 +172,7 @@
                 }
               },
               "queryRef": "portfolio.exclusive_known",
-              "nativeQueryRef": "exclusive_known"
+              "nativeQueryRef": "Known exclusivity"
             }
           ]
         }

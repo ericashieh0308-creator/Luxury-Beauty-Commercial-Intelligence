@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "fact_simulated_finance.month",
-              "nativeQueryRef": "month",
+              "nativeQueryRef": "Month",
               "active": true
             }
           ]

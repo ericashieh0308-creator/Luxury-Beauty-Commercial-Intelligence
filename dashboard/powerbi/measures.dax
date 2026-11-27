@@ -42,6 +42,9 @@ Price comparison availability = IF([Comparable price gaps] > 0, "Eligible gaps a
 // discount_summary
 Valid discount depth = DIVIDE(SUMX(discount_summary, discount_summary[mean_discount_depth] * discount_summary[valid_discount_observations]), SUM(discount_summary[valid_discount_observations]))
 
+// fact_simulated_channel
+Channel contribution margin = DIVIDE(SUM(fact_simulated_channel[contribution]), SUM(fact_simulated_channel[net_revenue]))
+
 // fact_simulated_finance
 Simulated net revenue = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[net_revenue]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
 
@@ -62,6 +65,12 @@ Weighted gross margin = DIVIDE([Simulated gross profit], [Simulated net revenue]
 
 // fact_simulated_finance
 Weighted operating margin = DIVIDE([Simulated operating profit], [Simulated net revenue])
+
+// fact_simulated_finance
+Simulated gross sales = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[gross_sales]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+
+// fact_simulated_finance
+Simulated operating expenses = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[variable_expenses]) + SUM(fact_simulated_finance[fixed]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
 
 // fact_simulated_promotion
 Promotion ROI = SELECTEDVALUE(fact_simulated_promotion[roi])

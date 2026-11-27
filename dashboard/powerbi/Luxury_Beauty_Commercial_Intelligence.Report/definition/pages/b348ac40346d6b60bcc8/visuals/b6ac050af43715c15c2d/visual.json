@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "portfolio.category",
-              "nativeQueryRef": "category",
+              "nativeQueryRef": "Category",
               "active": true
             }
           ]
@@ -41,6 +41,24 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "portfolio"
+                  }
+                },
+                "Property": "Representative products"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
       }
     },
     "drillFilterOtherVisuals": false,

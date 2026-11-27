@@ -14,11 +14,11 @@
                       "Entity": "dim_cohort"
                     }
                   },
-                  "Property": "cohort_key"
+                  "Property": "cohort_label"
                 }
               },
-              "queryRef": "dim_cohort.cohort_key",
-              "nativeQueryRef": "cohort_key"
+              "nativeQueryRef": "Catalog cohort",
+              "queryRef": "dim_cohort.cohort_label"
             }
           ]
         }
@@ -61,6 +61,34 @@
               "expr": {
                 "Literal": {
                   "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

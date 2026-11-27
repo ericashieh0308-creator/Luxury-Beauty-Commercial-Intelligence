@@ -52,6 +52,7 @@ table price_comparison
 
 	column fx_date
 		dataType: dateTime
+		formatString: yyyy-MM-dd
 		lineageTag: f92ac725-09ed-5001-bc1f-03337d0f9511
 		summarizeBy: none
 		sourceColumn: fx_date

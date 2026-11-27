@@ -20,6 +20,7 @@ table discount_summary
 
 	column snapshot
 		dataType: dateTime
+		formatString: yyyy-MM-dd
 		lineageTag: cd38182f-428f-56c5-aa01-a062fb272727
 		summarizeBy: none
 		sourceColumn: snapshot

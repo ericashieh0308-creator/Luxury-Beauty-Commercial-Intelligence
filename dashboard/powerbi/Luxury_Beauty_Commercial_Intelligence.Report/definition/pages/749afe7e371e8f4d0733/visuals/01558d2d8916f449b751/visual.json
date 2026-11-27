@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "SYNTHETIC HISTORICAL REVIEWS  |  Topic mentions are simple lexicon signals. Product detail uses aggregate review records.",
+                    "value": "SYNTHETIC HISTORICAL REVIEWS  |  Which feedback themes merit qualitative follow-up?",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

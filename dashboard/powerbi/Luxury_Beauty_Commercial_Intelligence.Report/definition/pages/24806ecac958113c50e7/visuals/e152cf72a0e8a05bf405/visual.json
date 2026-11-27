@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "fact_simulated_variance.month",
-              "nativeQueryRef": "month"
+              "nativeQueryRef": "Month"
             },
             {
               "field": {
@@ -32,7 +32,7 @@
                 }
               },
               "queryRef": "fact_simulated_variance.metric",
-              "nativeQueryRef": "metric"
+              "nativeQueryRef": "P&L item"
             },
             {
               "field": {
@@ -46,7 +46,7 @@
                 }
               },
               "queryRef": "fact_simulated_variance.budget",
-              "nativeQueryRef": "budget"
+              "nativeQueryRef": "Base budget"
             },
             {
               "field": {
@@ -60,7 +60,7 @@
                 }
               },
               "queryRef": "fact_simulated_variance.simulated_actual",
-              "nativeQueryRef": "simulated_actual"
+              "nativeQueryRef": "Bull simulated actual"
             },
             {
               "field": {
@@ -74,7 +74,7 @@
                 }
               },
               "queryRef": "fact_simulated_variance.variance",
-              "nativeQueryRef": "variance"
+              "nativeQueryRef": "Variance"
             },
             {
               "field": {
@@ -88,7 +88,7 @@
                 }
               },
               "queryRef": "fact_simulated_variance.variance_pct",
-              "nativeQueryRef": "variance_pct"
+              "nativeQueryRef": "Variance %"
             },
             {
               "field": {
@@ -102,7 +102,7 @@
                 }
               },
               "queryRef": "fact_simulated_variance.direction",
-              "nativeQueryRef": "direction"
+              "nativeQueryRef": "Variance direction"
             },
             {
               "field": {
@@ -116,7 +116,7 @@
                 }
               },
               "queryRef": "fact_simulated_variance.ytd_variance",
-              "nativeQueryRef": "ytd_variance"
+              "nativeQueryRef": "YTD variance"
             }
           ]
         }

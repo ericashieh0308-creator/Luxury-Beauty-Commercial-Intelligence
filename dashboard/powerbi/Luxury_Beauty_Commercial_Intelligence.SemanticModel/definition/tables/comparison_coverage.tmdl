@@ -2,7 +2,7 @@ table comparison_coverage
 	lineageTag: 8d53cb04-a9ba-46ea-8941-863b59425b0f
 
 	measure 'Comparable price gaps' = SUM(comparison_coverage[comparable_gaps])
-		formatString: 0
+		formatString: #,0
 		lineageTag: e6c8c324-56b4-58c1-b88d-270c38751398
 
 	measure 'Price comparison availability' = IF([Comparable price gaps] > 0, "Eligible gaps available", "Not available")
@@ -19,7 +19,7 @@ table comparison_coverage
 
 	column left_source_records
 		dataType: int64
-		formatString: 0
+		formatString: #,0
 		lineageTag: f87906e8-034e-4efd-a5a3-011901ad09d0
 		summarizeBy: sum
 		sourceColumn: left_source_records
@@ -28,7 +28,7 @@ table comparison_coverage
 
 	column right_source_records
 		dataType: int64
-		formatString: 0
+		formatString: #,0
 		lineageTag: aaa7b5b7-6ce8-4de7-a465-54faf1e7421e
 		summarizeBy: sum
 		sourceColumn: right_source_records
@@ -37,7 +37,7 @@ table comparison_coverage
 
 	column candidate_pairs
 		dataType: int64
-		formatString: 0
+		formatString: #,0
 		lineageTag: 45d9c735-dea6-4669-8f9b-ae4c7874dafb
 		summarizeBy: sum
 		sourceColumn: candidate_pairs
@@ -46,7 +46,7 @@ table comparison_coverage
 
 	column left_candidates
 		dataType: int64
-		formatString: 0
+		formatString: #,0
 		lineageTag: 95f0278e-9c8d-45e7-944d-1b5902acf447
 		summarizeBy: sum
 		sourceColumn: left_candidates
@@ -55,7 +55,7 @@ table comparison_coverage
 
 	column right_candidates
 		dataType: int64
-		formatString: 0
+		formatString: #,0
 		lineageTag: 13aee952-9dd7-4382-8e15-c863529c50ca
 		summarizeBy: sum
 		sourceColumn: right_candidates
@@ -64,7 +64,7 @@ table comparison_coverage
 
 	column accepted_pairs
 		dataType: int64
-		formatString: 0
+		formatString: #,0
 		lineageTag: 3772ab46-5e94-4f43-987a-b35dbabfb8b0
 		summarizeBy: sum
 		sourceColumn: accepted_pairs
@@ -73,7 +73,7 @@ table comparison_coverage
 
 	column left_accepted
 		dataType: int64
-		formatString: 0
+		formatString: #,0
 		lineageTag: 46f9691b-fba6-4579-9ded-fd3b26759459
 		summarizeBy: sum
 		sourceColumn: left_accepted
@@ -82,7 +82,7 @@ table comparison_coverage
 
 	column right_accepted
 		dataType: int64
-		formatString: 0
+		formatString: #,0
 		lineageTag: a6e5457a-be5d-44c4-ab19-5b971847ef9a
 		summarizeBy: sum
 		sourceColumn: right_accepted
@@ -91,7 +91,7 @@ table comparison_coverage
 
 	column priced_pairs
 		dataType: int64
-		formatString: 0
+		formatString: #,0
 		lineageTag: 808881b3-35a5-45ce-a6d2-e09e14cf53e4
 		summarizeBy: sum
 		sourceColumn: priced_pairs
@@ -100,7 +100,7 @@ table comparison_coverage
 
 	column comparable_gaps
 		dataType: int64
-		formatString: 0
+		formatString: #,0
 		lineageTag: 93a0c85e-69e1-4f56-bae9-0190d4fd4ca4
 		summarizeBy: sum
 		sourceColumn: comparable_gaps

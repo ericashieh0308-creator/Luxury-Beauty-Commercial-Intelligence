@@ -27,7 +27,7 @@
                 }
               },
               "queryRef": "portfolio.brand",
-              "nativeQueryRef": "brand",
+              "nativeQueryRef": "Brand",
               "active": true
             }
           ]
@@ -46,7 +46,7 @@
                 }
               },
               "queryRef": "portfolio.market",
-              "nativeQueryRef": "market"
+              "nativeQueryRef": "Market"
             }
           ]
         },
@@ -69,7 +69,7 @@
                 }
               },
               "queryRef": "Sum(portfolio.products)",
-              "nativeQueryRef": "Sum of products"
+              "nativeQueryRef": "Representative products"
             }
           ]
         }

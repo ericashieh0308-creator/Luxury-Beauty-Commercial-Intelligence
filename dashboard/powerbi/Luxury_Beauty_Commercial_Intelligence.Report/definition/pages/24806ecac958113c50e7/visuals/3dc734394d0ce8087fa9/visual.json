@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "fact_simulated_variance.metric",
-              "nativeQueryRef": "metric",
+              "nativeQueryRef": "P&L item",
               "active": true
             }
           ]
@@ -42,7 +42,7 @@
                 }
               },
               "queryRef": "Sum(fact_simulated_variance.variance)",
-              "nativeQueryRef": "variance"
+              "nativeQueryRef": "Variance"
             }
           ]
         }

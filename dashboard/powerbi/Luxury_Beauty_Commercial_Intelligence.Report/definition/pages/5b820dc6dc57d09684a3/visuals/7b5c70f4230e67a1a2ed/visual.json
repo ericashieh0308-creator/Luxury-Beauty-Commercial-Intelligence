@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "fact_simulated_channel.channel",
-              "nativeQueryRef": "channel",
+              "nativeQueryRef": "Channel",
               "active": true
             }
           ]
@@ -42,7 +42,25 @@
                 }
               },
               "queryRef": "Sum(fact_simulated_channel.contribution)",
-              "nativeQueryRef": "contribution"
+              "nativeQueryRef": "Contribution"
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_channel"
+                    }
+                  },
+                  "Property": "Channel contribution margin"
+                }
+              },
+              "queryRef": "fact_simulated_channel.Channel contribution margin",
+              "nativeQueryRef": "Contribution margin"
             }
           ]
         }

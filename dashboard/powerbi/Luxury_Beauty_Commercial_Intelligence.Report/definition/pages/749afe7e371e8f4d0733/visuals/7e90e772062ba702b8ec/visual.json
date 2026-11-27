@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "review_topic.topic",
-              "nativeQueryRef": "topic",
+              "nativeQueryRef": "Review topic",
               "active": true
             }
           ]
@@ -42,7 +42,7 @@
                 }
               },
               "queryRef": "Sum(review_topic.mentions)",
-              "nativeQueryRef": "mentions"
+              "nativeQueryRef": "Topic mentions"
             }
           ]
         }

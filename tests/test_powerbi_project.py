@@ -1,13 +1,12 @@
 from beauty.demo import build_catalog
 from beauty.finance_export import build as export_finance
-from scripts.validate_powerbi import PROJECT, validate_finance, validate_layout, validate_model
+from scripts.validate_powerbi import project_paths, validate_finance, validate_layout, validate_model
 
 
 def test_powerbi_demo_project(tmp_path):
     build_catalog(tmp_path / "catalog")
     export_finance(tmp_path / "finance")
-    report = next(PROJECT.glob("*.Report"))
-    model = next(PROJECT.glob("*.SemanticModel")) / "definition"
+    report, model = project_paths()
     fields = validate_model(model, tmp_path)
     pages = validate_layout(report, fields)
     assert pages[0][0] == "Executive Overview"

@@ -3,9 +3,9 @@
   "name": "f03a34e92488608234f2",
   "position": {
     "x": 48,
-    "y": 897,
+    "y": 1019,
     "z": 8,
-    "height": 76,
+    "height": 46,
     "width": 1824,
     "tabOrder": 8
   },
@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "Use the report tabs to explore commercial evidence, financial scenarios and data quality. Price gaps require independently comparable products and verified reference data.",
+                    "value": "Use record and SKU coverage to prioritize follow-up. Assortment presence does not measure sales or market share.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "14pt",
+                      "fontSize": "12pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

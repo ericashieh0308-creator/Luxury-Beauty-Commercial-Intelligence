@@ -21,21 +21,21 @@ table fact_simulated_variance
 
 	column budget
 		dataType: double
-		formatString: "$"#,0;("$"#,0)
+		formatString: "USD "#,0;("USD "#,0)
 		lineageTag: f4d3c4df-08b7-5883-be7a-5d245e3a1699
 		summarizeBy: none
 		sourceColumn: budget
 
 	column simulated_actual
 		dataType: double
-		formatString: "$"#,0;("$"#,0)
+		formatString: "USD "#,0;("USD "#,0)
 		lineageTag: a6078f3a-188a-51fd-8623-48562896cf0b
 		summarizeBy: none
 		sourceColumn: simulated_actual
 
 	column variance
 		dataType: double
-		formatString: "$"#,0;("$"#,0)
+		formatString: "USD "#,0;("USD "#,0)
 		lineageTag: f8b5312f-8b24-519d-8fa6-f88eacaa15cd
 		summarizeBy: none
 		sourceColumn: variance
@@ -55,7 +55,7 @@ table fact_simulated_variance
 
 	column ytd_variance
 		dataType: double
-		formatString: "$"#,0;("$"#,0)
+		formatString: "USD "#,0;("USD "#,0)
 		lineageTag: a23e817c-6edb-5ed1-9226-64481d9ea3fe
 		summarizeBy: none
 		sourceColumn: ytd_variance

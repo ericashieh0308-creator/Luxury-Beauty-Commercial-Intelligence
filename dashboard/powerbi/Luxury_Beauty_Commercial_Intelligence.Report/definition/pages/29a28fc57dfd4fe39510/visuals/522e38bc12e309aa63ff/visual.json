@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "SYNTHETIC MATCH AUDIT  |  Candidates are not accepted matches. FX, CPI and industry benchmarks are unavailable in the public demo.",
+                    "value": "SYNTHETIC MATCH AUDIT  |  Is there enough verified product evidence to compare prices?",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

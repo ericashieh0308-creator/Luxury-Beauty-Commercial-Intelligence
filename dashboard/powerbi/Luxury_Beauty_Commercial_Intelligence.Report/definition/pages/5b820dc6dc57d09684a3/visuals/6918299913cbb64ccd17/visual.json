@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "fact_simulated_promotion.discount",
-              "nativeQueryRef": "discount"
+              "nativeQueryRef": "Discount"
             },
             {
               "field": {
@@ -32,7 +32,7 @@
                 }
               },
               "queryRef": "fact_simulated_promotion.uplift",
-              "nativeQueryRef": "uplift"
+              "nativeQueryRef": "Assumed uplift"
             },
             {
               "field": {
@@ -46,7 +46,7 @@
                 }
               },
               "queryRef": "fact_simulated_promotion.incremental_revenue",
-              "nativeQueryRef": "incremental_revenue"
+              "nativeQueryRef": "Incremental revenue"
             },
             {
               "field": {
@@ -60,7 +60,7 @@
                 }
               },
               "queryRef": "fact_simulated_promotion.incremental_contribution",
-              "nativeQueryRef": "incremental_contribution"
+              "nativeQueryRef": "Incremental contribution"
             },
             {
               "field": {
@@ -88,7 +88,7 @@
                 }
               },
               "queryRef": "fact_simulated_promotion.breakeven_units",
-              "nativeQueryRef": "breakeven_units"
+              "nativeQueryRef": "Break-even units"
             },
             {
               "field": {
@@ -102,7 +102,21 @@
                 }
               },
               "queryRef": "fact_simulated_promotion.breakeven_discount",
-              "nativeQueryRef": "breakeven_discount"
+              "nativeQueryRef": "Break-even discount"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_promotion"
+                    }
+                  },
+                  "Property": "required_uplift"
+                }
+              },
+              "nativeQueryRef": "Required uplift",
+              "queryRef": "fact_simulated_promotion.required_uplift"
             }
           ]
         }

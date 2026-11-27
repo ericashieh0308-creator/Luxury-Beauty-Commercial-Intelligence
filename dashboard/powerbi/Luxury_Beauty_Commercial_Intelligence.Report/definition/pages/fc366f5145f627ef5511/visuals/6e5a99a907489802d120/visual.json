@@ -18,7 +18,21 @@
                 }
               },
               "queryRef": "fact_simulated_finance.month",
-              "nativeQueryRef": "month"
+              "nativeQueryRef": "Month"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Simulated gross sales"
+                }
+              },
+              "nativeQueryRef": "Simulated gross sales",
+              "queryRef": "fact_simulated_finance.Simulated gross sales"
             },
             {
               "field": {
@@ -75,6 +89,20 @@
               },
               "queryRef": "fact_simulated_finance.Weighted gross margin",
               "nativeQueryRef": "Weighted gross margin"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Simulated operating expenses"
+                }
+              },
+              "nativeQueryRef": "Simulated operating expenses",
+              "queryRef": "fact_simulated_finance.Simulated operating expenses"
             },
             {
               "field": {

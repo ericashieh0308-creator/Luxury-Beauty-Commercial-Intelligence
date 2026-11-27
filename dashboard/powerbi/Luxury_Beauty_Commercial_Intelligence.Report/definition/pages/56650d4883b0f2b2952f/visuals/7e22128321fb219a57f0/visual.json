@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "quality_report.severity",
-              "nativeQueryRef": "severity",
+              "nativeQueryRef": "Severity",
               "active": true
             }
           ]
@@ -42,7 +42,7 @@
                 }
               },
               "queryRef": "Sum(quality_report.count)",
-              "nativeQueryRef": "count"
+              "nativeQueryRef": "Issue count"
             }
           ]
         }

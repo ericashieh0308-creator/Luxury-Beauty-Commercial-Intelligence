@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "fact_simulated_promotion.uplift",
-              "nativeQueryRef": "uplift"
+              "nativeQueryRef": "Assumed uplift"
             }
           ]
         }
@@ -61,6 +61,34 @@
               "expr": {
                 "Literal": {
                   "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

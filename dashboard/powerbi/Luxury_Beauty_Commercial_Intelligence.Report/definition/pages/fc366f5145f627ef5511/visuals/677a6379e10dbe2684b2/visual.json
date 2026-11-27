@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "SIMULATED FINANCE  |  Currency USD. Margins use the ratio of summed profit and revenue. Clearing scenario uses Base.",
+                    "value": "SIMULATED FINANCE · USD  |  What drives revenue, contribution, and operating profit by scenario?",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

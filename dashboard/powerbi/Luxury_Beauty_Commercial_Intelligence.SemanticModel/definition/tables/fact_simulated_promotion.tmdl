@@ -28,27 +28,28 @@ table fact_simulated_promotion
 
 	column incremental_units
 		dataType: double
+		formatString: #,0.0
 		lineageTag: 4e588948-851e-5ed1-adab-0f750ece6f27
 		summarizeBy: none
 		sourceColumn: incremental_units
 
 	column incremental_revenue
 		dataType: double
-		formatString: "$"#,0;("$"#,0)
+		formatString: "USD "#,0;("USD "#,0)
 		lineageTag: cf89cc3d-935c-5b72-8e74-47584f39f055
 		summarizeBy: none
 		sourceColumn: incremental_revenue
 
 	column incremental_gp
 		dataType: double
-		formatString: "$"#,0;("$"#,0)
+		formatString: "USD "#,0;("USD "#,0)
 		lineageTag: b5aa4555-96ef-5827-9fbf-75c289a21cd2
 		summarizeBy: none
 		sourceColumn: incremental_gp
 
 	column incremental_contribution
 		dataType: double
-		formatString: "$"#,0;("$"#,0)
+		formatString: "USD "#,0;("USD "#,0)
 		lineageTag: df525e47-0bca-56e2-ad4a-bb63e03dd24e
 		summarizeBy: none
 		sourceColumn: incremental_contribution
@@ -62,6 +63,7 @@ table fact_simulated_promotion
 
 	column breakeven_units
 		dataType: double
+		formatString: #,0.0
 		lineageTag: b44cf6f2-9f5a-5118-8ef6-249b382ce1b7
 		summarizeBy: none
 		sourceColumn: breakeven_units

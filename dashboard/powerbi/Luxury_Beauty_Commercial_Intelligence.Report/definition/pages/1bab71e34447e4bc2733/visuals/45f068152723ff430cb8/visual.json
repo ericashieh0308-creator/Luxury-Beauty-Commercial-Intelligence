@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "assortment_counts.vintage",
-              "nativeQueryRef": "vintage"
+              "nativeQueryRef": "Snapshot period"
             },
             {
               "field": {
@@ -32,7 +32,7 @@
                 }
               },
               "queryRef": "assortment_counts.market",
-              "nativeQueryRef": "market"
+              "nativeQueryRef": "Market"
             },
             {
               "field": {
@@ -46,7 +46,7 @@
                 }
               },
               "queryRef": "assortment_counts.snapshot",
-              "nativeQueryRef": "snapshot"
+              "nativeQueryRef": "Snapshot date"
             },
             {
               "field": {
@@ -60,7 +60,7 @@
                 }
               },
               "queryRef": "assortment_counts.Catalog records",
-              "nativeQueryRef": "Catalog records"
+              "nativeQueryRef": "Source records"
             },
             {
               "field": {
@@ -74,7 +74,7 @@
                 }
               },
               "queryRef": "assortment_counts.Catalog products",
-              "nativeQueryRef": "Catalog products"
+              "nativeQueryRef": "Distinct products"
             },
             {
               "field": {
@@ -88,7 +88,7 @@
                 }
               },
               "queryRef": "assortment_counts.Product SKU keys",
-              "nativeQueryRef": "Product SKU keys"
+              "nativeQueryRef": "Distinct product–SKU pairs"
             }
           ]
         }

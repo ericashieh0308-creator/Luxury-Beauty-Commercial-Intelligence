@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "match_coverage.comparison",
-              "nativeQueryRef": "comparison"
+              "nativeQueryRef": "Comparison"
             },
             {
               "field": {
@@ -32,7 +32,7 @@
                 }
               },
               "queryRef": "match_coverage.status",
-              "nativeQueryRef": "status"
+              "nativeQueryRef": "Match status"
             },
             {
               "field": {
@@ -46,7 +46,7 @@
                 }
               },
               "queryRef": "match_coverage.confidence",
-              "nativeQueryRef": "confidence"
+              "nativeQueryRef": "Confidence"
             },
             {
               "field": {
@@ -60,7 +60,7 @@
                 }
               },
               "queryRef": "match_coverage.reason",
-              "nativeQueryRef": "reason"
+              "nativeQueryRef": "Match reason"
             },
             {
               "field": {
@@ -79,7 +79,7 @@
                 }
               },
               "queryRef": "Sum(match_coverage.candidate_pairs)",
-              "nativeQueryRef": "candidate_pairs"
+              "nativeQueryRef": "Candidate pairs"
             },
             {
               "field": {
@@ -98,7 +98,7 @@
                 }
               },
               "queryRef": "Sum(match_coverage.left_records)",
-              "nativeQueryRef": "left_records"
+              "nativeQueryRef": "Left records"
             },
             {
               "field": {
@@ -117,7 +117,7 @@
                 }
               },
               "queryRef": "Sum(match_coverage.right_records)",
-              "nativeQueryRef": "right_records"
+              "nativeQueryRef": "Right records"
             }
           ]
         }

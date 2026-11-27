@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "commercial_kpi.market",
-              "nativeQueryRef": "market"
+              "nativeQueryRef": "Market"
             },
             {
               "field": {
@@ -32,7 +32,7 @@
                 }
               },
               "queryRef": "commercial_kpi.vintage",
-              "nativeQueryRef": "vintage"
+              "nativeQueryRef": "Snapshot period"
             },
             {
               "field": {

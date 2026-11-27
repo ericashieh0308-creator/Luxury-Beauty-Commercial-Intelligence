@@ -11,14 +11,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "quality_report"
+                      "Entity": "dim_quality_vintage"
                     }
                   },
                   "Property": "vintage"
                 }
               },
-              "queryRef": "quality_report.vintage",
-              "nativeQueryRef": "vintage"
+              "queryRef": "dim_quality_vintage.vintage",
+              "nativeQueryRef": "Snapshot period"
             }
           ]
         }
@@ -39,7 +39,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Issue vintage'"
+                  "Value": "'Snapshot period'"
                 }
               }
             },
@@ -61,6 +61,34 @@
               "expr": {
                 "Literal": {
                   "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

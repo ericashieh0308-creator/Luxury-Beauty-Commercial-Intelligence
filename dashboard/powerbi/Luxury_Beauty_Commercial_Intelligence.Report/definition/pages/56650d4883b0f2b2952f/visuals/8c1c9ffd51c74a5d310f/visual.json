@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "quality_completeness.vintage",
-              "nativeQueryRef": "vintage",
+              "nativeQueryRef": "Snapshot period",
               "active": true
             }
           ]

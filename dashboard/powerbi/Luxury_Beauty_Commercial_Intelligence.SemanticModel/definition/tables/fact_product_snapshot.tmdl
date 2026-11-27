@@ -9,6 +9,7 @@ table fact_product_snapshot
 
 	column snapshot
 		dataType: dateTime
+		formatString: yyyy-MM-dd
 		lineageTag: 002749b9-06ab-5698-9dff-b1fd5675a346
 		summarizeBy: none
 		sourceColumn: snapshot
@@ -65,6 +66,7 @@ table fact_product_snapshot
 
 	column rating
 		dataType: double
+		formatString: 0.0
 		lineageTag: 36e6bb52-ef9b-528e-81b9-a057470e7af7
 		summarizeBy: none
 		sourceColumn: rating

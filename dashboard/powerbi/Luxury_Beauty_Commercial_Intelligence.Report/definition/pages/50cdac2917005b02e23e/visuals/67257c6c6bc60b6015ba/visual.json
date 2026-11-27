@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "product_position.category",
-              "nativeQueryRef": "category",
+              "nativeQueryRef": "Category",
               "active": true
             }
           ]
@@ -37,7 +37,7 @@
                 }
               },
               "queryRef": "product_position.Native median list price",
-              "nativeQueryRef": "Native median list price"
+              "nativeQueryRef": "Median list price"
             }
           ]
         }

@@ -2,11 +2,11 @@ table review_summary
 	lineageTag: 721e27a5-5552-56c9-96a7-624c420b6b8f
 
 	measure 'Historical review records' = SUM(review_summary[reviews])
-		formatString: 0
+		formatString: #,0
 		lineageTag: db3fef3d-a55a-526c-953f-cc9a5998612d
 
 	measure 'Reviews missing source text' = SUM(review_summary[missing_text])
-		formatString: 0
+		formatString: #,0
 		lineageTag: 4c17d4bd-5936-5252-91f5-f5cef83a2327
 
 
@@ -24,6 +24,7 @@ table review_summary
 
 	column mean_rating
 		dataType: double
+		formatString: 0.0
 		lineageTag: f3f74eb5-a210-5ac7-94ee-cfb14cb9e728
 		summarizeBy: none
 		sourceColumn: mean_rating

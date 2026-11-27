@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "SYNTHETIC CATALOG  |  USD and CAD stay separate. Select one market, vintage and snapshot for median prices. Discounts use eligible observations.",
+                    "value": "SYNTHETIC CATALOG  |  Which categories merit price-ladder or promotional follow-up? Select one catalog cohort.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

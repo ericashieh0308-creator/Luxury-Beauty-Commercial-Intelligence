@@ -19,12 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "SIMULATED FINANCE  |  Forecast scenarios respond to the scenario control. Variance compares fixed Base budget with simulated Bull actual.",
+                    "value": "SIMULATED FINANCE · USD  |  How does the forecast change across scenarios, and what drove the modeled variance?",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
                       "fontWeight": "normal",
-                      "color": "#231F1D"
+                      "color": "#634F43"
                     }
                   }
                 ]

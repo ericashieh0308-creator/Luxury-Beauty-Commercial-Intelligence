@@ -27,7 +27,7 @@
                 }
               },
               "queryRef": "assortment_counts.Market Covered",
-              "nativeQueryRef": "Market Covered"
+              "nativeQueryRef": "Recent markets"
             }
           ]
         }

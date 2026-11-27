@@ -44,9 +44,21 @@ let
             Typed = Table.TransformColumnTypes(BlankToNull,List.Combine({DateTypes,CountTypes,DecimalTypes}),"en-US"),
             Scoped = if List.ContainsAll(Columns, {"vintage", "market", "snapshot"}) then
                 Table.AddColumn(Typed, "cohort_key", each Text.Combine({[market], [vintage], if [snapshot] = null then "Unknown date" else Date.ToText([snapshot], [Format="yyyy-MM-dd", Culture="en-US"])}, " | "), type text)
-                else Typed
+                else Typed,
+            ComparisonLabel = (value as nullable text) as nullable text =>
+                if value = "cross_market" then "US–Canada comparison"
+                else if value = "longitudinal" then "Historical price comparison" else value,
+            VarianceLabel = (value as nullable text) as nullable text =>
+                if value = "net_revenue" then "Net revenue"
+                else if value = "gross_profit" then "Gross profit"
+                else if value = "variable_expenses" then "Variable expenses"
+                else if value = "fixed" then "Fixed expenses"
+                else if value = "operating_profit" then "Operating profit" else value,
+            Presented = if List.Contains(Columns, "comparison") then Table.TransformColumns(Scoped, {{"comparison", ComparisonLabel, type text}})
+                else if name = "fact_simulated_variance" then Table.TransformColumns(Scoped, {{"metric", VarianceLabel, type text}})
+                else Scoped
         in
-            Scoped,
+            Presented,
     Names = List.Combine({CatalogNames,FinanceNames}),
     Tables = Record.FromList(List.Transform(Names, each ReadTable(if List.Contains(FinanceNames,_) then FinanceFolder else CatalogFolder,_)),Names)
 in

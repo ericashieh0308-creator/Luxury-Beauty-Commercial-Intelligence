@@ -18,7 +18,7 @@
                 }
               },
               "queryRef": "comparison_coverage.comparison",
-              "nativeQueryRef": "comparison",
+              "nativeQueryRef": "Comparison",
               "active": true
             }
           ]
@@ -42,7 +42,7 @@
                 }
               },
               "queryRef": "Sum(comparison_coverage.candidate_pairs)",
-              "nativeQueryRef": "candidate_pairs"
+              "nativeQueryRef": "Candidate pairs"
             },
             {
               "field": {
@@ -61,7 +61,30 @@
                 }
               },
               "queryRef": "Sum(comparison_coverage.accepted_pairs)",
-              "nativeQueryRef": "accepted_pairs"
+              "nativeQueryRef": "Accepted pairs"
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "comparison_coverage"
+                        }
+                      },
+                      "Property": "comparable_gaps"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(comparison_coverage.comparable_gaps)",
+              "nativeQueryRef": "Usable price gaps"
             }
           ]
         }
