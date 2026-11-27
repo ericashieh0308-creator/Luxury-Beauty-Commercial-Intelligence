@@ -44,3 +44,5 @@ Use ivory backgrounds, black foregrounds, muted champagne accent fills and diffe
 ### Readiness and unavailable evidence
 
 Load `assortment_counts`, `discount_summary`, `comparison_coverage`, and `quality_completeness` as separate aggregate tables. Use shared cohort slicers only where dimension grain agrees. Use a single market, vintage and snapshot to display distinct counts from precomputed aggregates. Keep the underlying numeric gaps blank for calculations. Use **Matched Gap Display** and **Comparison Availability** on the price-pair summary cards, with accepted and priced pair counts beside them. Use `match_coverage` for confidence and reason counts and present `quality_completeness` alongside issue rates. Some comparison tables may have only headers, so check source types explicitly and retain an availability card from the coverage table. Dashboard assets have no native Power BI Desktop validation in this environment.
+
+See [theme formatting and PBIP/PBIR workflow](theme-formatting.md) for schema validation, supported typography defaults, and a method to restyle an existing Desktop report in place.
