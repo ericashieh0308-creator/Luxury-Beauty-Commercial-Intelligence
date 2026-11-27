@@ -7,7 +7,6 @@ table LocalDateTable_d8680fe1-76eb-4ba0-82ec-6454d75870da
 		dataType: dateTime
 		formatString: yyyy-MM-dd
 		isHidden
-		formatString: General Date
 		lineageTag: f53d41f9-ac82-43d6-9668-9e0c2962b6c4
 		dataCategory: PaddedDateTableDates
 		summarizeBy: none

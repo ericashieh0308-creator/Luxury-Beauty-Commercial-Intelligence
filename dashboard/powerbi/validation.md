@@ -42,3 +42,15 @@ $python = '.\.venv\Scripts\python.exe'
 Use the [opening and refresh instructions](README.md). Confirm Desktop opens the PBIP, refreshes after setting DemoRoot, and accepts all report and model definitions. Check the custom visual title typography, Card callouts, long headers, picker labels, charts, table sizing and tab navigation. Exercise one catalog cohort at a time, switch Base to Bull to Bear, and validate the comparison availability card. Check that outputs with missing matches, FX, CPI or verified benchmarks remain unavailable. Desktop rendering, actual clipping, and interactive filter propagation were not exercised here.
 
 See the [final QA report](final-qa-report.md) for page decisions, original issues, and Desktop verification notes.
+
+## TMDL parsing repair
+
+The model audit found the same duplicate on line 10 of the hidden date template and both generated local date tables. Each Date object already had an explicit ISO format, followed by a legacy General Date property. The repair removes only the second property in each file. User-facing snapshot dates remain date-typed and keep yyyy-MM-dd.
+
+Microsoft Analysis Services TOM 19.120.1 deserialized the repaired model on Linux with .NET 8. It reported 28 tables, 32 measures, and 25 relationships. The same parser rejected the original commit d1f2ca1 with DuplicatedProperty on formatString. The Python suite additionally checks duplicate properties by indentation scope across all TMDL files, along with PBIR bindings and registered theme resources. These checks are separate from Power BI Desktop opening, refresh, rendering, and DAX evaluation.
+
+To repeat the official deserialization with a .NET 8 SDK, run this PowerShell command from the repository root:
+
+```powershell
+dotnet run --project scripts/tmdl-parser -- 'dashboard/powerbi/Luxury_Beauty_Commercial_Intelligence.SemanticModel/definition'
+```

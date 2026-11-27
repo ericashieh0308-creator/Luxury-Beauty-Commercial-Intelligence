@@ -12,6 +12,7 @@ from urllib.error import URLError
 from urllib.request import urlopen
 
 from beauty.finance import Drivers, SCENARIOS, channels, forecast, promotion, variance
+from scripts.check_tmdl import check_tmdl_tree
 
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT = ROOT / "dashboard/powerbi"
@@ -20,7 +21,14 @@ DAX_REF = re.compile(r"(?:(?P<table>\b\w+|'[^']+')\s*)?\[(?P<field>[^]]+)\]")
 
 
 def read_json(path):
-    return json.loads(path.read_text(encoding="utf-8-sig"))
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            require(key not in result, f"{path}: duplicate JSON property {key}")
+            result[key] = value
+        return result
+
+    return json.loads(path.read_text(encoding="utf-8-sig"), object_pairs_hook=unique_object)
 
 
 def require(condition, message):
@@ -39,10 +47,23 @@ def project_paths():
     read_json(model/"definition.pbism")
     for path in (report/"definition").rglob("*.json"):
         read_json(path)
+    report_definition = read_json(report/"definition/report.json")
+    resources = {}
+    for package in report_definition.get("resourcePackages", []):
+        root = (report/"StaticResources"/package["name"]).resolve()
+        for item in package["items"]:
+            resource = (root/item["path"]).resolve()
+            require(root in resource.parents and resource.is_file(), f"Missing report resource {item['path']}")
+            if resource.suffix == ".json":
+                read_json(resource)
+            resources[package["type"],item["name"]] = resource
+    for theme in report_definition["themeCollection"].values():
+        require((theme["type"],theme["name"]) in resources, f"Missing registered theme {theme['name']}")
     return report, model/"definition"
 
 
 def validate_model(model, demo):
+    check_tmdl_tree(model)
     fields = {}
     texts = {}
     for path in (model / "tables").glob("*.tmdl"):

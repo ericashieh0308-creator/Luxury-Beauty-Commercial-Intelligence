@@ -7,7 +7,6 @@ table DateTableTemplate_01f7a383-b1de-4707-a2de-e5fea1e3a7b4
 		dataType: dateTime
 		formatString: yyyy-MM-dd
 		isHidden
-		formatString: General Date
 		lineageTag: d5a9a4c9-e639-4436-b10a-9d7945239ffa
 		dataCategory: PaddedDateTableDates
 		summarizeBy: none
