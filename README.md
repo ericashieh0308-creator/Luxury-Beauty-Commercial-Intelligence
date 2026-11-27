@@ -4,6 +4,23 @@
 
 [![Launch Live Dashboard](assets/portfolio/launch-live-dashboard.svg)](https://luxury-beauty-commercial-intelligence.streamlit.app/)
 
+## Professional Portfolio
+
+Explore the integrated commercial intelligence portfolio, combining commercial strategy, financial modeling, business intelligence, and data-driven decision-making.
+
+| Portfolio | Focus |
+|---|---|
+| [Integrated Work Sample](portfolio/v3/Commercial_Business_Analytics_Integrated_Work_Sample.pdf) | Commercial strategy, pricing, profitability, and decision support |
+| [Commercial & Business Analytics](portfolio/v3/Commercial_Business_Analytics_Flagship_V3.pdf) | Commercial performance and strategic analysis |
+| [Finance & FP&A](portfolio/v3/Finance_FPA_Portfolio_V3.pdf) | Financial modeling, variance analysis, and scenario planning |
+| [Business Analytics & BI](portfolio/v3/Business_Analytics_BI_Portfolio_V3.pdf) | SQL, Power BI, Python, and analytical reporting |
+| [Executive Decision Brief](portfolio/v3/Commercial_Executive_Brief.pdf) | Key findings and actionable recommendations |
+
+[![View Full Portfolio](https://img.shields.io/badge/View_Full_Portfolio-V3.0-A58B60?style=for-the-badge)](portfolio/v3/README.md)
+[![Download Portfolio](https://img.shields.io/badge/Download-Portfolio_ZIP-493B30?style=for-the-badge)](portfolio/v3/Recruiter_Portfolio_V3_FINAL.zip)
+
+--- 
+
 A beauty retailer can see which products are listed, what they cost, and what customers review. Those signals can guide an assortment or pricing review. Funding a promotion also requires a view of unit response, costs, returns, and contribution. This project gives commercial, merchandising, and finance teams separate evidence for those decisions.
 
 | Explore | What you’ll find |
