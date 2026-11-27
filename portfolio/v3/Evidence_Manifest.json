@@ -1,0 +1,249 @@
+{
+  "catalog_evidence": "Deterministic synthetic catalog and review records",
+  "finance_evidence": "Simulated outputs from the tracked Python model, with tracked Excel formulas",
+  "screenshot_evidence": "Six genuine local Chromium captures. No native Excel or Power BI screenshots.",
+  "video_evidence": "Timed sequence of the six screenshots with captions; no continuous recording or audio",
+  "employer_sources": "No individual vacancy verified; access attempts listed separately",
+  "pdf_validation": [
+    {
+      "artifact": "Commercial_Business_Analytics_Flagship_V3.pdf",
+      "pages": 14,
+      "link_annotations": 56
+    },
+    {
+      "artifact": "Finance_FPA_Portfolio_V3.pdf",
+      "pages": 12,
+      "link_annotations": 48
+    },
+    {
+      "artifact": "Business_Analytics_BI_Portfolio_V3.pdf",
+      "pages": 12,
+      "link_annotations": 48
+    },
+    {
+      "artifact": "Commercial_Executive_Brief.pdf",
+      "pages": 1,
+      "link_annotations": 4
+    },
+    {
+      "artifact": "Finance_Executive_Brief.pdf",
+      "pages": 1,
+      "link_annotations": 4
+    },
+    {
+      "artifact": "BI_Executive_Brief.pdf",
+      "pages": 1,
+      "link_annotations": 4
+    },
+    {
+      "artifact": "Executive_Decision_Memo.pdf",
+      "pages": 2,
+      "link_annotations": 8
+    },
+    {
+      "artifact": "Commercial_Business_Analytics_Integrated_Work_Sample.pdf",
+      "pages": 12,
+      "link_annotations": 79
+    }
+  ],
+  "charts": {
+    "commercial-overview": "portfolio.csv and recent US category counts",
+    "financial-overview": "fact_simulated_finance.csv and annual Base totals",
+    "scenario-comparison": "fact_simulated_finance.csv and modeled annual operating profit",
+    "promotion-profitability": "fact_simulated_promotion.csv at 15 percent discount",
+    "data-quality": "quality_completeness.csv and recent synthetic fields"
+  },
+  "technical_evidence": {
+    "repository": "https://github.com/ericashieh0308-creator/Luxury-Beauty-Commercial-Intelligence",
+    "live_dashboard": "https://luxury-beauty-commercial-intelligence.streamlit.app/",
+    "power_bi": "https://github.com/ericashieh0308-creator/Luxury-Beauty-Commercial-Intelligence/tree/main/dashboard/powerbi",
+    "excel": "https://github.com/ericashieh0308-creator/Luxury-Beauty-Commercial-Intelligence/blob/main/models/excel/Luxury_Beauty_Commercial_Financial_Model.xlsx"
+  },
+  "files": [
+    {
+      "path": "Commercial_Business_Analytics_Flagship_V3.pdf",
+      "sha256": "15a2ccfd53b5a42b342375691050d736ced6e0595db04757b749e414494c045f",
+      "bytes": 462447
+    },
+    {
+      "path": "Finance_FPA_Portfolio_V3.pdf",
+      "sha256": "3bc54b654b707e2dfea89f423eb82331b1ea6ef23733c51b895962ef8efafc71",
+      "bytes": 299559
+    },
+    {
+      "path": "Business_Analytics_BI_Portfolio_V3.pdf",
+      "sha256": "9af550884da609a218ed54e6efdb061f43a9e3e3bd7ba25008a641af5ebe542d",
+      "bytes": 759205
+    },
+    {
+      "path": "Commercial_Executive_Brief.pdf",
+      "sha256": "f1fbd1122bb58dc1fdafdf5888bc126114bf5826ea420731fae347006716f021",
+      "bytes": 58931
+    },
+    {
+      "path": "Finance_Executive_Brief.pdf",
+      "sha256": "ee94225f2ea91cb88a44a7f31ba78777c58f376b511b681ce8c126212489e0db",
+      "bytes": 55701
+    },
+    {
+      "path": "BI_Executive_Brief.pdf",
+      "sha256": "e3da6b09820fd6341ebb4c5ac698b43c5b7eb0a06e4e47b58518b1aa998a20d6",
+      "bytes": 63424
+    },
+    {
+      "path": "Executive_Decision_Memo.pdf",
+      "sha256": "630c611dc67cf64a22e926c9eb569b45fa70fc2e39fc03895f9e714580036aef",
+      "bytes": 132104
+    },
+    {
+      "path": "Commercial_Business_Analytics_Integrated_Work_Sample.pdf",
+      "sha256": "66a899ea3548c1e5b2fa42529cef7585a97057a19def30e5bbe9e96c4939dae8",
+      "bytes": 137902
+    },
+    {
+      "path": "README.md",
+      "sha256": "94eebc0a0166ba9f5b4b704b6ee8e473a30decda1911b511f7b3ef8ec7dd2043",
+      "bytes": 4003
+    },
+    {
+      "path": "Streamlit_Demo.mp4",
+      "sha256": "51c8d7e5e35e1b1097ff2690a86c61dcf4492eaab3dffb4f58d572e82a0234f1",
+      "bytes": 825985
+    },
+    {
+      "path": "Streamlit_Storyboard.md",
+      "sha256": "dd09f2b432fda6d4103d2aca892693794052c7c9ee9d6fff3c238bbea609d62f",
+      "bytes": 1652
+    },
+    {
+      "path": "Career_Positioning.md",
+      "sha256": "ab20391dd6413418fd91610e9d7ab4ed3faf37fa566741b2ef3d581f6138ef71",
+      "bytes": 2819
+    },
+    {
+      "path": "Employer_Competency_Matrix.csv",
+      "sha256": "13c35d183d65c8f0942af97cfba79f83a502418ca83cf5ce3d7a4e815cdf527c",
+      "bytes": 3417
+    },
+    {
+      "path": "Employer_Source_Attempts.csv",
+      "sha256": "fec3f4e027f4ddac2cccfda6e271bab4bd67d570899f9a425ec54c1d3488c599",
+      "bytes": 546
+    },
+    {
+      "path": "Evidence_Coverage_Matrix.csv",
+      "sha256": "3564edbc3bd13dacf0e9b5e8392299dc791e4e2daa676031f6adca79018ff90e",
+      "bytes": 3382
+    },
+    {
+      "path": "Portfolio_Validation_Report.md",
+      "sha256": "493cf528ac7ea3093fa657597768835a797f3d040666f58d79c3a9d7c4b3f4e6",
+      "bytes": 4765
+    },
+    {
+      "path": "Power_BI_Evidence.md",
+      "sha256": "38c94fea88e30b89c3f547f58232417c7d072c8b5e06e33f3fa1df54b4da3d89",
+      "bytes": 1595
+    },
+    {
+      "path": "evidence/01-executive.png",
+      "sha256": "c2ff53b5e6dc1fe1ab3f215545ae6bc8ddadebf9cc691728897910b15cc18c47",
+      "bytes": 119885
+    },
+    {
+      "path": "evidence/02-commercial.png",
+      "sha256": "c78458018edbcb66ab4e6f1cc4efd79d8b4f7aaf4c3813b59135fcc77fc67e81",
+      "bytes": 106744
+    },
+    {
+      "path": "evidence/03-base.png",
+      "sha256": "a6b999465739309ff66e77a849406ac53aa9bdb635debf1455cc1461783a3bbb",
+      "bytes": 118667
+    },
+    {
+      "path": "evidence/04-bull.png",
+      "sha256": "d9026860cbe19f9753c0577fd895295e5893049bfe8f51a2397c39fae9e2a91e",
+      "bytes": 118727
+    },
+    {
+      "path": "evidence/05-offer.png",
+      "sha256": "59e8736a0285fedd7d23a780aae23618eec82444494eb74f5ce1ef07b5fc53e9",
+      "bytes": 137270
+    },
+    {
+      "path": "evidence/06-uplift.png",
+      "sha256": "48241f49e3706cac2490f9163b975f98a7ea2ddef8c9511911f0e8829f9f5acb",
+      "bytes": 139072
+    },
+    {
+      "path": "evidence/charts/commercial-overview.png",
+      "sha256": "a9c13d304831104d6a5e47d3d82420cdc4f002fdecf1fd432951ad6ff447b8e5",
+      "bytes": 58109
+    },
+    {
+      "path": "evidence/charts/financial-overview.png",
+      "sha256": "f677cc3ddb022b326aa2e8383cac6263b7f6e74c10767ba27d8d7686a55804a7",
+      "bytes": 63862
+    },
+    {
+      "path": "evidence/charts/scenario-comparison.png",
+      "sha256": "0a0efddec086741b0c67e2a65b54e9c405cae74477631437630150de799ee274",
+      "bytes": 55850
+    },
+    {
+      "path": "evidence/charts/promotion-profitability.png",
+      "sha256": "cb9553865e74ddc1fb631d5c72d6396b607ccf58640c1a0fe56d1e8dadea2d82",
+      "bytes": 81370
+    },
+    {
+      "path": "evidence/charts/data-quality.png",
+      "sha256": "ac75861c8c5bdcfef1766eaa674f7ca62ac1c8746232cd98f11f53b84d9e9519",
+      "bytes": 68915
+    },
+    {
+      "path": "generation/capture.py",
+      "sha256": "e27e81b7a22cbc426309b5ad7c7e44f65828ef18e454f9d03716ab3777092009",
+      "bytes": 2358
+    },
+    {
+      "path": "generation/evidence.py",
+      "sha256": "9a155e8b922d466f198c403993faa7de575abff11f2a8760c924d9c4fc25a2aa",
+      "bytes": 6723
+    },
+    {
+      "path": "generation/integrated.py",
+      "sha256": "fb98852360f319cbb090cc9df43e354fd6d083ec04417e6b87101f7da34631c3",
+      "bytes": 17298
+    },
+    {
+      "path": "generation/inventory.py",
+      "sha256": "6673c2fbf393f1afedfd3d27ecfc9d5041654f1106b244b151cbfdc702fb9bc8",
+      "bytes": 7882
+    },
+    {
+      "path": "generation/narratives.py",
+      "sha256": "a22807c4595d03d2f71919ef041a1970c3621332e176af23cb02d6d61bbd14ae",
+      "bytes": 16723
+    },
+    {
+      "path": "generation/package.py",
+      "sha256": "28be4d4ea96c50c647a50bed9b0c3d9669cb984135366f9162e4113f63bd2e90",
+      "bytes": 6768
+    },
+    {
+      "path": "generation/polish.py",
+      "sha256": "0b03fc5af41b3b8d73332adeb4735a49aad64bf367e0664140cb0ee3f011aa22",
+      "bytes": 11200
+    },
+    {
+      "path": "generation/render.py",
+      "sha256": "c37a9fe3d8fb2147eed78d75e3b54f3001141021d6c931119c1de6e886644239",
+      "bytes": 13265
+    },
+    {
+      "path": "generation/video.py",
+      "sha256": "a88e8ec0f6a1992cb4574d82d48f13609578972c9b311fb82016ba607a00bd8b",
+      "bytes": 2534
+    }
+  ]
+}

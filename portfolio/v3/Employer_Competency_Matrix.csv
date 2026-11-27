@@ -1,0 +1,17 @@
+﻿competency,project_evidence,portfolio_location,boundary,basis
+Commercial performance reporting,Power BI: Executive Overview,Commercial flagship pp. 1–2,Cohort counts describe the sample.,Project evidence mapped to requested role families; individual posting not verified
+Sales and profitability analysis,Excel: Monthly P&L; Power BI: Financial Performance,Finance case pp. 2–3,Sales are simulated.,Project evidence mapped to requested role families; individual posting not verified
+Budgeting and forecasting,Excel: Revenue Forecast; Streamlit: Financial performance,Finance case pp. 3–5,Base/Bull/Bear are modeled.,Project evidence mapped to requested role families; individual posting not verified
+Variance analysis,Excel: Budget vs Actual; Power BI: Budget Variance,Finance case pp. 5–6,Bull is simulated actual.,Project evidence mapped to requested role families; individual posting not verified
+Pricing and promotion analysis,SQLite pricing and discount exports; Streamlit simulator,"Commercial case pp. 5–7, 11–12",No elasticity estimate.,Project evidence mapped to requested role families; individual posting not verified
+Product and assortment performance,assortment_counts.csv and portfolio.csv,Commercial case pp. 2–4,Coverage differs from sell-through.,Project evidence mapped to requested role families; individual posting not verified
+Brand and category analysis,Power BI Brand & Category Performance,Commercial case pp. 3–4,Fictional brands in public release.,Project evidence mapped to requested role families; individual posting not verified
+Merchandising economics,Excel Product Economics; simulated SKU CSV,Commercial case p. 9,Actual unit economics unavailable.,Project evidence mapped to requested role families; individual posting not verified
+Channel profitability,Excel Channel Profitability; simulated channel CSV,Finance case p. 8,Illustrative channel costs.,Project evidence mapped to requested role families; individual posting not verified
+Customer insights,review_summary.csv and review_topic.csv,BI case p. 9,Lexicon signals only.,Project evidence mapped to requested role families; individual posting not verified
+KPI development,TMDL cohort and margin guards; methodology,"BI case pp. 4, 7–8",Licensed benchmark comparisons unavailable.,Project evidence mapped to requested role families; individual posting not verified
+Excel financial modeling,15-sheet workbook and reconciliation cells,Finance case p. 11,Worksheet preview reconstructed.,Project evidence mapped to requested role families; individual posting not verified
+Power BI reporting,10-page native PBIR with TMDL and theme,"BI case pp. 7–8, 11",Desktop images unavailable.,Project evidence mapped to requested role families; individual posting not verified
+SQL and data management,SQLite cohort count and quality assertions,BI case pp. 2–3,Public build uses synthetic data.,Project evidence mapped to requested role families; individual posting not verified
+Cross-functional communication,Two executive decision memos,Executive Decision Memo pp. 1–2,Illustrative decision roles.,Project evidence mapped to requested role families; individual posting not verified
+Executive recommendations,Commercial campaign funding and verification gates,Commercial case pp. 11–14,No realized business impact.,Project evidence mapped to requested role families; individual posting not verified

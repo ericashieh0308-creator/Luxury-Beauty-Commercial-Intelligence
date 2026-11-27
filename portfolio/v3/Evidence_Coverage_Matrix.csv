@@ -1,0 +1,36 @@
+﻿artifact,capability,evidence,status
+Power BI,Executive Overview,Commercial p. 1; Chromium 01,Reconstructed evidence
+Power BI,Market & Assortment Intelligence,Commercial pp. 2–3; SQLite cohort count,Derived analytics
+Power BI,Brand & Category Performance,Commercial pp. 3–4; Chromium 02,Reconstructed evidence
+Power BI,Pricing & Promotional Intelligence,Commercial pp. 5–6,Derived analytics
+Power BI,Customer Reviews & Product Intelligence,Commercial p. 8; BI p. 9,Derived analytics
+Power BI,Cross-Market & Historical Comparison,Commercial p. 7; BI p. 6,Unavailable gaps disclosed
+Power BI,Financial Performance & P&L,Finance pp. 2–4; Chromium 03,Reconstructed evidence
+Power BI,Budget Variance & Scenario Forecasting,Finance pp. 4–6,Modeled outputs verified
+Power BI,"SKU, Channel & Promotion Profitability",Finance pp. 7–10,Modeled outputs verified
+Power BI,Data Quality & Methodology,BI p. 5; quality chart,Derived analytics
+Streamlit,Executive overview,Chromium 01,Browser capture
+Streamlit,Commercial intelligence,Chromium 02,Browser capture
+Streamlit,Pricing analytics,Commercial pp. 5–6; existing AppTest,Outputs and existing test
+Streamlit,Customer intelligence,BI p. 9; existing AppTest,Outputs and existing test
+Streamlit,Financial performance,Chromium 03 and 04,Base and Bull captured
+Streamlit,Promotion & scenario simulator,Chromium 05 and 06; 72-second walkthrough,Offer and uplift change verified
+Streamlit,Data quality & limitations,BI p. 5; existing AppTest,Outputs and existing test
+Streamlit,Portfolio sensitivity and inventory views,Live application and repository,"Linked, scenario CSV download and inventory controls not captured for V3"
+Excel,ReadMe,Finance pp. 11–12; tracked workbook,Workbook/source coverage; no native screenshot
+Excel,Control Panel,Finance p. 11,Workbook/source coverage; no native screenshot
+Excel,Assumptions,"Finance pp. 2, 9–11",Workbook/source coverage; no native screenshot
+Excel,Industry Benchmarks,Empty verified-input structure; no observations,Workbook/source coverage; no native screenshot
+Excel,Product Economics,Finance p. 7,Workbook/source coverage; no native screenshot
+Excel,Monthly P&L,"Finance pp. 2–3, 11",Workbook/source coverage; no native screenshot
+Excel,Budget vs Actual,Finance p. 5,Workbook/source coverage; no native screenshot
+Excel,Revenue Forecast,Finance pp. 3–4,Workbook/source coverage; no native screenshot
+Excel,Channel Profitability,Finance p. 8; scenario-specific workbook differs from standalone Python channel example,Workbook/source coverage; no native screenshot
+Excel,Promotion ROI,Finance pp. 9–11,Workbook/source coverage; no native screenshot
+Excel,Price–Volume–Mix,Finance p. 6,Workbook/source coverage; no native screenshot
+Excel,Scenario Analysis,Finance p. 4,Workbook/source coverage; no native screenshot
+Excel,Sensitivity Analysis,Finance p. 10; Python cost sensitivity is a separate illustration,Workbook/source coverage; no native screenshot
+Excel,Executive Summary,Finance executive brief; tracked worksheet,Workbook/source coverage; no native screenshot
+Excel,Model Checks,Finance p. 11; calculator required for live checks,Workbook/source coverage; no native screenshot
+Technical,Python + SQLite,Validation report and BI case pp. 2–3,Executed
+Technical,Official TOM,Native TMDL and TOM result,Deserialization only
