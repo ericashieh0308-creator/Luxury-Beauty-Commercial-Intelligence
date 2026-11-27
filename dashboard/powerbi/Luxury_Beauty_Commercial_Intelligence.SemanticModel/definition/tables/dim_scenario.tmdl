@@ -1,0 +1,10 @@
+table dim_scenario
+	column scenario
+		dataType: string
+		summarizeBy: none
+		sourceColumn: scenario
+
+	partition dim_scenario = m
+		mode: import
+		source =
+				#table(type table [scenario = text], {{"Base"}, {"Bull"}, {"Bear"}})

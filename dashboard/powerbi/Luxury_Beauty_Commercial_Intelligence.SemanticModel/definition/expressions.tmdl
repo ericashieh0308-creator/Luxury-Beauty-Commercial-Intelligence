@@ -1,14 +1,15 @@
-﻿expression PortfolioTables = ```
+expression DemoRoot = "" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	annotation PBI_ResultType = Text
+
+expression PortfolioTables = ```
 		let
-		    
-		    // Replace both folders with absolute paths. Windows paths use a single backslash in M.
-		    CatalogFolder = "C:\replace-me\output\demo\catalog",
-		    FinanceFolder = "C:\replace-me\output\demo\finance",
+		    CatalogFolder = if DemoRoot = "" then error "Set DemoRoot to the absolute path to output/demo." else DemoRoot & "/catalog",
+		    FinanceFolder = DemoRoot & "/finance",
 		    CatalogNames = {
 		        "dim_brand","dim_category","dim_market","dim_date","fact_product_snapshot","fact_sku_snapshot",
 		        "pricing","commercial_kpi","portfolio","assortment_counts","discount_summary","review_summary",
 		        "review_topic","quality_report","quality_completeness","comparison_coverage","match_coverage",
-		        "price_comparison","category_diagnostics"
+		        "price_comparison","category_diagnostics","product_position","comparison_summary"
 		    },
 		    FinanceNames = {
 		        "finance_assumptions","fact_simulated_finance","fact_simulated_sku","fact_simulated_channel",
@@ -16,7 +17,7 @@
 		    },
 		    DateColumns = {"snapshot","left_date","right_date","fx_date"},
 		    CountColumns = {"line","source_id","left_id","right_id","id","month","known","flagged","products","brands",
-		        "priced","rated","engagement","engagement_total","engagement_known","reviews","positive","negative",
+		        "priced","variant_count","matched_records","rated","engagement","engagement_total","engagement_known","reviews","positive","negative",
 		        "neutral_or_unscored","missing_text","mentions","count","denominator","present","valid","exclusive",
 		        "online","limited","bestseller","new_arrival","promotion","out_of_stock","bestsellers","bestseller_known",
 		        "new_arrivals","new_arrival_known","exclusive_products","exclusive_known","priced_product_representatives",
@@ -24,7 +25,7 @@
 		        "candidate_pairs","accepted_pairs","priced_pairs","comparable_gaps","left_records","right_records",
 		        "left_source_records","right_source_records","left_candidates","right_candidates","left_accepted","right_accepted"},
 		    DecimalColumns = {"price","sale","price_max","rating","mean_rating","mean_price","median_price","min_price",
-		        "max_price","assortment_share","share","category_median","price_gap","discount_depth","mean_discount_depth",
+		        "max_price","median_gap","assortment_share","share","category_median","price_gap","discount_depth","mean_discount_depth",
 		        "premium_proxy","price_heavy_proxy","issue_rate","completeness_rate","parse_valid_rate","left_accepted_share",
 		        "right_accepted_share","left_price","right_native","right_usd","absolute_gap","percent_gap","fx","fx_low_gap",
 		        "fx_high_gap","real_change","value","gross_sales","discounts","returns","net_revenue","cogs","gross_profit",
@@ -35,7 +36,7 @@
 		        "budget","simulated_actual","variance","variance_pct","ytd_variance"},
 		    ReadTable = (folder as text, name as text) as table =>
 		        let
-		            FilePath = folder & "\" & name & ".csv",
+		            FilePath = folder & "/" & name & ".csv",
 		            Raw = Csv.Document(File.Contents(FilePath),[Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 		            Header = Table.PromoteHeaders(Raw,[PromoteAllScalars=true]),
 		            Columns = Table.ColumnNames(Header),
@@ -43,9 +44,12 @@
 		            DateTypes = List.Transform(List.Intersect({Columns,DateColumns}),each {_,type date}),
 		            CountTypes = List.Transform(List.Intersect({Columns,CountColumns}),each {_,Int64.Type}),
 		            DecimalTypes = List.Transform(List.Intersect({Columns,DecimalColumns}),each {_,type number}),
-		            Typed = Table.TransformColumnTypes(BlankToNull,List.Combine({DateTypes,CountTypes,DecimalTypes}),"en-US")
+		            Typed = Table.TransformColumnTypes(BlankToNull,List.Combine({DateTypes,CountTypes,DecimalTypes}),"en-US"),
+		            Scoped = if List.ContainsAll(Columns, {"vintage", "market", "snapshot"}) then
+		                Table.AddColumn(Typed, "cohort_key", each Text.Combine({[market], [vintage], if [snapshot] = null then "Unknown date" else Date.ToText([snapshot], [Format="yyyy-MM-dd", Culture="en-US"])}, " | "), type text)
+		                else Typed
 		        in
-		            Typed,
+		            Scoped,
 		    Names = List.Combine({CatalogNames,FinanceNames}),
 		    Tables = Record.FromList(List.Transform(Names, each ReadTable(if List.Contains(FinanceNames,_) then FinanceFolder else CatalogFolder,_)),Names)
 		in

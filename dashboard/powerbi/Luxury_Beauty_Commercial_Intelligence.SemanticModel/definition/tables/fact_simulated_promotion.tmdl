@@ -1,0 +1,95 @@
+table fact_simulated_promotion
+	lineageTag: 24744bb8-7698-5cd6-89d9-7a5ca3c06531
+
+	measure 'Promotion ROI' = SELECTEDVALUE(fact_simulated_promotion[roi])
+		formatString: 0.0%
+		lineageTag: f4b6e919-2bba-5525-a990-854feafd3299
+
+
+	column evidence
+		dataType: string
+		lineageTag: a863e9fa-6a0f-5b0e-bbe7-c69850cb0d77
+		summarizeBy: none
+		sourceColumn: evidence
+
+	column discount
+		dataType: double
+		formatString: 0.0%
+		lineageTag: ca03908a-b16f-5912-897b-0ad1d26004ac
+		summarizeBy: none
+		sourceColumn: discount
+
+	column uplift
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 7f750469-9154-5f1c-9533-51a336d95adb
+		summarizeBy: none
+		sourceColumn: uplift
+
+	column incremental_units
+		dataType: double
+		lineageTag: 4e588948-851e-5ed1-adab-0f750ece6f27
+		summarizeBy: none
+		sourceColumn: incremental_units
+
+	column incremental_revenue
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: cf89cc3d-935c-5b72-8e74-47584f39f055
+		summarizeBy: none
+		sourceColumn: incremental_revenue
+
+	column incremental_gp
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: b5aa4555-96ef-5827-9fbf-75c289a21cd2
+		summarizeBy: none
+		sourceColumn: incremental_gp
+
+	column incremental_contribution
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: df525e47-0bca-56e2-ad4a-bb63e03dd24e
+		summarizeBy: none
+		sourceColumn: incremental_contribution
+
+	column roi
+		dataType: double
+		formatString: 0.0%
+		lineageTag: d5dac5cc-91e2-541a-8e33-0809b52909de
+		summarizeBy: none
+		sourceColumn: roi
+
+	column breakeven_units
+		dataType: double
+		lineageTag: b44cf6f2-9f5a-5118-8ef6-249b382ce1b7
+		summarizeBy: none
+		sourceColumn: breakeven_units
+
+	column required_uplift
+		dataType: double
+		formatString: 0.0%
+		lineageTag: e17b5d65-5d4c-5cd8-9cc9-668e0b805236
+		summarizeBy: none
+		sourceColumn: required_uplift
+
+	column breakeven_discount
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 1be06950-0e87-5bb7-87d8-07468dc54371
+		summarizeBy: none
+		sourceColumn: breakeven_discount
+
+	column margin_dilution
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 31b10459-6bff-59b1-9e69-3d39f37eb1bf
+		summarizeBy: none
+		sourceColumn: margin_dilution
+
+	partition fact_simulated_promotion = m
+		mode: import
+		source =
+				PortfolioTables[fact_simulated_promotion]
+
+	annotation PBI_ResultType = Table

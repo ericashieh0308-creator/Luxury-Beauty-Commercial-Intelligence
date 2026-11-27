@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "e536dbd8eb9e50466e5d",
   "position": {
-    "x": 0,
-    "y": 729.07183716341854,
-    "z": 5,
-    "height": 350.75215949841,
-    "width": 528.46658697760438,
-    "tabOrder": 5
+    "x": 48,
+    "y": 380,
+    "z": 6,
+    "height": 476,
+    "width": 900,
+    "tabOrder": 6
   },
   "visual": {
     "visualType": "donutChart",
@@ -74,10 +74,38 @@
       "title": [
         {
           "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Recent Market Assortment'"
+                  "Value": "'Recent source records by market'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
                 }
               }
             }

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "c31f98f0601cde6ed6c9",
   "position": {
-    "x": 547.67597337156315,
-    "y": 476.16414245362023,
-    "z": 2,
-    "height": 168.36103655923679,
-    "width": 280.60172759872796,
-    "tabOrder": 2
+    "x": 972,
+    "y": 184,
+    "z": 4,
+    "height": 162,
+    "width": 438,
+    "tabOrder": 4
   },
   "visual": {
     "visualType": "cardVisual",
@@ -51,7 +51,50 @@
         }
       ]
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Recent SKU records'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   },
   "filterConfig": {
     "filters": [

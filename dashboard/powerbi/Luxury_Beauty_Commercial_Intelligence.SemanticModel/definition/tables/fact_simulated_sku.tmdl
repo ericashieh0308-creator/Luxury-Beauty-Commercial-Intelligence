@@ -1,0 +1,150 @@
+table fact_simulated_sku
+	lineageTag: 125314dd-c539-500c-bcc0-e0f2285a928a
+
+	measure 'SKU gross contribution' = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_sku[gross_profit]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: df2a5a55-1575-5e5e-9f1f-ecebb63f5c38
+
+
+	column evidence
+		dataType: string
+		lineageTag: d67d5d6e-0e6f-5f71-9414-1a9001a536ec
+		summarizeBy: none
+		sourceColumn: evidence
+
+	column scenario
+		dataType: string
+		lineageTag: c1382dc9-b80d-5eff-b44c-758c8a91e7b7
+		summarizeBy: none
+		sourceColumn: scenario
+
+	column month
+		dataType: int64
+		lineageTag: cf7b1666-2304-55e9-9598-a8939aeb1504
+		summarizeBy: none
+		sourceColumn: month
+
+	column sku
+		dataType: string
+		lineageTag: 82719999-7256-5e03-ad55-173a6186059a
+		summarizeBy: none
+		sourceColumn: sku
+
+	column gross_sales
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: 48823e69-0f3f-5fc8-bb92-d11f51c9f51c
+		summarizeBy: none
+		sourceColumn: gross_sales
+
+	column discounts
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: 6b9bfbe0-5600-5bb9-8b86-eab20de7459a
+		summarizeBy: none
+		sourceColumn: discounts
+
+	column returns
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: ada60ff9-3bd5-587f-b848-038c2490626d
+		summarizeBy: none
+		sourceColumn: returns
+
+	column net_revenue
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: b5e4e199-1f70-5009-bdc6-4990e8153f2a
+		summarizeBy: none
+		sourceColumn: net_revenue
+
+	column cogs
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: 97f029a0-aa27-52df-9176-da49144712cf
+		summarizeBy: none
+		sourceColumn: cogs
+
+	column gross_profit
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: 4f8dc0fb-8725-5e96-9e45-0175c2f18309
+		summarizeBy: none
+		sourceColumn: gross_profit
+
+	column gross_margin
+		dataType: double
+		formatString: 0.0%
+		lineageTag: f443c537-ee65-51f1-a70c-ebfe509980b8
+		summarizeBy: none
+		sourceColumn: gross_margin
+
+	column fulfillment
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: c7fc3fb7-3c40-51b0-af50-6bceccf69da8
+		summarizeBy: none
+		sourceColumn: fulfillment
+
+	column payment_fees
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: 819b3740-2620-5fed-9670-d9451eace938
+		summarizeBy: none
+		sourceColumn: payment_fees
+
+	column return_handling
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: 410d6bbb-b9e6-5eba-85c3-6363bcd8f03c
+		summarizeBy: none
+		sourceColumn: return_handling
+
+	column marketing
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: 3ec57423-6cbd-5f57-bfee-5d6e7da4fc4f
+		summarizeBy: none
+		sourceColumn: marketing
+
+	column variable_expenses
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: dbef1a20-3954-5779-8223-122138b90f12
+		summarizeBy: none
+		sourceColumn: variable_expenses
+
+	column contribution
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: 35e6a58d-1fec-5c26-a0fd-eff04f817b96
+		summarizeBy: none
+		sourceColumn: contribution
+
+	column fixed
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: 2e502e07-0c13-5f2c-8c6a-e757379347e1
+		summarizeBy: none
+		sourceColumn: fixed
+
+	column operating_profit
+		dataType: double
+		formatString: "$"#,0;("$"#,0)
+		lineageTag: 32b98a20-632f-57ab-9b0b-c1814271e18d
+		summarizeBy: none
+		sourceColumn: operating_profit
+
+	column operating_margin
+		dataType: double
+		formatString: 0.0%
+		lineageTag: df6e2f2a-19ec-5dc4-a54a-6b6dcf1d0d24
+		summarizeBy: none
+		sourceColumn: operating_margin
+
+	partition fact_simulated_sku = m
+		mode: import
+		source =
+				PortfolioTables[fact_simulated_sku]
+
+	annotation PBI_ResultType = Table

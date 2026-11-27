@@ -1,0 +1,121 @@
+table price_comparison
+	lineageTag: 3497bcd6-440c-532e-b1cf-556b7802f6f5
+
+	column left_id
+		dataType: int64
+		lineageTag: 684992ca-fd15-5be6-9a9b-27a3571eaf73
+		summarizeBy: none
+		sourceColumn: left_id
+
+	column right_id
+		dataType: int64
+		lineageTag: c317812e-7939-558b-a566-9ce263db6ba6
+		summarizeBy: none
+		sourceColumn: right_id
+
+	column comparison
+		dataType: string
+		lineageTag: a7cb5d1b-8405-5bf5-be34-432f439ebb5a
+		summarizeBy: none
+		sourceColumn: comparison
+
+	column left_price
+		dataType: double
+		lineageTag: 560879bd-f56d-5c48-94bc-ebe4182eb777
+		summarizeBy: none
+		sourceColumn: left_price
+
+	column right_native
+		dataType: double
+		lineageTag: 46767b02-1391-50d1-8694-4026c89e0da9
+		summarizeBy: none
+		sourceColumn: right_native
+
+	column right_usd
+		dataType: double
+		lineageTag: 163d5e1b-339f-57b5-b412-56a26cd2e22c
+		summarizeBy: none
+		sourceColumn: right_usd
+
+	column absolute_gap
+		dataType: double
+		lineageTag: 3931cdef-95c6-5192-a1f7-0d36e9d8bcb9
+		summarizeBy: none
+		sourceColumn: absolute_gap
+
+	column percent_gap
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 9a73470c-2905-53c1-84a0-ed96c516b2de
+		summarizeBy: none
+		sourceColumn: percent_gap
+
+	column fx_date
+		dataType: dateTime
+		lineageTag: f92ac725-09ed-5001-bc1f-03337d0f9511
+		summarizeBy: none
+		sourceColumn: fx_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column fx
+		dataType: double
+		lineageTag: 22d56303-4fe1-53ad-b0bf-b2f5ca543ba7
+		summarizeBy: none
+		sourceColumn: fx
+
+	column fx_low_gap
+		dataType: double
+		lineageTag: 7b034a50-9de1-54fa-a7c2-c6f00e324a52
+		summarizeBy: none
+		sourceColumn: fx_low_gap
+
+	column fx_high_gap
+		dataType: double
+		lineageTag: c79e62eb-211d-5781-bc12-ceeff3750cbb
+		summarizeBy: none
+		sourceColumn: fx_high_gap
+
+	column real_change
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 18ae9668-831c-5d6e-b785-b3c4d9f28aab
+		summarizeBy: none
+		sourceColumn: real_change
+
+	column left_tier
+		dataType: string
+		lineageTag: 59ea0d6c-6640-523d-af0e-d7b6fa00db6d
+		summarizeBy: none
+		sourceColumn: left_tier
+
+	column right_tier
+		dataType: string
+		lineageTag: 6f166ee4-a028-5d09-8e9f-e568d6a709f0
+		summarizeBy: none
+		sourceColumn: right_tier
+
+	column right_tier_at_left_thresholds
+		dataType: string
+		lineageTag: 1938a9f5-5b2f-5019-9f31-b69939404ccb
+		summarizeBy: none
+		sourceColumn: right_tier_at_left_thresholds
+
+	column left_promotion
+		dataType: string
+		lineageTag: a9bae140-bda0-5a62-b2aa-10ce804332fb
+		summarizeBy: none
+		sourceColumn: left_promotion
+
+	column right_promotion
+		dataType: string
+		lineageTag: 02068eaf-2127-5726-8665-2e305749b12a
+		summarizeBy: none
+		sourceColumn: right_promotion
+
+	partition price_comparison = m
+		mode: import
+		source =
+				PortfolioTables[price_comparison]
+
+	annotation PBI_ResultType = Table

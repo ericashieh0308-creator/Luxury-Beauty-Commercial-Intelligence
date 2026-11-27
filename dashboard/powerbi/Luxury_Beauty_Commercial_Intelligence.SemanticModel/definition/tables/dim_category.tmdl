@@ -1,0 +1,15 @@
+table dim_category
+	lineageTag: 9b35e77c-d84d-59d3-81d5-0a040d4ac758
+
+	column category
+		dataType: string
+		lineageTag: 4ec802c4-7202-52cf-916e-84d2c0a22c7b
+		summarizeBy: none
+		sourceColumn: category
+
+	partition dim_category = m
+		mode: import
+		source =
+				PortfolioTables[dim_category]
+
+	annotation PBI_ResultType = Table

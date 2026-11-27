@@ -9,7 +9,7 @@ A retailer can see what is listed, priced, or reviewed in a catalog without know
 | What is represented in the catalog? | Product/SKU counts, brand and category coverage, review topics, and field-level quality |
 | Where does the assortment sit on the price ladder? | Native-currency category tiers, brand positioning, eligible discount depth, and auditable match evidence |
 | Is a campaign worth funding? | Formula-driven Excel P&L, budget variance, SKU and channel profitability, and interactive promotion breakeven |
-| How can stakeholders reproduce it? | Python and SQLite pipeline, Streamlit public demo, and a Power BI Desktop implementation kit |
+| How can stakeholders reproduce it? | Python and SQLite pipeline, Streamlit public demo, and a Power BI Desktop project |
 
 ## Dashboard previews
 
@@ -97,3 +97,5 @@ The owner’s Windows validation of the preceding release passed 22 tests and pr
 The public Streamlit startup uses fictional records only. To explore private outputs on your own machine, set `$env:BEAUTY_LOCAL_CATALOG_DIR = (Resolve-Path 'data/processed').Path` and launch Streamlit with `--server.address 127.0.0.1`. Before running a public demo, clear that variable with `Remove-Item Env:BEAUTY_LOCAL_CATALOG_DIR -ErrorAction SilentlyContinue`. Keep licensed raw files, derived exports, private databases and local configuration out of the repo and release assets.
 
 The [release checklist](docs/release-checklist.md) covers the final Windows check, Desktop workflow, and GitHub release review.
+
+The [native Power BI project](dashboard/powerbi/README.md) contains ten report pages, a semantic model, and a portable synthetic demo configuration.

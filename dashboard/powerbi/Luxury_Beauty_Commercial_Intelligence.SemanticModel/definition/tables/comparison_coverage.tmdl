@@ -1,6 +1,14 @@
 table comparison_coverage
 	lineageTag: 8d53cb04-a9ba-46ea-8941-863b59425b0f
 
+	measure 'Comparable price gaps' = SUM(comparison_coverage[comparable_gaps])
+		formatString: 0
+		lineageTag: e6c8c324-56b4-58c1-b88d-270c38751398
+
+	measure 'Price comparison availability' = IF([Comparable price gaps] > 0, "Eligible gaps available", "Not available")
+		lineageTag: aa38ccd9-38a4-5968-8256-f20eccf631b1
+
+
 	column comparison
 		dataType: string
 		lineageTag: 63ea0a5d-6380-456a-bb3d-d82310e93bf9
@@ -101,6 +109,7 @@ table comparison_coverage
 
 	column left_accepted_share
 		dataType: double
+		formatString: 0.0%
 		lineageTag: 006ae298-c622-4352-b539-e0c84441be38
 		summarizeBy: sum
 		sourceColumn: left_accepted_share
@@ -111,6 +120,7 @@ table comparison_coverage
 
 	column right_accepted_share
 		dataType: double
+		formatString: 0.0%
 		lineageTag: 36321260-fe43-4c19-ab76-ade425150f8c
 		summarizeBy: sum
 		sourceColumn: right_accepted_share

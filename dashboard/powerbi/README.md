@@ -1,48 +1,45 @@
-# Power BI Desktop implementation kit
+# Luxury & Beauty Commercial Intelligence · Power BI
 
-The public demo uses generated fictional catalog records and simulated finance tables. Native report creation and validation require Windows Power BI Desktop. The kit automates CSV selection, headers, blank normalization, and core type assignments through a reusable M loader.
+Open [Luxury_Beauty_Commercial_Intelligence.pbip](Luxury_Beauty_Commercial_Intelligence.pbip) in current Power BI Desktop. The project includes an enhanced PBIR report, TMDL model, Ivory & Champagne theme, and populated report definitions for all ten pages. The public demo uses fictional catalog records and simulated financial results.
 
-## Shortest Desktop workflow
+## Open and refresh on Windows
 
-1. Run `python -m beauty.demo`. It writes the synthetic catalog to `output/demo/catalog` and simulated finance to `output/demo/finance`.
-2. In Desktop, open **Transform data > New source > Blank query > Advanced Editor**, paste [PortfolioTables.pq](PortfolioTables.pq), and replace the two folder paths with your absolute demo paths. Name the query `PortfolioTables` and disable **Enable load** for it.
-3. Create one blank query per table you want. In the formula bar, paste `= PortfolioTables[assortment_counts]` and name it `assortment_counts`. Repeat for `portfolio`, `discount_summary`, `comparison_coverage`, `quality_report`, and `fact_simulated_finance` for the first two pages. Add other tables from the record as needed. Select **Close & Apply**.
-4. Import [Ivory & Champagne](theme.json). Under **Modeling > New measure**, paste the measures for the loaded tables from [measures.dax](measures.dax). For a first executive page, add source and distinct-product cards, a **Portfolio** category bar, and comparison availability. Use a single vintage, market, and snapshot for each visual. For finance, add a scenario slicer, monthly line chart, operating profit and weighted gross margin.
-5. Review the [KPI definitions](../../docs/methodology.md) and add the star-schema tables and relationships below when you extend beyond the first two pages. Validate filters against the synthetic CSVs and the workbook, then save in Desktop.
+Run in PowerShell from the repository root with your project Python environment configured.
 
-The M loader is source text. It has not been executed in Power Query Desktop here. The release includes no PBIX or PBIP.
+```powershell
+$python = '.\.venv\Scripts\python.exe'
+& $python -m beauty.demo
+if ($LASTEXITCODE -ne 0) { throw 'Demo generation failed.' }
+& $python -m scripts.validate_powerbi
+if ($LASTEXITCODE -ne 0) { throw 'Power BI project validation failed.' }
+(Resolve-Path 'output/demo').Path
+Start-Process (Resolve-Path 'dashboard/powerbi/Luxury_Beauty_Commercial_Intelligence.pbip').Path
+```
 
-## Model and Power Query
+Set the **DemoRoot** text parameter under **Transform data > Edit parameters** to the absolute folder printed above, then choose **Apply changes** or **Close & Apply** and refresh. Point to the folder containing both `catalog` and `finance`. This is the only source setting required. Save machine-specific settings in a separate untracked copy of the project or revert the parameter value before committing changes. Desktop must load the model on first open after setting this parameter.
 
-1. Create `ObservedPath` and `FinancePath` text parameters. Use the loader with the desired catalog and finance folders. Keep a separate Desktop file for the public synthetic demo and any licensed local work.
-2. Set IDs and counts to whole numbers, prices to decimal, dates to date, flags to nullable whole numbers, and categories to text. Preserve blank flags and prices. Set format for USD and CAD explicitly or show the native currency beside every price visual.
-3. Load `dim_brand`, `dim_category`, `dim_market`, and `dim_date`. Create one-to-many single-direction relationships from each key to `fact_product_snapshot`. Reject duplicate dimension keys. Link snapshot `id` to `pricing.id` with a unique ID relationship. Treat each comparison endpoint as a separate role if loading endpoint slicers. Leave preaggregated commercial and QA tables disconnected and give them local slicers.
-4. Model scenario and month as separate dimensions for the simulated facts. Expose finance measures independently of observational market and SKU filters. Place the evidence label prominently on each financial page.
-5. Paste measures individually from [measures.dax](measures.dax). Check one market/vintage/date at a time for precomputed KPIs. Restrict portfolio shares to the same cohort and deduplicate repeated flag metrics.
-6. Configure tab order, alt text, titles and accessible contrasting labels. Test slicers, currency cues, zero denominators, totals and export rights in Desktop before distributing.
-7. Compare visual results with SQLite/CSV for observed data and the workbook for finance. Validate Base annual net revenue $700,824.23 and operating profit $155,492.93 with unchanged defaults. Restrict sample exports to approved aggregates.
+Use the built-in report page tabs to navigate. No manual recreation of queries, relationships, measures, visuals, or theme import is required for this project. The separate [Power Query expression](PortfolioTables.pq) and [DAX reference](measures.dax) are for reuse or inspection.
 
-## Page specifications and wireframes
+## Pages and verification
 
-Each wireframe lists the top KPI strip, central chart pair, and lower detail panel. Keep global menu navigation at the top and page slicers on the left.
+| Page | What to check in Desktop |
+|---|---|
+| Executive Overview | Check the four source-count cards and compare market and brand coverage with the synthetic export. |
+| Market & Assortment Intelligence | Verify cohort-record counts and that distinct products and SKU keys report at one market, vintage and snapshot. |
+| Brand & Category Performance | Pick one cohort and verify that the brand and category charts and known-flag denominators respond. |
+| Pricing & Promotional Intelligence | Switch between US and CA cohorts independently. Verify native currency, category tiers, eligible discount ratios, and unknown flag handling. |
+| Customer Reviews & Product Intelligence | Confirm historical review counts, lexicon topic mentions, and per-product aggregates. |
+| Cross-Market & Historical Comparison | Filter the comparison type. Confirm candidate and accepted counts remain separate and absent gaps read **Not available**. |
+| Financial Performance & P&L | Check month order, Base default, Bull and Bear switches, and totals. Base annual revenue is USD 700,824.23 and operating profit is USD 155,492.93 with default drivers. |
+| Budget Variance & Scenario Forecasting | Check the scenario trend and fixed Base vs Bull variance and PVM detail. |
+| SKU, Channel & Promotion Profitability | Verify scenario KPI isolation, monthly channel contribution, and discount/uplift filters. At 15% discount and 20% uplift, simulated contribution changes by about −USD 455 and ROI is about −30.3%. |
+| Data Quality & Methodology | Inspect severity counts, parse-valid denominators, and audit notes by source field. |
 
-| Page | Layout from top to bottom | Slicers and safeguards |
-|---|---|---|
-| 1 Executive Commercial Overview | Product count, priced coverage, median US list, promo known share / category share bars, price histogram / cohort KPI table | US default, vintage, date. Use single snapshot selection |
-| 2 Brand & Product Portfolio | Brands and SKUs / brand × category matrix, flag mix bars / brand-category detail | Brand, category, market, date. Use source counts and known flag denominators |
-| 3 Pricing & Premiumization | Median, spread and discount depth / category price bands, price–rating scatter / price ladder table | Category, brand, market, snapshot. Use native currency consistently |
-| 4 2023 vs 2026 Price Comparison | Eligible pairs, median change and coverage / matched price-gap histogram, tier migration matrix / status and price-pair table | Category, brand, match status and comparison dates |
-| 5 US vs Canada Market Intelligence | FX date, paired count, median USD gap / category gap dots, FX stress ranges / USD/CAD list-price pairs | Same-day snapshot and product/SKU scope. Show FX direction |
-| 6 Consumer & Review Intelligence | Review count, rated coverage / historical sentinel rating and topic bars / product review summary | Historical product. Keep review text out of exports |
-| 7 Commercial Finance & P&L | Revenue, gross margin and operating profit / monthly P&L trend, operating profit waterfall / budget versus simulated actual table | One case and month. Label simulated USD |
-| 8 Forecast & Scenario Planning | Annual scenario comparison / case operating-profit lines, month × case matrix / drivers and variance | Case and month. Use weighted annual margins |
-| 9 Promotion & Profitability | Incremental contribution, ROI and breakeven / discount-versus-contribution curve, sensitivity matrix / campaign cost detail | Select one uplift and discount for headline cards |
-| 10 Data Quality & Methodology | Invalid, missing and duplicate issues / issue-by-file bar, candidate status chart / lineage dictionary | Vintage, member, issue and field. Display source licensing status |
+## Model and data governance
 
-Use ivory backgrounds, black foregrounds, muted champagne accent fills and differentiated taupe supporting series. Add direct labels on charts that depend on color.
+- Market, category and cohort filters drive compatible catalog facts. The cohort key combines market, vintage and snapshot. Representative-product counts differ from raw records, and distinct counts are scoped to one cohort. Catalog coverage describes the sample.
+- Scenario filters drive only simulated forecast and SKU facts. Measures default to Base when the filter is cleared and return blank for an ambiguous multi-scenario selection. Weighted margins divide total profit by total revenue. Channel, budget, PVM and campaign tables are separate modeled grain and assumptions.
+- Reviews are historical aggregates. Quality completeness counts evaluated source fields. Match confidence describes candidates. The public demo has no eligible price gaps, verified FX, CPI, or industry benchmark inputs.
+- Keep licensed data, private exports, PBIX, and caches local. The native report's labels explicitly describe the generated synthetic catalog and simulated finance. Use a separate private working copy if adapting the report to licensed sources, and update evidence labels before any use.
 
-### Readiness and unavailable evidence
-
-Load `assortment_counts`, `discount_summary`, `comparison_coverage`, and `quality_completeness` as separate aggregate tables. Use shared cohort slicers only where dimension grain agrees. Use a single market, vintage and snapshot to display distinct counts from precomputed aggregates. Keep the underlying numeric gaps blank for calculations. Use **Matched Gap Display** and **Comparison Availability** on the price-pair summary cards, with accepted and priced pair counts beside them. Use `match_coverage` for confidence and reason counts and present `quality_completeness` alongside issue rates. Some comparison tables may have only headers, so check source types explicitly and retain an availability card from the coverage table. Dashboard assets have no native Power BI Desktop validation in this environment.
-
-See [theme formatting and PBIP/PBIR workflow](theme-formatting.md) for schema validation, supported typography defaults, and a method to restyle an existing Desktop report in place.
+For visual defaults and mechanics, see the [theme formatting guide](theme-formatting.md). For reproducible checks and remaining Desktop verification, see the [validation report](validation.md).

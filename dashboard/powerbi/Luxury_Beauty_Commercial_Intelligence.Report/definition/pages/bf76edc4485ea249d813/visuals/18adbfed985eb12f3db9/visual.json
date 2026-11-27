@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "18adbfed985eb12f3db9",
   "position": {
-    "x": 19.186100977984697,
-    "y": 97.6746958879221,
-    "z": 8,
-    "height": 57.558302933954096,
-    "width": 528.48987239357848,
-    "tabOrder": 8
+    "x": 48,
+    "y": 103,
+    "z": 1,
+    "height": 58,
+    "width": 1824,
+    "tabOrder": 1
   },
   "visual": {
     "visualType": "textbox",
@@ -19,9 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "Executive Overview i  US & Canada i Synthetic Demo Data",
+                    "value": "SYNTHETIC CATALOG  |  SIMULATED FINANCE  |  Coverage describes source records, not sales.",
                     "textStyle": {
-                      "fontSize": "14pt"
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "14pt",
+                      "fontWeight": "normal",
+                      "color": "#231F1D"
                     }
                   }
                 ]

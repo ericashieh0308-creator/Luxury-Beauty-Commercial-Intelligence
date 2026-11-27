@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "b9cff7c9e2bf0e88725a",
   "position": {
-    "x": 828.49072404933918,
-    "y": 477.90833345161883,
-    "z": 3,
-    "height": 168.36103655923679,
-    "width": 280.60172759872796,
-    "tabOrder": 3
+    "x": 1434,
+    "y": 184,
+    "z": 5,
+    "height": 162,
+    "width": 438,
+    "tabOrder": 5
   },
   "visual": {
     "visualType": "cardVisual",
@@ -51,7 +51,50 @@
         }
       ]
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Recent markets'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   },
   "filterConfig": {
     "filters": [

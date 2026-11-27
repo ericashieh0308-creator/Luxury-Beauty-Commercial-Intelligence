@@ -1,0 +1,179 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_variance"
+                    }
+                  },
+                  "Property": "month"
+                }
+              },
+              "queryRef": "fact_simulated_variance.month",
+              "nativeQueryRef": "month"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_variance"
+                    }
+                  },
+                  "Property": "metric"
+                }
+              },
+              "queryRef": "fact_simulated_variance.metric",
+              "nativeQueryRef": "metric"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_variance"
+                    }
+                  },
+                  "Property": "budget"
+                }
+              },
+              "queryRef": "fact_simulated_variance.budget",
+              "nativeQueryRef": "budget"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_variance"
+                    }
+                  },
+                  "Property": "simulated_actual"
+                }
+              },
+              "queryRef": "fact_simulated_variance.simulated_actual",
+              "nativeQueryRef": "simulated_actual"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_variance"
+                    }
+                  },
+                  "Property": "variance"
+                }
+              },
+              "queryRef": "fact_simulated_variance.variance",
+              "nativeQueryRef": "variance"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_variance"
+                    }
+                  },
+                  "Property": "variance_pct"
+                }
+              },
+              "queryRef": "fact_simulated_variance.variance_pct",
+              "nativeQueryRef": "variance_pct"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_variance"
+                    }
+                  },
+                  "Property": "direction"
+                }
+              },
+              "queryRef": "fact_simulated_variance.direction",
+              "nativeQueryRef": "direction"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_variance"
+                    }
+                  },
+                  "Property": "ytd_variance"
+                }
+              },
+              "queryRef": "fact_simulated_variance.ytd_variance",
+              "nativeQueryRef": "ytd_variance"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Monthly simulated budget and actual variance'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "e152cf72a0e8a05bf405",
+  "position": {
+    "x": 48,
+    "y": 646,
+    "z": 5,
+    "height": 362,
+    "width": 1016,
+    "tabOrder": 5
+  }
+}

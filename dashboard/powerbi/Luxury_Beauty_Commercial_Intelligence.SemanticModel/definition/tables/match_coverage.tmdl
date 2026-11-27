@@ -1,0 +1,57 @@
+table match_coverage
+	lineageTag: a4f2ebca-27f4-5a1e-96a7-253d8acd4cbd
+
+	column comparison
+		dataType: string
+		lineageTag: dfed3985-e9f4-5db7-86a8-18f6f428589b
+		summarizeBy: none
+		sourceColumn: comparison
+
+	column status
+		dataType: string
+		lineageTag: 0b73ebc1-9d52-5119-828e-d0cc2302e889
+		summarizeBy: none
+		sourceColumn: status
+
+	column method
+		dataType: string
+		lineageTag: 013a93e3-98ae-5051-8f4d-ea0dfb8027f7
+		summarizeBy: none
+		sourceColumn: method
+
+	column candidate_pairs
+		dataType: int64
+		lineageTag: 9ab8ff73-65f0-5b6c-9138-e5387df94b7e
+		summarizeBy: none
+		sourceColumn: candidate_pairs
+
+	column left_records
+		dataType: int64
+		lineageTag: 6704dfc0-7c83-5afc-8c0e-e037c059ca65
+		summarizeBy: none
+		sourceColumn: left_records
+
+	column right_records
+		dataType: int64
+		lineageTag: e09af616-4629-5fbd-b280-94f9f07d97c7
+		summarizeBy: none
+		sourceColumn: right_records
+
+	column confidence
+		dataType: string
+		lineageTag: 57a5d2cd-e0f8-50f9-a35d-f582021651d7
+		summarizeBy: none
+		sourceColumn: confidence
+
+	column reason
+		dataType: string
+		lineageTag: fa35b18a-d300-5041-af03-e212e7c0cfb2
+		summarizeBy: none
+		sourceColumn: reason
+
+	partition match_coverage = m
+		mode: import
+		source =
+				PortfolioTables[match_coverage]
+
+	annotation PBI_ResultType = Table

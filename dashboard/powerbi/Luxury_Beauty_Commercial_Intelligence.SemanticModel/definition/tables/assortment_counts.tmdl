@@ -1,11 +1,11 @@
 table assortment_counts
 	lineageTag: c4b22664-cc23-4834-9ddb-874bc932c609
 
-	measure 'Recent Product Record' = CALCULATE(SUM(assortment_counts[distinct_products]),assortment_counts[vintage] = "recent")
+	measure 'Recent Product Record' = CALCULATE(SUM(assortment_counts[source_records]),assortment_counts[vintage] = "recent")
 		formatString: 0
 		lineageTag: a982c9b7-46c2-4934-85be-aa1433ea101d
 
-	measure 'Historical Product Records' = CALCULATE(SUM(assortment_counts[distinct_products]), assortment_counts[vintage] = "historical")
+	measure 'Historical Product Records' = CALCULATE(SUM(assortment_counts[source_records]), assortment_counts[vintage] = "historical")
 		formatString: 0
 		lineageTag: 38a1cc7d-8ac2-46ea-8f58-87ebf64465c0
 
@@ -16,6 +16,19 @@ table assortment_counts
 	measure 'Market Covered' = CALCULATE(DISTINCTCOUNT(assortment_counts[market]), assortment_counts[vintage] = "recent")
 		formatString: 0
 		lineageTag: 03eff062-1cc1-4cb0-bbab-f5596d42d29c
+
+	measure 'Catalog records' = SUM(assortment_counts[source_records])
+		formatString: 0
+		lineageTag: a21e46fe-dfd2-5382-a44f-94fcdb40d94e
+
+	measure 'Catalog products' = IF(HASONEVALUE(assortment_counts[vintage]) && HASONEVALUE(assortment_counts[market]) && HASONEVALUE(assortment_counts[snapshot]), SUM(assortment_counts[distinct_products]))
+		formatString: 0
+		lineageTag: 20aaa780-004b-5990-924c-6203ca98944d
+
+	measure 'Product SKU keys' = IF(HASONEVALUE(assortment_counts[vintage]) && HASONEVALUE(assortment_counts[market]) && HASONEVALUE(assortment_counts[snapshot]), SUM(assortment_counts[distinct_product_skus]))
+		formatString: 0
+		lineageTag: 877c9346-26f5-5308-8552-eb8d30a26323
+
 
 	column vintage
 		dataType: string
@@ -84,6 +97,12 @@ table assortment_counts
 		sourceColumn: distinct_product_skus
 
 		annotation SummarizationSetBy = Automatic
+
+	column cohort_key
+		dataType: string
+		lineageTag: 5d7e1d91-9d35-59a4-9879-55db8831e6c4
+		summarizeBy: none
+		sourceColumn: cohort_key
 
 	partition assortment_counts = m
 		mode: import

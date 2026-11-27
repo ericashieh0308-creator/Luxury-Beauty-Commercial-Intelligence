@@ -1,6 +1,11 @@
 table portfolio
 	lineageTag: 3b57bba9-5c9d-4f77-ad09-73cf061b1aaa
 
+	measure 'Representative products' = IF(HASONEVALUE(portfolio[vintage]) && HASONEVALUE(portfolio[market]) && HASONEVALUE(portfolio[snapshot]), SUM(portfolio[products]))
+		formatString: 0
+		lineageTag: 25d694e7-99bd-5f5a-860c-bf49e5024655
+
+
 	column vintage
 		dataType: string
 		lineageTag: 8af4b61c-730b-454c-bcfb-3610a4082c5e
@@ -131,6 +136,12 @@ table portfolio
 		sourceColumn: exclusive_known
 
 		annotation SummarizationSetBy = Automatic
+
+	column cohort_key
+		dataType: string
+		lineageTag: 115d9839-3c03-5b06-a31c-8c06113b01ff
+		summarizeBy: none
+		sourceColumn: cohort_key
 
 	partition portfolio = m
 		mode: import

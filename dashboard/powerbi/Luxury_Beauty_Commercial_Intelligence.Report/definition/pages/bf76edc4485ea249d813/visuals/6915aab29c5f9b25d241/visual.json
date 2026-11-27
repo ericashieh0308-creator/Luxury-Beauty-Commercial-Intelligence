@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "6915aab29c5f9b25d241",
   "position": {
-    "x": 10.465145987991653,
-    "y": 27.90705596797774,
-    "z": 7,
-    "height": 127.32594285389845,
-    "width": 976.746958879221,
-    "tabOrder": 7
+    "x": 48,
+    "y": 30,
+    "z": 0,
+    "height": 68,
+    "width": 1824,
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "textbox",
@@ -19,10 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "LUXURY & BEAUTY I  COMMERCIAL INTELLIGENCE",
+                    "value": "Executive Overview",
                     "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "28pt",
                       "fontWeight": "bold",
-                      "fontSize": "28pt"
+                      "color": "#231F1D"
                     }
                   }
                 ]

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "50cdac2917005b02e23e",
+  "displayName": "Pricing & Promotional Intelligence",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "pageBinding": {
+    "name": "683e2605eed9c39629ae",
+    "type": "Default",
+    "parameters": []
+  }
+}

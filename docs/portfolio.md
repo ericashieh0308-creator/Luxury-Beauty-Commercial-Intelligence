@@ -59,3 +59,7 @@ Use the bullet that matches the role and your own contribution. The processing s
 | Beauty and Luxury Analytics | Presented premium beauty assortment and pricing signals beside a separate promotion simulator, making the implications for positioning and contribution accessible to business stakeholders. |
 
 **LinkedIn Featured description:** Luxury & Beauty Commercial Intelligence is a Python, SQLite, Streamlit, Excel and Power BI portfolio case. Explore the synthetic catalog demo, inspect quality and pricing coverage, and test how discount and volume assumptions change simulated campaign contribution. The workbook reconciles three planning scenarios and the implementation kit documents how to build the Power BI report in Desktop.
+
+### Native Power BI report description
+
+Luxury & Beauty Commercial Intelligence is a ten-page Power BI project with an enhanced PBIR report and a TMDL semantic model. The public walkthrough covers sample assortment, native-currency pricing, historical review signals, and data-quality evidence. A separate simulated finance model shows how scenario, channel, and promotion assumptions affect contribution and operating profit.

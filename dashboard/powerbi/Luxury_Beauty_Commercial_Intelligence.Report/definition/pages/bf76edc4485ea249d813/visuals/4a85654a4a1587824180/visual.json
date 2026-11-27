@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "4a85654a4a1587824180",
   "position": {
-    "x": 514.53634440958967,
-    "y": 729.07183716341854,
-    "z": 4,
-    "height": 350.75215949841,
-    "width": 593.94032341730758,
-    "tabOrder": 4
+    "x": 972,
+    "y": 380,
+    "z": 7,
+    "height": 476,
+    "width": 900,
+    "tabOrder": 7
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -102,10 +102,38 @@
       "title": [
         {
           "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Brand Portfolio By Market'"
+                  "Value": "'Representative product records by brand and market'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
                 }
               }
             }
