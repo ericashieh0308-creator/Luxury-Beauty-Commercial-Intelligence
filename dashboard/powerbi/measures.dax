@@ -1,0 +1,97 @@
+// Measures defined in the shipped TMDL. Use only for a separate manual report.
+
+// assortment_counts
+Recent Product Record = CALCULATE(SUM(assortment_counts[source_records]),assortment_counts[vintage] = "recent")
+
+// assortment_counts
+Historical Product Records = CALCULATE(SUM(assortment_counts[source_records]), assortment_counts[vintage] = "historical")
+
+// assortment_counts
+Recent SKU Records = CALCULATE(SUM(assortment_counts[sku_records]), assortment_counts[vintage] = "recent")
+
+// assortment_counts
+Market Covered = CALCULATE(DISTINCTCOUNT(assortment_counts[market]), assortment_counts[vintage] = "recent")
+
+// assortment_counts
+Catalog records = SUM(assortment_counts[source_records])
+
+// assortment_counts
+Catalog products = IF(HASONEVALUE(assortment_counts[vintage]) && HASONEVALUE(assortment_counts[market]) && HASONEVALUE(assortment_counts[snapshot]), SUM(assortment_counts[distinct_products]))
+
+// assortment_counts
+Product SKU keys = IF(HASONEVALUE(assortment_counts[vintage]) && HASONEVALUE(assortment_counts[market]) && HASONEVALUE(assortment_counts[snapshot]), SUM(assortment_counts[distinct_product_skus]))
+
+// commercial_kpi
+Exclusive share = IF(HASONEVALUE(commercial_kpi[vintage]) && HASONEVALUE(commercial_kpi[market]) && HASONEVALUE(commercial_kpi[snapshot]), CALCULATE(DIVIDE(SUM(commercial_kpi[flagged]), SUM(commercial_kpi[known])), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "exclusive"))
+
+// commercial_kpi
+Online share = IF(HASONEVALUE(commercial_kpi[vintage]) && HASONEVALUE(commercial_kpi[market]) && HASONEVALUE(commercial_kpi[snapshot]), CALCULATE(DIVIDE(SUM(commercial_kpi[flagged]), SUM(commercial_kpi[known])), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "online"))
+
+// commercial_kpi
+Bestseller share = IF(HASONEVALUE(commercial_kpi[vintage]) && HASONEVALUE(commercial_kpi[market]) && HASONEVALUE(commercial_kpi[snapshot]), CALCULATE(DIVIDE(SUM(commercial_kpi[flagged]), SUM(commercial_kpi[known])), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "bestseller"))
+
+// commercial_kpi
+New Arrival share = IF(HASONEVALUE(commercial_kpi[vintage]) && HASONEVALUE(commercial_kpi[market]) && HASONEVALUE(commercial_kpi[snapshot]), CALCULATE(DIVIDE(SUM(commercial_kpi[flagged]), SUM(commercial_kpi[known])), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "new_arrival"))
+
+// comparison_coverage
+Comparable price gaps = SUM(comparison_coverage[comparable_gaps])
+
+// comparison_coverage
+Price comparison availability = IF([Comparable price gaps] > 0, "Eligible gaps available", "Not available")
+
+// discount_summary
+Valid discount depth = DIVIDE(SUMX(discount_summary, discount_summary[mean_discount_depth] * discount_summary[valid_discount_observations]), SUM(discount_summary[valid_discount_observations]))
+
+// fact_simulated_channel
+Channel contribution margin = DIVIDE(SUM(fact_simulated_channel[contribution]), SUM(fact_simulated_channel[net_revenue]))
+
+// fact_simulated_finance
+Simulated net revenue = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[net_revenue]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+
+// fact_simulated_finance
+Simulated COGS = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[cogs]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+
+// fact_simulated_finance
+Simulated gross profit = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[gross_profit]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+
+// fact_simulated_finance
+Simulated operating profit = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[operating_profit]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+
+// fact_simulated_finance
+Simulated contribution = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[contribution]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+
+// fact_simulated_finance
+Weighted gross margin = DIVIDE([Simulated gross profit], [Simulated net revenue])
+
+// fact_simulated_finance
+Weighted operating margin = DIVIDE([Simulated operating profit], [Simulated net revenue])
+
+// fact_simulated_finance
+Simulated gross sales = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[gross_sales]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+
+// fact_simulated_finance
+Simulated operating expenses = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[variable_expenses]) + SUM(fact_simulated_finance[fixed]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+
+// fact_simulated_promotion
+Promotion ROI = SELECTEDVALUE(fact_simulated_promotion[roi])
+
+// fact_simulated_sku
+SKU gross contribution = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_sku[gross_profit]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+
+// portfolio
+Representative products = IF(HASONEVALUE(portfolio[vintage]) && HASONEVALUE(portfolio[market]) && HASONEVALUE(portfolio[snapshot]), SUM(portfolio[products]))
+
+// product_position
+Native median list price = IF(HASONEVALUE(product_position[vintage]) && HASONEVALUE(product_position[market]) && HASONEVALUE(product_position[snapshot]), MEDIAN(product_position[price]))
+
+// product_position
+Eligible priced products = COUNTROWS(product_position)
+
+// quality_completeness
+Parse-valid coverage = DIVIDE(SUM(quality_completeness[valid]), SUM(quality_completeness[denominator]))
+
+// review_summary
+Historical review records = SUM(review_summary[reviews])
+
+// review_summary
+Reviews missing source text = SUM(review_summary[missing_text])

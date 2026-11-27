@@ -1,0 +1,13 @@
+table dim_comparison
+	lineageTag: 0644b192-9591-58f9-873e-1bf196d25366
+
+	column comparison
+		dataType: string
+		lineageTag: fcf20940-118c-5515-bba4-4ed86533f4ab
+		summarizeBy: none
+		sourceColumn: comparison
+
+	partition dim_comparison = m
+		mode: import
+		source =
+				Table.Distinct(Table.SelectColumns(PortfolioTables[comparison_coverage], {"comparison"}))

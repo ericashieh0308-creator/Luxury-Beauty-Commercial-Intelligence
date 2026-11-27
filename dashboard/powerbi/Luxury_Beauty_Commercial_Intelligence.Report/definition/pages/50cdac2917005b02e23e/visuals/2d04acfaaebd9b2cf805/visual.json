@@ -1,0 +1,151 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "commercial_kpi"
+                    }
+                  },
+                  "Property": "market"
+                }
+              },
+              "queryRef": "commercial_kpi.market",
+              "nativeQueryRef": "Market"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "commercial_kpi"
+                    }
+                  },
+                  "Property": "vintage"
+                }
+              },
+              "queryRef": "commercial_kpi.vintage",
+              "nativeQueryRef": "Snapshot period"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "commercial_kpi"
+                    }
+                  },
+                  "Property": "Exclusive share"
+                }
+              },
+              "queryRef": "commercial_kpi.Exclusive share",
+              "nativeQueryRef": "Exclusive share"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "commercial_kpi"
+                    }
+                  },
+                  "Property": "Online share"
+                }
+              },
+              "queryRef": "commercial_kpi.Online share",
+              "nativeQueryRef": "Online share"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "commercial_kpi"
+                    }
+                  },
+                  "Property": "Bestseller share"
+                }
+              },
+              "queryRef": "commercial_kpi.Bestseller share",
+              "nativeQueryRef": "Bestseller share"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "commercial_kpi"
+                    }
+                  },
+                  "Property": "New Arrival share"
+                }
+              },
+              "queryRef": "commercial_kpi.New Arrival share",
+              "nativeQueryRef": "New Arrival share"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Observed merchandising flag shares'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "2d04acfaaebd9b2cf805",
+  "position": {
+    "x": 1200,
+    "y": 646,
+    "z": 9,
+    "height": 362,
+    "width": 672,
+    "tabOrder": 9
+  }
+}

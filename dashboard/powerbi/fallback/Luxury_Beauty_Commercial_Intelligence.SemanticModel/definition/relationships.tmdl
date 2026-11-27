@@ -1,0 +1,94 @@
+relationship a8f99832-c7ba-4852-abd5-f56991129f4a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: assortment_counts.snapshot
+	toColumn: LocalDateTable_d8680fe1-76eb-4ba0-82ec-6454d75870da.Date
+
+relationship c66d3bf8-6e39-4633-a528-3ad4ab7b7f0d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: portfolio.snapshot
+	toColumn: LocalDateTable_1bb60f14-eb4a-4541-bc92-fda6c4b6cdcf.Date
+
+
+relationship 3b079b8b-4f4a-51ce-89cb-81e0643a96b3
+	fromColumn: assortment_counts.market
+	toColumn: dim_market.market
+
+relationship 7ca80300-0c2b-50e3-91ef-ee21c9bd03ec
+	fromColumn: portfolio.market
+	toColumn: dim_market.market
+
+relationship 8207dbf6-10aa-535c-9bf6-5ba7e9522d48
+	fromColumn: fact_product_snapshot.market
+	toColumn: dim_market.market
+
+relationship 0437d135-e22f-5fad-a55b-31861da091a3
+	fromColumn: product_position.market
+	toColumn: dim_market.market
+
+relationship 958e7e41-4542-51f9-ad7d-bfe6f1da7aac
+	fromColumn: discount_summary.market
+	toColumn: dim_market.market
+
+relationship 2a893741-9873-5582-8c62-c2bd81c6d787
+	fromColumn: commercial_kpi.market
+	toColumn: dim_market.market
+
+relationship 51e67379-9657-5f01-b8f6-07601c72ff5b
+	fromColumn: portfolio.category
+	toColumn: dim_category.category
+
+relationship 12a841b0-acdf-5024-b7ef-dffda05b7233
+	fromColumn: fact_product_snapshot.category
+	toColumn: dim_category.category
+
+relationship 74f03607-67ef-521c-970d-6301c4fcfdc6
+	fromColumn: product_position.category
+	toColumn: dim_category.category
+
+relationship 73c0495c-0096-5f54-b0e3-25da403562ba
+	fromColumn: discount_summary.category
+	toColumn: dim_category.category
+
+relationship 94decf49-a57a-519f-b069-a0ce89f26e81
+	fromColumn: fact_simulated_finance.scenario
+	toColumn: dim_scenario.scenario
+
+relationship c1382dc9-b80d-5eff-b44c-758c8a91e7b7
+	fromColumn: fact_simulated_sku.scenario
+	toColumn: dim_scenario.scenario
+
+relationship 5d7e1d91-9d35-59a4-9879-55db8831e6c4
+	fromColumn: assortment_counts.cohort_key
+	toColumn: dim_cohort.cohort_key
+
+relationship 115d9839-3c03-5b06-a31c-8c06113b01ff
+	fromColumn: portfolio.cohort_key
+	toColumn: dim_cohort.cohort_key
+
+relationship 8803283a-f49c-5c23-a878-6cb9535fd93c
+	fromColumn: product_position.cohort_key
+	toColumn: dim_cohort.cohort_key
+
+relationship 9b3ec911-1fd2-5291-a9a8-5047883b44d3
+	fromColumn: discount_summary.cohort_key
+	toColumn: dim_cohort.cohort_key
+
+relationship 7e34c25c-c69c-5a63-9871-ec52d0eba7d8
+	fromColumn: commercial_kpi.cohort_key
+	toColumn: dim_cohort.cohort_key
+
+relationship 8ce9c138-bf08-5860-9d31-7dd2d96e4e28
+	fromColumn: fact_product_snapshot.cohort_key
+	toColumn: dim_cohort.cohort_key
+
+relationship 2b83d271-8fd4-5957-b3bb-35f4bba80cf5
+	fromColumn: comparison_coverage.comparison
+	toColumn: dim_comparison.comparison
+
+relationship ac359857-913f-507b-a135-951ca47b1999
+	fromColumn: match_coverage.comparison
+	toColumn: dim_comparison.comparison
+
+relationship fd019935-d259-5a64-97cd-e5c806e3de03
+	fromColumn: price_comparison.comparison
+	toColumn: dim_comparison.comparison

@@ -1,0 +1,235 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "market"
+                }
+              },
+              "queryRef": "portfolio.market",
+              "nativeQueryRef": "Market"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "vintage"
+                }
+              },
+              "queryRef": "portfolio.vintage",
+              "nativeQueryRef": "Snapshot period"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "snapshot"
+                }
+              },
+              "queryRef": "portfolio.snapshot",
+              "nativeQueryRef": "Snapshot date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "brand"
+                }
+              },
+              "queryRef": "portfolio.brand",
+              "nativeQueryRef": "Brand"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "category"
+                }
+              },
+              "queryRef": "portfolio.category",
+              "nativeQueryRef": "Category"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "products"
+                }
+              },
+              "queryRef": "portfolio.products",
+              "nativeQueryRef": "Representative products"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "bestsellers"
+                }
+              },
+              "queryRef": "portfolio.bestsellers",
+              "nativeQueryRef": "Bestsellers"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "bestseller_known"
+                }
+              },
+              "queryRef": "portfolio.bestseller_known",
+              "nativeQueryRef": "Known bestseller status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "new_arrivals"
+                }
+              },
+              "queryRef": "portfolio.new_arrivals",
+              "nativeQueryRef": "New arrivals"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "new_arrival_known"
+                }
+              },
+              "queryRef": "portfolio.new_arrival_known",
+              "nativeQueryRef": "Known arrival status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "exclusive_products"
+                }
+              },
+              "queryRef": "portfolio.exclusive_products",
+              "nativeQueryRef": "Exclusives"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "portfolio"
+                    }
+                  },
+                  "Property": "exclusive_known"
+                }
+              },
+              "queryRef": "portfolio.exclusive_known",
+              "nativeQueryRef": "Known exclusivity"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Representative portfolio and merchandising evidence'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "d344b098e6d1815ac072",
+  "position": {
+    "x": 48,
+    "y": 646,
+    "z": 7,
+    "height": 362,
+    "width": 1824,
+    "tabOrder": 7
+  }
+}

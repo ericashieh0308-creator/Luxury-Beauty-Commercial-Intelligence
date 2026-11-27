@@ -1,0 +1,151 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "assortment_counts"
+                    }
+                  },
+                  "Property": "vintage"
+                }
+              },
+              "queryRef": "assortment_counts.vintage",
+              "nativeQueryRef": "Snapshot period"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "assortment_counts"
+                    }
+                  },
+                  "Property": "market"
+                }
+              },
+              "queryRef": "assortment_counts.market",
+              "nativeQueryRef": "Market"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "assortment_counts"
+                    }
+                  },
+                  "Property": "snapshot"
+                }
+              },
+              "queryRef": "assortment_counts.snapshot",
+              "nativeQueryRef": "Snapshot date"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "assortment_counts"
+                    }
+                  },
+                  "Property": "Catalog records"
+                }
+              },
+              "queryRef": "assortment_counts.Catalog records",
+              "nativeQueryRef": "Source records"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "assortment_counts"
+                    }
+                  },
+                  "Property": "Catalog products"
+                }
+              },
+              "queryRef": "assortment_counts.Catalog products",
+              "nativeQueryRef": "Distinct products"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "assortment_counts"
+                    }
+                  },
+                  "Property": "Product SKU keys"
+                }
+              },
+              "queryRef": "assortment_counts.Product SKU keys",
+              "nativeQueryRef": "Distinct product–SKU pairs"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Cohort counts'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "45f068152723ff430cb8",
+  "position": {
+    "x": 48,
+    "y": 646,
+    "z": 6,
+    "height": 362,
+    "width": 1824,
+    "tabOrder": 6
+  }
+}

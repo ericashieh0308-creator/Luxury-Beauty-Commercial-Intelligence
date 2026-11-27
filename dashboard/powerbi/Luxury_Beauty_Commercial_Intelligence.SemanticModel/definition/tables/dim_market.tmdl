@@ -1,0 +1,21 @@
+table dim_market
+	lineageTag: 342bd010-812f-5b51-960f-6cb5cbc93ef2
+
+	column market
+		dataType: string
+		lineageTag: eb19dc3d-1acd-5bf8-a0aa-ae238e4bebf1
+		summarizeBy: none
+		sourceColumn: market
+
+	column currency
+		dataType: string
+		lineageTag: 8da6dda6-092f-5d9c-97da-c1f3c408f5df
+		summarizeBy: none
+		sourceColumn: currency
+
+	partition dim_market = m
+		mode: import
+		source =
+				PortfolioTables[dim_market]
+
+	annotation PBI_ResultType = Table

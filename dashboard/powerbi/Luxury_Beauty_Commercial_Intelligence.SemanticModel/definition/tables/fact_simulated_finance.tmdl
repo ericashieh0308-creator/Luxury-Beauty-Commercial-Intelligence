@@ -1,0 +1,254 @@
+table fact_simulated_finance
+	lineageTag: 7dc1d592-316d-461c-9060-61a7163833a1
+
+	measure 'Simulated net revenue' = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[net_revenue]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: bc809a60-4274-58ab-b634-96ad2bfd4fe8
+
+	measure 'Simulated COGS' = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[cogs]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 6303f13c-4110-5f25-aac5-3a23323d20f4
+
+	measure 'Simulated gross profit' = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[gross_profit]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: b2035db8-e244-5ac6-a58c-b42c77bbe5fe
+
+	measure 'Simulated operating profit' = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[operating_profit]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 34128893-0238-5d00-ad1b-8aceb29f3fc5
+
+	measure 'Simulated contribution' = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[contribution]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 290d1e93-0f51-5394-9d2f-0ca2d1cd7284
+
+	measure 'Weighted gross margin' = DIVIDE([Simulated gross profit], [Simulated net revenue])
+		formatString: 0.0%
+		lineageTag: ff89f81e-381c-5950-942e-9af5d38866e0
+
+	measure 'Weighted operating margin' = DIVIDE([Simulated operating profit], [Simulated net revenue])
+		formatString: 0.0%
+		lineageTag: 6744ff04-7aca-5ac7-8717-af2a6c9c5247
+
+
+	measure 'Simulated gross sales' = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[gross_sales]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: f22bf753-5c49-5ba9-a714-50f00fb5f951
+
+	measure 'Simulated operating expenses' = VAR ScenarioName = IF(ISFILTERED(dim_scenario[scenario]), SELECTEDVALUE(dim_scenario[scenario]), "Base") RETURN IF(NOT ISBLANK(ScenarioName), CALCULATE(SUM(fact_simulated_finance[variable_expenses]) + SUM(fact_simulated_finance[fixed]), KEEPFILTERS(dim_scenario[scenario] = ScenarioName)))
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 44f0649a-35f6-5da4-a6aa-50aa957a635f
+
+	column evidence
+		dataType: string
+		lineageTag: de7ec1ca-b072-4d47-af25-675e7b22f530
+		summarizeBy: none
+		sourceColumn: evidence
+
+		annotation SummarizationSetBy = Automatic
+
+	column scenario
+		dataType: string
+		lineageTag: a5db53ee-bc88-48c6-8aa9-d870e885adc4
+		summarizeBy: none
+		sourceColumn: scenario
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: #,0
+		lineageTag: 9629d0ed-ed88-411f-8138-c837d74a8c17
+		summarizeBy: sum
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column gross_sales
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 1525d3c6-ea71-4327-a0a0-ef693f5b7813
+		summarizeBy: sum
+		sourceColumn: gross_sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column discounts
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 5e1eff73-b5dc-46ea-831c-fbcbef347bc3
+		summarizeBy: sum
+		sourceColumn: discounts
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column returns
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 29b9ec1c-1393-44fc-a363-8360e38908cb
+		summarizeBy: sum
+		sourceColumn: returns
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column net_revenue
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 8ff2a649-88c6-4ae9-a51e-f3d2526aa136
+		summarizeBy: sum
+		sourceColumn: net_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cogs
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: c7ac3070-1a37-41fb-b562-5d9fb2690923
+		summarizeBy: sum
+		sourceColumn: cogs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gross_profit
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 5e8cce30-831f-41ee-9bea-68f11c8b9ca9
+		summarizeBy: sum
+		sourceColumn: gross_profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fulfillment
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 98a3c6c8-8cfb-4172-a0e1-dc62126ce71f
+		summarizeBy: sum
+		sourceColumn: fulfillment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column payment_fees
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 2b57c26d-acda-4f4a-ba14-5b465636baa5
+		summarizeBy: sum
+		sourceColumn: payment_fees
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column return_handling
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 127c8466-3f04-4275-9090-cbf6e84b830b
+		summarizeBy: sum
+		sourceColumn: return_handling
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column marketing
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: d2a0d12a-0ce1-4b85-98e0-43a0389ec012
+		summarizeBy: sum
+		sourceColumn: marketing
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column variable_expenses
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 3d969865-04c3-4036-8f2d-86c58e93d670
+		summarizeBy: sum
+		sourceColumn: variable_expenses
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column contribution
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 06662fc4-5760-4335-a01c-0806bf9337ca
+		summarizeBy: sum
+		sourceColumn: contribution
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fixed
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 84d770b1-9a97-4081-afe8-4d134c2b6efb
+		summarizeBy: sum
+		sourceColumn: fixed
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column operating_profit
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 5c75124d-ad09-422d-bd7e-dc248c0aa9b9
+		summarizeBy: sum
+		sourceColumn: operating_profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gross_margin
+		dataType: double
+		formatString: 0.0%
+		lineageTag: c1f2d5aa-8381-44e9-b4c9-114f2150b088
+		summarizeBy: sum
+		sourceColumn: gross_margin
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column operating_margin
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 21b2f8c9-daaf-4a27-8832-1b53b16905de
+		summarizeBy: sum
+		sourceColumn: operating_margin
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_simulated_finance = m
+		mode: import
+		source =
+				let
+				    Source = PortfolioTables[fact_simulated_finance],
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"evidence", type text}, {"scenario", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

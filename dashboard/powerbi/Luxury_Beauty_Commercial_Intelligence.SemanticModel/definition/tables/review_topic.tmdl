@@ -1,0 +1,27 @@
+table review_topic
+	lineageTag: b7796daa-61b7-5ab9-9773-991d03ecd134
+
+	column product
+		dataType: string
+		lineageTag: 9dd48e8f-cdd8-5d03-8bce-1b6e7b9e3344
+		summarizeBy: none
+		sourceColumn: product
+
+	column topic
+		dataType: string
+		lineageTag: 8e99b6f6-89a7-547e-bf87-3c0c90c51f58
+		summarizeBy: none
+		sourceColumn: topic
+
+	column mentions
+		dataType: int64
+		lineageTag: 871e4049-4dd6-5621-9130-c80820cc3cbc
+		summarizeBy: none
+		sourceColumn: mentions
+
+	partition review_topic = m
+		mode: import
+		source =
+				PortfolioTables[review_topic]
+
+	annotation PBI_ResultType = Table

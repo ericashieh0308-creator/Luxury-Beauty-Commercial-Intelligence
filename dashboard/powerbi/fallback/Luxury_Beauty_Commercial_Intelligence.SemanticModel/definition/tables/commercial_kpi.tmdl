@@ -1,0 +1,161 @@
+table commercial_kpi
+	lineageTag: e06b8ba9-ddd6-5d10-9ce6-98b6c2d7e29b
+
+	measure 'Exclusive share' = IF(HASONEVALUE(commercial_kpi[vintage]) && HASONEVALUE(commercial_kpi[market]) && HASONEVALUE(commercial_kpi[snapshot]), CALCULATE(DIVIDE(SUM(commercial_kpi[flagged]), SUM(commercial_kpi[known])), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "exclusive"))
+		formatString: 0.0%
+		lineageTag: 952f395f-4f5a-5a97-bea9-229e03df0da8
+
+	measure 'Online share' = IF(HASONEVALUE(commercial_kpi[vintage]) && HASONEVALUE(commercial_kpi[market]) && HASONEVALUE(commercial_kpi[snapshot]), CALCULATE(DIVIDE(SUM(commercial_kpi[flagged]), SUM(commercial_kpi[known])), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "online"))
+		formatString: 0.0%
+		lineageTag: 1add7269-4381-5262-b93e-055b2333c019
+
+	measure 'Bestseller share' = IF(HASONEVALUE(commercial_kpi[vintage]) && HASONEVALUE(commercial_kpi[market]) && HASONEVALUE(commercial_kpi[snapshot]), CALCULATE(DIVIDE(SUM(commercial_kpi[flagged]), SUM(commercial_kpi[known])), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "bestseller"))
+		formatString: 0.0%
+		lineageTag: dfb8d8a9-83eb-5c9b-84f5-e3cf89b70d23
+
+	measure 'New Arrival share' = IF(HASONEVALUE(commercial_kpi[vintage]) && HASONEVALUE(commercial_kpi[market]) && HASONEVALUE(commercial_kpi[snapshot]), CALCULATE(DIVIDE(SUM(commercial_kpi[flagged]), SUM(commercial_kpi[known])), commercial_kpi[dimension] = "overall", commercial_kpi[metric] = "new_arrival"))
+		formatString: 0.0%
+		lineageTag: 0629a79c-6726-5128-8135-be1e14c82196
+
+
+	column vintage
+		dataType: string
+		lineageTag: 8843af6c-613b-5609-be19-2f389cae34ca
+		summarizeBy: none
+		sourceColumn: vintage
+
+	column market
+		dataType: string
+		lineageTag: 2a893741-9873-5582-8c62-c2bd81c6d787
+		summarizeBy: none
+		sourceColumn: market
+
+	column snapshot
+		dataType: dateTime
+		lineageTag: 44944beb-4ad7-5d00-b920-bf5535dbde00
+		summarizeBy: none
+		sourceColumn: snapshot
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column dimension
+		dataType: string
+		lineageTag: b76bc9cc-a9db-51b0-8dac-cbbade4d6249
+		summarizeBy: none
+		sourceColumn: dimension
+
+	column segment
+		dataType: string
+		lineageTag: bb08da7c-93c0-52d9-b5a6-c007ad168f9f
+		summarizeBy: none
+		sourceColumn: segment
+
+	column products
+		dataType: int64
+		lineageTag: bc093594-bfe4-5e10-8518-05a1b091e07d
+		summarizeBy: none
+		sourceColumn: products
+
+	column brands
+		dataType: int64
+		lineageTag: d038610e-bd5c-52f9-80ae-0a20e1e119b0
+		summarizeBy: none
+		sourceColumn: brands
+
+	column priced
+		dataType: int64
+		lineageTag: 372735a1-56ed-5a28-9c79-815ef860748a
+		summarizeBy: none
+		sourceColumn: priced
+
+	column mean_price
+		dataType: double
+		lineageTag: 77b99c3f-d865-5e0d-9811-4162d97634b2
+		summarizeBy: none
+		sourceColumn: mean_price
+
+	column median_price
+		dataType: double
+		lineageTag: cb8919a7-0015-51da-bf14-766587295938
+		summarizeBy: none
+		sourceColumn: median_price
+
+	column min_price
+		dataType: double
+		lineageTag: 1958b3a1-1770-5d8b-9576-9e8c7a8e2716
+		summarizeBy: none
+		sourceColumn: min_price
+
+	column max_price
+		dataType: double
+		lineageTag: 85883592-8a7d-59fa-bfcf-ca4034e3a91b
+		summarizeBy: none
+		sourceColumn: max_price
+
+	column assortment_share
+		dataType: double
+		lineageTag: ed5c87b0-6f50-50e1-959b-1d60c1c0908a
+		summarizeBy: none
+		sourceColumn: assortment_share
+
+	column mean_rating
+		dataType: double
+		lineageTag: 71781d09-3bb0-5d5b-9c84-dd64708d4de0
+		summarizeBy: none
+		sourceColumn: mean_rating
+
+	column rated
+		dataType: int64
+		lineageTag: 5b49233c-da6a-564f-81ad-8ffee154513b
+		summarizeBy: none
+		sourceColumn: rated
+
+	column engagement_total
+		dataType: int64
+		lineageTag: 3cfeafc6-498e-574d-8cd2-fe3925b1649f
+		summarizeBy: none
+		sourceColumn: engagement_total
+
+	column engagement_known
+		dataType: int64
+		lineageTag: de3ff9b0-2308-5aeb-a814-3d7b74dfd6d1
+		summarizeBy: none
+		sourceColumn: engagement_known
+
+	column metric
+		dataType: string
+		lineageTag: e3ada67a-ada0-549b-b43a-2c1a2627ba72
+		summarizeBy: none
+		sourceColumn: metric
+
+	column known
+		dataType: int64
+		lineageTag: 7be2ef38-7805-5213-ab18-d67a536bb862
+		summarizeBy: none
+		sourceColumn: known
+
+	column flagged
+		dataType: int64
+		lineageTag: a2acc778-29b8-578e-a93e-83ee4c9d2b36
+		summarizeBy: none
+		sourceColumn: flagged
+
+	column share
+		dataType: double
+		formatString: 0.0%
+		lineageTag: aaeb3597-5fb0-5135-8baf-8028a8bf77da
+		summarizeBy: none
+		sourceColumn: share
+
+	column cohort_key
+		dataType: string
+		lineageTag: 7e34c25c-c69c-5a63-9871-ec52d0eba7d8
+		summarizeBy: none
+		sourceColumn: cohort_key
+
+	partition commercial_kpi = m
+		mode: import
+		source =
+				PortfolioTables[commercial_kpi]
+
+	annotation PBI_ResultType = Table

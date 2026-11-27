@@ -1,0 +1,26 @@
+table dim_cohort
+	lineageTag: ee8de67e-d9d0-5291-b495-b921bffdd881
+
+	column cohort_key
+		dataType: string
+		lineageTag: 5694be0b-d6bd-5b1e-a5b3-18c8229a1f61
+		summarizeBy: none
+		sourceColumn: cohort_key
+
+	column cohort_label
+		dataType: string
+		lineageTag: 22387de9-8bf1-5345-b352-cb7e9538e7ff
+		summarizeBy: none
+		sourceColumn: cohort_label
+
+	partition dim_cohort = m
+		mode: import
+		source =
+				Table.AddColumn(
+				    Table.Distinct(Table.SelectColumns(PortfolioTables[assortment_counts], {"cohort_key"})),
+				    "cohort_label",
+				    each let Parts = Text.Split([cohort_key], " | "), Market = Parts{0},
+				             Currency = if Market = "US" then " (USD)" else if Market = "CA" then " (CAD)" else ""
+				         in Market & Currency & " | " & Text.Proper(Parts{1}, "en-US") & " | " & Parts{2},
+				    type text
+				)

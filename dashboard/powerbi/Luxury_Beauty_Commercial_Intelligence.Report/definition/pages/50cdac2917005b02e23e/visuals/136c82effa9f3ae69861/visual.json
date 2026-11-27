@@ -1,0 +1,123 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "discount_summary"
+                    }
+                  },
+                  "Property": "category"
+                }
+              },
+              "queryRef": "discount_summary.category",
+              "nativeQueryRef": "Category",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "discount_summary"
+                    }
+                  },
+                  "Property": "Valid discount depth"
+                }
+              },
+              "queryRef": "discount_summary.Valid discount depth",
+              "nativeQueryRef": "Valid discount depth"
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "discount_summary"
+                        }
+                      },
+                      "Property": "valid_discount_observations"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(discount_summary.valid_discount_observations)",
+              "nativeQueryRef": "Valid sale observations"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Valid discount depth by category'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "136c82effa9f3ae69861",
+  "position": {
+    "x": 972,
+    "y": 310,
+    "z": 6,
+    "height": 312,
+    "width": 900,
+    "tabOrder": 6
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_promotion"
+                    }
+                  },
+                  "Property": "discount"
+                }
+              },
+              "queryRef": "fact_simulated_promotion.discount",
+              "nativeQueryRef": "Discount"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_promotion"
+                    }
+                  },
+                  "Property": "uplift"
+                }
+              },
+              "queryRef": "fact_simulated_promotion.uplift",
+              "nativeQueryRef": "Assumed uplift"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_promotion"
+                    }
+                  },
+                  "Property": "incremental_revenue"
+                }
+              },
+              "queryRef": "fact_simulated_promotion.incremental_revenue",
+              "nativeQueryRef": "Incremental revenue"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_promotion"
+                    }
+                  },
+                  "Property": "incremental_contribution"
+                }
+              },
+              "queryRef": "fact_simulated_promotion.incremental_contribution",
+              "nativeQueryRef": "Incremental contribution"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_promotion"
+                    }
+                  },
+                  "Property": "Promotion ROI"
+                }
+              },
+              "queryRef": "fact_simulated_promotion.Promotion ROI",
+              "nativeQueryRef": "Promotion ROI"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_promotion"
+                    }
+                  },
+                  "Property": "breakeven_units"
+                }
+              },
+              "queryRef": "fact_simulated_promotion.breakeven_units",
+              "nativeQueryRef": "Break-even units"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_promotion"
+                    }
+                  },
+                  "Property": "breakeven_discount"
+                }
+              },
+              "queryRef": "fact_simulated_promotion.breakeven_discount",
+              "nativeQueryRef": "Break-even discount"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_promotion"
+                    }
+                  },
+                  "Property": "required_uplift"
+                }
+              },
+              "nativeQueryRef": "Required uplift",
+              "queryRef": "fact_simulated_promotion.required_uplift"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Campaign sensitivity · one row per discount and uplift'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "6918299913cbb64ccd17",
+  "position": {
+    "x": 48,
+    "y": 646,
+    "z": 7,
+    "height": 362,
+    "width": 1824,
+    "tabOrder": 7
+  }
+}

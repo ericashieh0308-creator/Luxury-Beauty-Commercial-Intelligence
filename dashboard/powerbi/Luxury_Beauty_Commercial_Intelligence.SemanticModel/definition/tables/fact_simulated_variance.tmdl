@@ -1,0 +1,68 @@
+table fact_simulated_variance
+	lineageTag: c93fe058-aac4-5bf7-9ea7-05caa58eba41
+
+	column evidence
+		dataType: string
+		lineageTag: 0c0e0670-5209-5e03-8787-7f763120474e
+		summarizeBy: none
+		sourceColumn: evidence
+
+	column month
+		dataType: int64
+		lineageTag: 2cf9229a-8def-5270-a617-fa211371d397
+		summarizeBy: none
+		sourceColumn: month
+
+	column metric
+		dataType: string
+		lineageTag: 646421de-8d56-59e4-9f99-e6d0aace994f
+		summarizeBy: none
+		sourceColumn: metric
+
+	column budget
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: f4d3c4df-08b7-5883-be7a-5d245e3a1699
+		summarizeBy: none
+		sourceColumn: budget
+
+	column simulated_actual
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: a6078f3a-188a-51fd-8623-48562896cf0b
+		summarizeBy: none
+		sourceColumn: simulated_actual
+
+	column variance
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: f8b5312f-8b24-519d-8fa6-f88eacaa15cd
+		summarizeBy: none
+		sourceColumn: variance
+
+	column variance_pct
+		dataType: double
+		formatString: 0.0%
+		lineageTag: b68a5b57-e0e3-595d-8cce-ab12911ec72d
+		summarizeBy: none
+		sourceColumn: variance_pct
+
+	column direction
+		dataType: string
+		lineageTag: 2d08e2ff-69d3-5d7b-a4f2-6407988664fd
+		summarizeBy: none
+		sourceColumn: direction
+
+	column ytd_variance
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: a23e817c-6edb-5ed1-9226-64481d9ea3fe
+		summarizeBy: none
+		sourceColumn: ytd_variance
+
+	partition fact_simulated_variance = m
+		mode: import
+		source =
+				PortfolioTables[fact_simulated_variance]
+
+	annotation PBI_ResultType = Table

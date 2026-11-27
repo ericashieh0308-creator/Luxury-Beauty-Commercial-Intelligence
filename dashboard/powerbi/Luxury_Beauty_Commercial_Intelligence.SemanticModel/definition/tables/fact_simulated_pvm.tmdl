@@ -1,0 +1,82 @@
+table fact_simulated_pvm
+	lineageTag: e029d332-a043-5874-b50d-8277fffbef1b
+
+	column evidence
+		dataType: string
+		lineageTag: 9c00ea8b-41fc-5f33-910a-f9c502287fcc
+		summarizeBy: none
+		sourceColumn: evidence
+
+	column month
+		dataType: int64
+		lineageTag: 1ff77894-35cd-535b-a5be-09eae302788a
+		summarizeBy: none
+		sourceColumn: month
+
+	column budget_case
+		dataType: string
+		lineageTag: 9201a6d9-f98c-5d04-a1f3-848b90735fd3
+		summarizeBy: none
+		sourceColumn: budget_case
+
+	column simulated_actual_case
+		dataType: string
+		lineageTag: 367fd8d6-9f6f-5c17-b8bd-16d76c5a09f1
+		summarizeBy: none
+		sourceColumn: simulated_actual_case
+
+	column price
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 07a88f35-99fc-5293-9071-e1958f2e36b2
+		summarizeBy: none
+		sourceColumn: price
+
+	column volume
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: eec82507-d7b0-5757-999b-9269edf81578
+		summarizeBy: none
+		sourceColumn: volume
+
+	column mix
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 2ad9d9c7-1486-5a67-8502-d9b56b49e3b0
+		summarizeBy: none
+		sourceColumn: mix
+
+	column new
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: eaf0f14b-ea2a-5902-badb-2a77b66d9515
+		summarizeBy: none
+		sourceColumn: new
+
+	column removed
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: a3a16be0-1948-5899-b420-eef2e11fab30
+		summarizeBy: none
+		sourceColumn: removed
+
+	column total
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: ad3926e3-d4e6-5339-8726-732d77dfdb68
+		summarizeBy: none
+		sourceColumn: total
+
+	column residual
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 7743200c-f4d6-5ac5-b0f3-fa22e7869801
+		summarizeBy: none
+		sourceColumn: residual
+
+	partition fact_simulated_pvm = m
+		mode: import
+		source =
+				PortfolioTables[fact_simulated_pvm]
+
+	annotation PBI_ResultType = Table

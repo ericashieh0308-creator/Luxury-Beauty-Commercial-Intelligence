@@ -1,0 +1,207 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "month"
+                }
+              },
+              "queryRef": "fact_simulated_finance.month",
+              "nativeQueryRef": "Month"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Simulated gross sales"
+                }
+              },
+              "nativeQueryRef": "Simulated gross sales",
+              "queryRef": "fact_simulated_finance.Simulated gross sales"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Simulated net revenue"
+                }
+              },
+              "queryRef": "fact_simulated_finance.Simulated net revenue",
+              "nativeQueryRef": "Simulated net revenue"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Simulated COGS"
+                }
+              },
+              "queryRef": "fact_simulated_finance.Simulated COGS",
+              "nativeQueryRef": "Simulated COGS"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Simulated gross profit"
+                }
+              },
+              "queryRef": "fact_simulated_finance.Simulated gross profit",
+              "nativeQueryRef": "Simulated gross profit"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Weighted gross margin"
+                }
+              },
+              "queryRef": "fact_simulated_finance.Weighted gross margin",
+              "nativeQueryRef": "Weighted gross margin"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Simulated operating expenses"
+                }
+              },
+              "nativeQueryRef": "Simulated operating expenses",
+              "queryRef": "fact_simulated_finance.Simulated operating expenses"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Simulated contribution"
+                }
+              },
+              "queryRef": "fact_simulated_finance.Simulated contribution",
+              "nativeQueryRef": "Simulated contribution"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Simulated operating profit"
+                }
+              },
+              "queryRef": "fact_simulated_finance.Simulated operating profit",
+              "nativeQueryRef": "Simulated operating profit"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_finance"
+                    }
+                  },
+                  "Property": "Weighted operating margin"
+                }
+              },
+              "queryRef": "fact_simulated_finance.Weighted operating margin",
+              "nativeQueryRef": "Weighted operating margin"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Monthly simulated P&L'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "6e5a99a907489802d120",
+  "position": {
+    "x": 48,
+    "y": 646,
+    "z": 5,
+    "height": 362,
+    "width": 1824,
+    "tabOrder": 5
+  }
+}

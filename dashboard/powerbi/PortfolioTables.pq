@@ -1,0 +1,65 @@
+/* Create a text parameter named DemoRoot with the absolute output/demo path. */
+let
+    CatalogFolder = if DemoRoot = "" then error "Set DemoRoot to the absolute path to output/demo." else DemoRoot & "/catalog",
+    FinanceFolder = DemoRoot & "/finance",
+    CatalogNames = {
+        "dim_brand","dim_category","dim_market","dim_date","fact_product_snapshot","fact_sku_snapshot",
+        "pricing","commercial_kpi","portfolio","assortment_counts","discount_summary","review_summary",
+        "review_topic","quality_report","quality_completeness","comparison_coverage","match_coverage",
+        "price_comparison","category_diagnostics","product_position","comparison_summary"
+    },
+    FinanceNames = {
+        "finance_assumptions","fact_simulated_finance","fact_simulated_sku","fact_simulated_channel",
+        "fact_simulated_promotion","fact_simulated_pvm","fact_simulated_variance"
+    },
+    DateColumns = {"snapshot","left_date","right_date","fx_date"},
+    CountColumns = {"line","source_id","left_id","right_id","id","month","known","flagged","products","brands",
+        "priced","variant_count","matched_records","rated","engagement","engagement_total","engagement_known","reviews","positive","negative",
+        "neutral_or_unscored","missing_text","mentions","count","denominator","present","valid","exclusive",
+        "online","limited","bestseller","new_arrival","promotion","out_of_stock","bestsellers","bestseller_known",
+        "new_arrivals","new_arrival_known","exclusive_products","exclusive_known","priced_product_representatives",
+        "valid_discount_observations","source_records","distinct_products","sku_records","distinct_product_skus",
+        "candidate_pairs","accepted_pairs","priced_pairs","comparable_gaps","left_records","right_records",
+        "left_source_records","right_source_records","left_candidates","right_candidates","left_accepted","right_accepted"},
+    DecimalColumns = {"price","sale","price_max","rating","mean_rating","mean_price","median_price","min_price",
+        "max_price","median_gap","assortment_share","share","category_median","price_gap","discount_depth","mean_discount_depth",
+        "premium_proxy","price_heavy_proxy","issue_rate","completeness_rate","parse_valid_rate","left_accepted_share",
+        "right_accepted_share","left_price","right_native","right_usd","absolute_gap","percent_gap","fx","fx_low_gap",
+        "fx_high_gap","real_change","value","gross_sales","discounts","returns","net_revenue","cogs","gross_profit",
+        "gross_margin","fulfillment","payment_fees","return_handling","marketing","variable_expenses",
+        "contribution","fixed","operating_profit","operating_margin","discount","uplift","incremental_units",
+        "incremental_revenue","incremental_gp","incremental_contribution","roi","breakeven_units",
+        "required_uplift","breakeven_discount","margin_dilution","volume","mix","new","removed","total","residual",
+        "budget","simulated_actual","variance","variance_pct","ytd_variance"},
+    ReadTable = (folder as text, name as text) as table =>
+        let
+            FilePath = folder & "/" & name & ".csv",
+            Raw = Csv.Document(File.Contents(FilePath),[Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+            Header = Table.PromoteHeaders(Raw,[PromoteAllScalars=true]),
+            Columns = Table.ColumnNames(Header),
+            BlankToNull = Table.ReplaceValue(Header,"",null,Replacer.ReplaceValue,Columns),
+            DateTypes = List.Transform(List.Intersect({Columns,DateColumns}),each {_,type date}),
+            CountTypes = List.Transform(List.Intersect({Columns,CountColumns}),each {_,Int64.Type}),
+            DecimalTypes = List.Transform(List.Intersect({Columns,DecimalColumns}),each {_,type number}),
+            Typed = Table.TransformColumnTypes(BlankToNull,List.Combine({DateTypes,CountTypes,DecimalTypes}),"en-US"),
+            Scoped = if List.ContainsAll(Columns, {"vintage", "market", "snapshot"}) then
+                Table.AddColumn(Typed, "cohort_key", each Text.Combine({[market], [vintage], if [snapshot] = null then "Unknown date" else Date.ToText([snapshot], [Format="yyyy-MM-dd", Culture="en-US"])}, " | "), type text)
+                else Typed,
+            ComparisonLabel = (value as nullable text) as nullable text =>
+                if value = "cross_market" then "US–Canada comparison"
+                else if value = "longitudinal" then "Historical price comparison" else value,
+            VarianceLabel = (value as nullable text) as nullable text =>
+                if value = "net_revenue" then "Net revenue"
+                else if value = "gross_profit" then "Gross profit"
+                else if value = "variable_expenses" then "Variable expenses"
+                else if value = "fixed" then "Fixed expenses"
+                else if value = "operating_profit" then "Operating profit" else value,
+            Presented = if List.Contains(Columns, "comparison") then Table.TransformColumns(Scoped, {{"comparison", ComparisonLabel, type text}})
+                else if name = "fact_simulated_variance" then Table.TransformColumns(Scoped, {{"metric", VarianceLabel, type text}})
+                else Scoped
+        in
+            Presented,
+    Names = List.Combine({CatalogNames,FinanceNames}),
+    Tables = Record.FromList(List.Transform(Names, each ReadTable(if List.Contains(FinanceNames,_) then FinanceFolder else CatalogFolder,_)),Names)
+in
+    Tables

@@ -1,0 +1,100 @@
+table product_position
+	lineageTag: f3ef84ef-6965-5887-9ded-536cb5e02913
+
+	measure 'Native median list price' = IF(HASONEVALUE(product_position[vintage]) && HASONEVALUE(product_position[market]) && HASONEVALUE(product_position[snapshot]), MEDIAN(product_position[price]))
+		formatString: #,0.00
+		lineageTag: 854c5e82-d6b0-59fa-b7b2-9d3e4d4dc3fe
+
+	measure 'Eligible priced products' = COUNTROWS(product_position)
+		formatString: #,0
+		lineageTag: 9cbbaeb3-3ddd-5d86-a872-117b0b341623
+
+
+	column id
+		dataType: int64
+		lineageTag: 62fae677-e9a1-5731-9500-ec9f60d524be
+		summarizeBy: none
+		sourceColumn: id
+
+	column vintage
+		dataType: string
+		lineageTag: 4b398d81-1c54-5d6d-9275-7f009a4f7d6e
+		summarizeBy: none
+		sourceColumn: vintage
+
+	column market
+		dataType: string
+		lineageTag: 0437d135-e22f-5fad-a55b-31861da091a3
+		summarizeBy: none
+		sourceColumn: market
+
+	column snapshot
+		dataType: dateTime
+		formatString: yyyy-MM-dd
+		lineageTag: 0e441c63-2430-5f96-83dd-f7772c052fc4
+		summarizeBy: none
+		sourceColumn: snapshot
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column category
+		dataType: string
+		lineageTag: 74f03607-67ef-521c-970d-6301c4fcfdc6
+		summarizeBy: none
+		sourceColumn: category
+
+	column brand
+		dataType: string
+		lineageTag: e4872cd0-cbff-5036-83db-8fb85009b8d2
+		summarizeBy: none
+		sourceColumn: brand
+
+	column price
+		dataType: double
+		lineageTag: 34597ed5-d6ce-5f08-83b4-3963ad7b200f
+		summarizeBy: none
+		sourceColumn: price
+
+	column rating
+		dataType: double
+		formatString: 0.0
+		lineageTag: 3556ddfd-3a18-5547-a293-4af5a769ab21
+		summarizeBy: none
+		sourceColumn: rating
+
+	column engagement
+		dataType: int64
+		lineageTag: cccd4b2d-cca7-5562-b4d1-6d3cc4c09642
+		summarizeBy: none
+		sourceColumn: engagement
+
+	column tier
+		dataType: string
+		lineageTag: 33a36517-f87c-5a0c-905f-cb30c806a8c7
+		summarizeBy: none
+		sourceColumn: tier
+
+	column premium_proxy
+		dataType: double
+		lineageTag: eeaf0e39-627e-54f9-b1d0-3c33e86bf9e8
+		summarizeBy: none
+		sourceColumn: premium_proxy
+
+	column price_heavy_proxy
+		dataType: double
+		lineageTag: e28651d0-f884-5b7f-930a-b9196d395931
+		summarizeBy: none
+		sourceColumn: price_heavy_proxy
+
+	column cohort_key
+		dataType: string
+		lineageTag: 8803283a-f49c-5c23-a878-6cb9535fd93c
+		summarizeBy: none
+		sourceColumn: cohort_key
+
+	partition product_position = m
+		mode: import
+		source =
+				PortfolioTables[product_position]
+
+	annotation PBI_ResultType = Table

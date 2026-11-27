@@ -1,0 +1,100 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "quality_completeness"
+                    }
+                  },
+                  "Property": "vintage"
+                }
+              },
+              "queryRef": "quality_completeness.vintage",
+              "nativeQueryRef": "Snapshot period",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "quality_completeness"
+                    }
+                  },
+                  "Property": "Parse-valid coverage"
+                }
+              },
+              "queryRef": "quality_completeness.Parse-valid coverage",
+              "nativeQueryRef": "Parse-valid coverage"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Parse-valid coverage by vintage'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "8c1c9ffd51c74a5d310f",
+  "position": {
+    "x": 972,
+    "y": 310,
+    "z": 4,
+    "height": 312,
+    "width": 900,
+    "tabOrder": 4
+  }
+}

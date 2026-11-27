@@ -1,0 +1,16 @@
+table dim_quality_vintage
+	lineageTag: c805a8d3-e64b-5dd1-87ca-305591df8870
+
+	column vintage
+		dataType: string
+		lineageTag: bfb8b3ab-535e-5aba-9516-2d2e641b452d
+		summarizeBy: none
+		sourceColumn: vintage
+
+	partition dim_quality_vintage = m
+		mode: import
+		source =
+				Table.Distinct(Table.Combine({
+				    Table.SelectColumns(PortfolioTables[quality_completeness], {"vintage"}),
+				    Table.SelectColumns(PortfolioTables[quality_report], {"vintage"})
+				}))

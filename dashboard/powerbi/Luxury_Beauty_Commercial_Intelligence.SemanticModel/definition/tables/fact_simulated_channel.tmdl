@@ -1,0 +1,137 @@
+table fact_simulated_channel
+	lineageTag: bca80514-702a-5f40-9a14-a97eac3a76e9
+
+	measure 'Channel contribution margin' = DIVIDE(SUM(fact_simulated_channel[contribution]), SUM(fact_simulated_channel[net_revenue]))
+		formatString: 0.0%
+		lineageTag: 58246361-91ab-55a6-84e9-70bd5f65b39c
+
+	column evidence
+		dataType: string
+		lineageTag: dbfe405a-7159-54bd-924d-b019ef7db6c7
+		summarizeBy: none
+		sourceColumn: evidence
+
+	column channel
+		dataType: string
+		lineageTag: 0f1fbb77-353c-55a1-9dad-843a1cd7a80e
+		summarizeBy: none
+		sourceColumn: channel
+
+	column gross_sales
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: bca8d8cc-09aa-599e-ba9b-8bdbd07ef4eb
+		summarizeBy: none
+		sourceColumn: gross_sales
+
+	column discounts
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 9543289e-384e-5c71-bdc2-60a7f2493928
+		summarizeBy: none
+		sourceColumn: discounts
+
+	column returns
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 41f76b57-7763-5e90-a8a2-ee06b6cf2c36
+		summarizeBy: none
+		sourceColumn: returns
+
+	column net_revenue
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 5b83bb11-4cb9-5ac4-8a59-25a7a9226bff
+		summarizeBy: none
+		sourceColumn: net_revenue
+
+	column cogs
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 59a64a35-87ca-5257-b213-41d88b04e422
+		summarizeBy: none
+		sourceColumn: cogs
+
+	column gross_profit
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 20d9a344-ca21-52da-aebe-cf3f124e88e4
+		summarizeBy: none
+		sourceColumn: gross_profit
+
+	column gross_margin
+		dataType: double
+		formatString: 0.0%
+		lineageTag: a443e0e7-15d2-552d-b76c-4ef8d38db86c
+		summarizeBy: none
+		sourceColumn: gross_margin
+
+	column fulfillment
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: c5bc251a-ae4b-54f4-888f-c4e9d5bb1b37
+		summarizeBy: none
+		sourceColumn: fulfillment
+
+	column payment_fees
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 07f5ff5e-fc8e-5262-9a15-8c781394af5c
+		summarizeBy: none
+		sourceColumn: payment_fees
+
+	column return_handling
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 0744d798-7685-557f-8e8a-4eabf0618fdc
+		summarizeBy: none
+		sourceColumn: return_handling
+
+	column marketing
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 49c82199-e5ef-5645-bf34-d8e5f52f6623
+		summarizeBy: none
+		sourceColumn: marketing
+
+	column variable_expenses
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 8178b69a-0248-580e-ad97-3fa5b0ab8443
+		summarizeBy: none
+		sourceColumn: variable_expenses
+
+	column contribution
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 01fb274b-c44c-54ce-912a-bbf232d43dfe
+		summarizeBy: none
+		sourceColumn: contribution
+
+	column fixed
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: cd167397-719c-528b-b95b-7f54000b9e2b
+		summarizeBy: none
+		sourceColumn: fixed
+
+	column operating_profit
+		dataType: double
+		formatString: "USD "#,0;("USD "#,0)
+		lineageTag: 1d590994-8a00-5e99-86a4-113a4c2ed071
+		summarizeBy: none
+		sourceColumn: operating_profit
+
+	column operating_margin
+		dataType: double
+		formatString: 0.0%
+		lineageTag: c0ad9e01-6c6b-5986-9514-0eaf3127e7aa
+		summarizeBy: none
+		sourceColumn: operating_margin
+
+	partition fact_simulated_channel = m
+		mode: import
+		source =
+				PortfolioTables[fact_simulated_channel]
+
+	annotation PBI_ResultType = Table

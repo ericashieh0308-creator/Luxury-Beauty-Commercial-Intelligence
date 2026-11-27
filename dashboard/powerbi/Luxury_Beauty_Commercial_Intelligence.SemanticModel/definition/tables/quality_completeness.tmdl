@@ -1,0 +1,64 @@
+table quality_completeness
+	lineageTag: 8efb1538-a5ce-5d7c-916e-6e6f8a9b8a7b
+
+	measure 'Parse-valid coverage' = DIVIDE(SUM(quality_completeness[valid]), SUM(quality_completeness[denominator]))
+		formatString: 0.0%
+		lineageTag: a9adad11-975b-5872-b962-f612531c981a
+
+
+	column vintage
+		dataType: string
+		lineageTag: 6e44036f-1e88-56b8-a21b-b9647da4f8fd
+		summarizeBy: none
+		sourceColumn: vintage
+
+	column member
+		dataType: string
+		lineageTag: f1b7b596-8f29-54a8-9790-f94d7d33bec3
+		summarizeBy: none
+		sourceColumn: member
+
+	column field
+		dataType: string
+		lineageTag: 112683ac-eea3-5d6b-960e-9ca6a75bcff5
+		summarizeBy: none
+		sourceColumn: field
+
+	column denominator
+		dataType: int64
+		lineageTag: e3a90923-a5e5-5546-823b-8d848638628c
+		summarizeBy: none
+		sourceColumn: denominator
+
+	column present
+		dataType: int64
+		lineageTag: 521c65dc-84ab-5142-b831-ae2a2da95ab0
+		summarizeBy: none
+		sourceColumn: present
+
+	column valid
+		dataType: int64
+		lineageTag: 6a6fbd25-235d-55f0-8cdb-6fe7f1b734d1
+		summarizeBy: none
+		sourceColumn: valid
+
+	column completeness_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: b93c5caa-f586-5ea8-ab37-e6330f317199
+		summarizeBy: none
+		sourceColumn: completeness_rate
+
+	column parse_valid_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: ddeac73a-e406-5831-834e-b56d7f00d4eb
+		summarizeBy: none
+		sourceColumn: parse_valid_rate
+
+	partition quality_completeness = m
+		mode: import
+		source =
+				PortfolioTables[quality_completeness]
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,165 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "review_summary"
+                    }
+                  },
+                  "Property": "product"
+                }
+              },
+              "queryRef": "review_summary.product",
+              "nativeQueryRef": "Product ID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "review_summary"
+                    }
+                  },
+                  "Property": "reviews"
+                }
+              },
+              "queryRef": "review_summary.reviews",
+              "nativeQueryRef": "Review records"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "review_summary"
+                    }
+                  },
+                  "Property": "mean_rating"
+                }
+              },
+              "queryRef": "review_summary.mean_rating",
+              "nativeQueryRef": "Mean rating"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "review_summary"
+                    }
+                  },
+                  "Property": "positive"
+                }
+              },
+              "queryRef": "review_summary.positive",
+              "nativeQueryRef": "Positive signals"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "review_summary"
+                    }
+                  },
+                  "Property": "negative"
+                }
+              },
+              "queryRef": "review_summary.negative",
+              "nativeQueryRef": "Negative signals"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "review_summary"
+                    }
+                  },
+                  "Property": "neutral_or_unscored"
+                }
+              },
+              "queryRef": "review_summary.neutral_or_unscored",
+              "nativeQueryRef": "Neutral or unscored"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "review_summary"
+                    }
+                  },
+                  "Property": "missing_text"
+                }
+              },
+              "queryRef": "review_summary.missing_text",
+              "nativeQueryRef": "Missing review text"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Review evidence by product'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "77f0c0093321af769b81",
+  "position": {
+    "x": 48,
+    "y": 520,
+    "z": 4,
+    "height": 488,
+    "width": 1824,
+    "tabOrder": 4
+  }
+}

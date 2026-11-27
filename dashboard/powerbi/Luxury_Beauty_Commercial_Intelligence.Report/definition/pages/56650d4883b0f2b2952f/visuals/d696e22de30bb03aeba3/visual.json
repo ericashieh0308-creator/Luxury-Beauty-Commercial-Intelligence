@@ -1,0 +1,165 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "quality_report"
+                    }
+                  },
+                  "Property": "vintage"
+                }
+              },
+              "queryRef": "quality_report.vintage",
+              "nativeQueryRef": "Snapshot period"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "quality_report"
+                    }
+                  },
+                  "Property": "field"
+                }
+              },
+              "queryRef": "quality_report.field",
+              "nativeQueryRef": "Source field"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "quality_report"
+                    }
+                  },
+                  "Property": "issue"
+                }
+              },
+              "queryRef": "quality_report.issue",
+              "nativeQueryRef": "Issue"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "quality_report"
+                    }
+                  },
+                  "Property": "severity"
+                }
+              },
+              "queryRef": "quality_report.severity",
+              "nativeQueryRef": "Severity"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "quality_report"
+                    }
+                  },
+                  "Property": "count"
+                }
+              },
+              "queryRef": "quality_report.count",
+              "nativeQueryRef": "Issue count"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "quality_report"
+                    }
+                  },
+                  "Property": "denominator"
+                }
+              },
+              "queryRef": "quality_report.denominator",
+              "nativeQueryRef": "Evaluated records"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "quality_report"
+                    }
+                  },
+                  "Property": "recommended_action"
+                }
+              },
+              "queryRef": "quality_report.recommended_action",
+              "nativeQueryRef": "Recommended action"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Data quality evidence and actions'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "d696e22de30bb03aeba3",
+  "position": {
+    "x": 48,
+    "y": 646,
+    "z": 5,
+    "height": 362,
+    "width": 1824,
+    "tabOrder": 5
+  }
+}

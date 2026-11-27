@@ -1,0 +1,180 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "match_coverage"
+                    }
+                  },
+                  "Property": "comparison"
+                }
+              },
+              "queryRef": "match_coverage.comparison",
+              "nativeQueryRef": "Comparison"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "match_coverage"
+                    }
+                  },
+                  "Property": "status"
+                }
+              },
+              "queryRef": "match_coverage.status",
+              "nativeQueryRef": "Match status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "match_coverage"
+                    }
+                  },
+                  "Property": "confidence"
+                }
+              },
+              "queryRef": "match_coverage.confidence",
+              "nativeQueryRef": "Confidence"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "match_coverage"
+                    }
+                  },
+                  "Property": "reason"
+                }
+              },
+              "queryRef": "match_coverage.reason",
+              "nativeQueryRef": "Match reason"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "match_coverage"
+                        }
+                      },
+                      "Property": "candidate_pairs"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(match_coverage.candidate_pairs)",
+              "nativeQueryRef": "Candidate pairs"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "match_coverage"
+                        }
+                      },
+                      "Property": "left_records"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(match_coverage.left_records)",
+              "nativeQueryRef": "Left records"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "match_coverage"
+                        }
+                      },
+                      "Property": "right_records"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(match_coverage.right_records)",
+              "nativeQueryRef": "Right records"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Match reasons and confidence'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "191c9f20b27c47fce11d",
+  "position": {
+    "x": 48,
+    "y": 646,
+    "z": 5,
+    "height": 362,
+    "width": 1824,
+    "tabOrder": 5
+  }
+}

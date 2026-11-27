@@ -1,0 +1,151 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_pvm"
+                    }
+                  },
+                  "Property": "month"
+                }
+              },
+              "queryRef": "fact_simulated_pvm.month",
+              "nativeQueryRef": "Month"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_pvm"
+                    }
+                  },
+                  "Property": "price"
+                }
+              },
+              "queryRef": "fact_simulated_pvm.price",
+              "nativeQueryRef": "Price effect"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_pvm"
+                    }
+                  },
+                  "Property": "volume"
+                }
+              },
+              "queryRef": "fact_simulated_pvm.volume",
+              "nativeQueryRef": "Volume effect"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_pvm"
+                    }
+                  },
+                  "Property": "mix"
+                }
+              },
+              "queryRef": "fact_simulated_pvm.mix",
+              "nativeQueryRef": "Mix effect"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_pvm"
+                    }
+                  },
+                  "Property": "total"
+                }
+              },
+              "queryRef": "fact_simulated_pvm.total",
+              "nativeQueryRef": "Total effect"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_simulated_pvm"
+                    }
+                  },
+                  "Property": "residual"
+                }
+              },
+              "queryRef": "fact_simulated_pvm.residual",
+              "nativeQueryRef": "Residual"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": false,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'PVM components · simulated Base vs Bull'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "name": "6b77e7ede3c1e671fb95",
+  "position": {
+    "x": 1088,
+    "y": 646,
+    "z": 7,
+    "height": 362,
+    "width": 784,
+    "tabOrder": 7
+  }
+}

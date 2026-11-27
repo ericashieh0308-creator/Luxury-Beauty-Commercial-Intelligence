@@ -1,0 +1,65 @@
+table discount_summary
+	lineageTag: 8874f07f-1fe4-589c-944a-b8fb20dcd750
+
+	measure 'Valid discount depth' = DIVIDE(SUMX(discount_summary, discount_summary[mean_discount_depth] * discount_summary[valid_discount_observations]), SUM(discount_summary[valid_discount_observations]))
+		formatString: 0.0%
+		lineageTag: a34b352b-7362-5e72-9b2e-b0e8a12e7fb7
+
+
+	column vintage
+		dataType: string
+		lineageTag: 284f6694-4dfd-58f2-a173-20c23fd0bf93
+		summarizeBy: none
+		sourceColumn: vintage
+
+	column market
+		dataType: string
+		lineageTag: 958e7e41-4542-51f9-ad7d-bfe6f1da7aac
+		summarizeBy: none
+		sourceColumn: market
+
+	column snapshot
+		dataType: dateTime
+		lineageTag: cd38182f-428f-56c5-aa01-a062fb272727
+		summarizeBy: none
+		sourceColumn: snapshot
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column category
+		dataType: string
+		lineageTag: 73c0495c-0096-5f54-b0e3-25da403562ba
+		summarizeBy: none
+		sourceColumn: category
+
+	column priced_product_representatives
+		dataType: int64
+		lineageTag: 85e53b8f-5f6f-5ed7-8066-cbd0d5da9519
+		summarizeBy: none
+		sourceColumn: priced_product_representatives
+
+	column valid_discount_observations
+		dataType: int64
+		lineageTag: 4aaa5031-81ca-561b-9fca-90ecb7ca70d1
+		summarizeBy: none
+		sourceColumn: valid_discount_observations
+
+	column mean_discount_depth
+		dataType: double
+		formatString: 0.0%
+		lineageTag: e1dc8821-c06b-5e79-864a-149b29cb22f7
+		summarizeBy: none
+		sourceColumn: mean_discount_depth
+
+	column cohort_key
+		dataType: string
+		lineageTag: 9b3ec911-1fd2-5291-a9a8-5047883b44d3
+		summarizeBy: none
+		sourceColumn: cohort_key
+
+	partition discount_summary = m
+		mode: import
+		source =
+				PortfolioTables[discount_summary]
+
+	annotation PBI_ResultType = Table

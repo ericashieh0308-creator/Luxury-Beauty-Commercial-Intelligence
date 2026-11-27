@@ -1,0 +1,120 @@
+table assortment_counts
+	lineageTag: c4b22664-cc23-4834-9ddb-874bc932c609
+
+	measure 'Recent Product Record' = CALCULATE(SUM(assortment_counts[source_records]),assortment_counts[vintage] = "recent")
+		formatString: 0
+		lineageTag: a982c9b7-46c2-4934-85be-aa1433ea101d
+
+	measure 'Historical Product Records' = CALCULATE(SUM(assortment_counts[source_records]), assortment_counts[vintage] = "historical")
+		formatString: 0
+		lineageTag: 38a1cc7d-8ac2-46ea-8f58-87ebf64465c0
+
+	measure 'Recent SKU Records' = CALCULATE(SUM(assortment_counts[sku_records]), assortment_counts[vintage] = "recent")
+		formatString: 0
+		lineageTag: 44cd4981-3a49-4f4e-86a3-afd6e8488bda
+
+	measure 'Market Covered' = CALCULATE(DISTINCTCOUNT(assortment_counts[market]), assortment_counts[vintage] = "recent")
+		formatString: 0
+		lineageTag: 03eff062-1cc1-4cb0-bbab-f5596d42d29c
+
+	measure 'Catalog records' = SUM(assortment_counts[source_records])
+		formatString: 0
+		lineageTag: a21e46fe-dfd2-5382-a44f-94fcdb40d94e
+
+	measure 'Catalog products' = IF(HASONEVALUE(assortment_counts[vintage]) && HASONEVALUE(assortment_counts[market]) && HASONEVALUE(assortment_counts[snapshot]), SUM(assortment_counts[distinct_products]))
+		formatString: 0
+		lineageTag: 20aaa780-004b-5990-924c-6203ca98944d
+
+	measure 'Product SKU keys' = IF(HASONEVALUE(assortment_counts[vintage]) && HASONEVALUE(assortment_counts[market]) && HASONEVALUE(assortment_counts[snapshot]), SUM(assortment_counts[distinct_product_skus]))
+		formatString: 0
+		lineageTag: 877c9346-26f5-5308-8552-eb8d30a26323
+
+
+	column vintage
+		dataType: string
+		lineageTag: 74fce4ef-fc45-437f-aa1d-f864eb2edd53
+		summarizeBy: none
+		sourceColumn: vintage
+
+		annotation SummarizationSetBy = Automatic
+
+	column market
+		dataType: string
+		lineageTag: 9ca0eced-7040-4413-90ed-cabec7a34f21
+		summarizeBy: none
+		sourceColumn: market
+
+		annotation SummarizationSetBy = Automatic
+
+	column snapshot
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6cc99b40-1fbc-4dd7-984c-0da0d10344e5
+		summarizeBy: none
+		sourceColumn: snapshot
+
+		variation Variation
+			isDefault
+			relationship: a8f99832-c7ba-4852-abd5-f56991129f4a
+			defaultHierarchy: LocalDateTable_d8680fe1-76eb-4ba0-82ec-6454d75870da.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column source_records
+		dataType: int64
+		formatString: 0
+		lineageTag: fadec24a-ba42-45d3-90d9-0d4596464669
+		summarizeBy: sum
+		sourceColumn: source_records
+
+		annotation SummarizationSetBy = Automatic
+
+	column distinct_products
+		dataType: int64
+		formatString: 0
+		lineageTag: 9727664b-44e9-4c98-a154-df74a5dfae22
+		summarizeBy: sum
+		sourceColumn: distinct_products
+
+		annotation SummarizationSetBy = Automatic
+
+	column sku_records
+		dataType: int64
+		formatString: 0
+		lineageTag: ddf6b555-d965-4e5f-8da0-f92061440229
+		summarizeBy: sum
+		sourceColumn: sku_records
+
+		annotation SummarizationSetBy = Automatic
+
+	column distinct_product_skus
+		dataType: int64
+		formatString: 0
+		lineageTag: c90fd8ea-d708-4972-b6e8-7ca3b3f80331
+		summarizeBy: sum
+		sourceColumn: distinct_product_skus
+
+		annotation SummarizationSetBy = Automatic
+
+	column cohort_key
+		dataType: string
+		lineageTag: 5d7e1d91-9d35-59a4-9879-55db8831e6c4
+		summarizeBy: none
+		sourceColumn: cohort_key
+
+	partition assortment_counts = m
+		mode: import
+		source =
+				let
+				    Source = PortfolioTables[assortment_counts],
+				    #"Changed Type" = PortfolioTables[assortment_counts],
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"vintage", type text}, {"market", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
