@@ -4,7 +4,7 @@ An employer-ready case for an NYU M.S. in Management & Analytics student. Choose
 
 ## Single attachment for applications
 
-Use the [Integrated Work Sample](Commercial_Business_Analytics_Integrated_Work_Sample.pdf) for Commercial Analyst, Commercial Business Analyst, and Business Analyst applications. The 11-page PDF covers assortment, pricing, customer signals, financial planning, and the promotion decision in one document.
+Use the [Integrated Work Sample](Commercial_Business_Analytics_Integrated_Work_Sample.pdf) for Commercial Analyst, Commercial Business Analyst, and Business Analyst applications. The 12-page PDF opens with Ya-Cheng (Erica) Hsieh’s profile and modeled Base KPIs, then traces assortment and pricing through the P&L, budget variance, and a promotion sensitivity decision. It includes an implementation roadmap and is sized for single-file application portals.
 
 ## Tier 1 · Recruiter briefs
 

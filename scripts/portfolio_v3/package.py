@@ -13,7 +13,7 @@ import fitz
 from PIL import Image
 
 from .evidence import DEMO, ROOT, checked_data, read
-from .integrated import FILENAME, LINKS
+from .integrated import AUTHOR, FILENAME, LINKS, PAGES
 from .render import EXCEL, LIVE, REPO, TECH
 
 OUT = ROOT / "portfolio/v3"
@@ -25,7 +25,7 @@ COUNTS = {
     "Finance_Executive_Brief.pdf":1,
     "BI_Executive_Brief.pdf":1,
     "Executive_Decision_Memo.pdf":2,
-    FILENAME:11,
+    FILENAME:len(PAGES),
 }
 ASSET_NAMES = {
     "commercial-overview":"portfolio.csv and recent US category counts",
@@ -66,14 +66,21 @@ def validation():
         annotations = 0
         with fitz.open(OUT/name) as pdf:
             assert len(pdf)==pages
+            if name == FILENAME:
+                assert pdf.metadata["author"] == AUTHOR
+                cover = pdf[0].get_text()
+                assert all(kpi in cover for kpi in ("USD 700,824", "USD 155,493", "60.3%", "22.2%"))
             for page in pdf:
                 text=page.get_text().lower()
                 assert "synthetic catalog" in text and "simulated financial" in text
                 links = [item["uri"] for item in page.get_links() if "uri" in item]
                 assert set(links) == expected_links
                 expected_count = len(expected_links)
-                if name == FILENAME and page.number == pages - 1:
-                    expected_count *= 2
+                if name == FILENAME:
+                    if page.number == 0:
+                        expected_count += 1
+                    elif page.number == pages - 1:
+                        expected_count *= 2
                 assert len(links) == expected_count
                 annotations += len(links)
                 for block in page.get_text("blocks"):
