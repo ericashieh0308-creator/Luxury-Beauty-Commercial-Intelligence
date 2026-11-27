@@ -39,6 +39,11 @@
       "artifact": "Executive_Decision_Memo.pdf",
       "pages": 2,
       "link_annotations": 8
+    },
+    {
+      "artifact": "Commercial_Business_Analytics_Integrated_Work_Sample.pdf",
+      "pages": 11,
+      "link_annotations": 60
     }
   ],
   "charts": {
@@ -91,9 +96,14 @@
       "bytes": 132104
     },
     {
+      "path": "Commercial_Business_Analytics_Integrated_Work_Sample.pdf",
+      "sha256": "2a6876d236a4bd10139ff1d8c1740a254e919d1c4966093e4d21fa96d8f22778",
+      "bytes": 582856
+    },
+    {
       "path": "README.md",
-      "sha256": "15b402c6343ca9dad506d0d6cc4631b95e2566d7cc3e376a3435ccd58f6c4dc6",
-      "bytes": 3462
+      "sha256": "1105366664bdddb060c67bc968a59e861804842340734d08f47123c17a35ba47",
+      "bytes": 3849
     },
     {
       "path": "Streamlit_Demo.mp4",
@@ -127,8 +137,8 @@
     },
     {
       "path": "Portfolio_Validation_Report.md",
-      "sha256": "1500e315aba591f2cb8fb7695d884d7a67aef62130e57e8ab5b594725081e9fd",
-      "bytes": 3438
+      "sha256": "052002fa09d307fe859129610606af98b9c00667624f8af6fde1950229b015b4",
+      "bytes": 3524
     },
     {
       "path": "Power_BI_Evidence.md",
@@ -201,6 +211,11 @@
       "bytes": 6723
     },
     {
+      "path": "generation/integrated.py",
+      "sha256": "dc903c893dd242875bd3e8b80fe7cd2c04b0b184342f5a8653ad6153c9ddc7f9",
+      "bytes": 12151
+    },
+    {
       "path": "generation/inventory.py",
       "sha256": "6673c2fbf393f1afedfd3d27ecfc9d5041654f1106b244b151cbfdc702fb9bc8",
       "bytes": 7882
@@ -212,8 +227,8 @@
     },
     {
       "path": "generation/package.py",
-      "sha256": "aa61c98b797b450baa7b4e183fb23cdc659049c98883f6779960aedb2c791060",
-      "bytes": 5875
+      "sha256": "47ab4d6ee85d13c980d8472a609aeee5a0f5887f6cea9d90f4762a4c50dadf1d",
+      "bytes": 6402
     },
     {
       "path": "generation/render.py",

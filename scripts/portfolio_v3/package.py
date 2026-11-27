@@ -13,6 +13,7 @@ import fitz
 from PIL import Image
 
 from .evidence import DEMO, ROOT, checked_data, read
+from .integrated import FILENAME, LINKS
 from .render import EXCEL, LIVE, REPO, TECH
 
 OUT = ROOT / "portfolio/v3"
@@ -24,6 +25,7 @@ COUNTS = {
     "Finance_Executive_Brief.pdf":1,
     "BI_Executive_Brief.pdf":1,
     "Executive_Decision_Memo.pdf":2,
+    FILENAME:11,
 }
 ASSET_NAMES = {
     "commercial-overview":"portfolio.csv and recent US category counts",
@@ -58,18 +60,27 @@ def validation():
     assert "HASONEVALUE(product_position[market])" in (model/"product_position.tmdl").read_text(encoding="utf-8-sig")
     assert 0.603 < evidence["summary"]["Base"]["gross_profit"] / evidence["summary"]["Base"]["net_revenue"] < .604
     for name, pages in COUNTS.items():
+        expected_links = {url for _, url in LINKS} if name == FILENAME else {LIVE, REPO, TECH, EXCEL}
+        if name == FILENAME:
+            assert (OUT/name).stat().st_size < 5_000_000
+        annotations = 0
         with fitz.open(OUT/name) as pdf:
             assert len(pdf)==pages
             for page in pdf:
                 text=page.get_text().lower()
                 assert "synthetic catalog" in text and "simulated financial" in text
-                links={item["uri"] for item in page.get_links() if "uri" in item}
-                assert links=={LIVE,REPO,TECH,EXCEL}
+                links = [item["uri"] for item in page.get_links() if "uri" in item]
+                assert set(links) == expected_links
+                expected_count = len(expected_links)
+                if name == FILENAME and page.number == pages - 1:
+                    expected_count *= 2
+                assert len(links) == expected_count
+                annotations += len(links)
                 for block in page.get_text("blocks"):
                     x0,y0,x1,y1,*_=block
                     assert 0<=x0<x1<=page.rect.width and 0<=y0<y1<=page.rect.height
                 page.get_pixmap(matrix=fitz.Matrix(1,1),alpha=False)
-            results.append({"artifact":name,"pages":pages,"link_annotations":pages*4})
+            results.append({"artifact":name,"pages":pages,"link_annotations":annotations})
     for file in (OUT/"evidence").glob("*.png"):
         with Image.open(file) as image:
             assert image.size==(1540,990)

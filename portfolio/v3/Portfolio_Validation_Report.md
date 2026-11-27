@@ -11,7 +11,7 @@ Native DAX margins were inspected for the ratio-of-totals expression, and the na
 ## Publication gate
 
 - All 38 repository tests passed on Linux. The product application and analytics were kept intact.
-- Seven PDFs contain 43 pages, with 172 clickable annotations to the live app, GitHub, Power BI project and workbook. Page count, text boundaries, evidence labels, and rendering were checked for every page. A visual audit used raster previews and larger inspection of selected dense pages.
+- Eight PDFs contain 54 pages, with 232 clickable annotations to the live app, GitHub, the workbook, and Power BI or validation evidence. The standalone Integrated Work Sample is 11 pages and under 5 MB. Page count, text boundaries, evidence labels, and rendering were checked for every page. A visual audit used raster previews and larger inspection of selected dense pages.
 - Six genuine local Chromium captures show the public demo, Base and Bull, the 15% offer, and the recalculation after changing uplift from 20% to 30%. The 72-second MP4 is a captioned sequence of those captures.
 - Coverage includes all ten Power BI pages, seven primary Streamlit views, and all 15 workbook sheets by evidence or reference. Some capabilities have output or source evidence only. The inventory and sensitivity views are linked. Native Excel and Power BI previews, deployment telemetry, and full native DAX execution remain unavailable in this run.
 - Corporate careers sites returned proxy HTTP 403. The employer source log identifies the endpoints and access date. The competency matrix maps requested role families to genuine project evidence. No current vacancy or employer-specific requirement was verified or asserted.

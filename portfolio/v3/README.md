@@ -2,6 +2,10 @@
 
 An employer-ready case for an NYU M.S. in Management & Analytics student. Choose the track that fits the role. The project is independent and unaffiliated with any employer. Public catalog data are synthetic and all finance inputs and results are simulated.
 
+## Single attachment for applications
+
+Use the [Integrated Work Sample](Commercial_Business_Analytics_Integrated_Work_Sample.pdf) for Commercial Analyst, Commercial Business Analyst, and Business Analyst applications. The 11-page PDF covers assortment, pricing, customer signals, financial planning, and the promotion decision in one document.
+
 ## Tier 1 · Recruiter briefs
 
 - [Commercial & Business Analytics](Commercial_Executive_Brief.pdf)
@@ -40,6 +44,7 @@ In a second terminal from the repository root:
 ```text
 python -m scripts.portfolio_v3.capture
 python -m scripts.portfolio_v3.render
+python -m scripts.portfolio_v3.integrated
 python -m scripts.portfolio_v3.video
 python -m scripts.portfolio_v3.inventory
 python -m pytest -q
