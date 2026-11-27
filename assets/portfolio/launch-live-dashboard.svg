@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="248" height="44" viewBox="0 0 248 44" role="img" aria-labelledby="title">
+  <title id="title">Launch Live Dashboard</title>
+  <rect width="248" height="44" rx="7" fill="#634F43"/>
+  <circle cx="21" cy="22" r="4" fill="#E2CDA8"/>
+  <text x="36" y="28" fill="#FFFDF8" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600">Launch Live Dashboard</text>
+  <path d="M215 28l10-10m-7 0h7v7" fill="none" stroke="#FFFDF8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

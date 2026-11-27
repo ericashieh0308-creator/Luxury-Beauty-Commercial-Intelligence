@@ -4,9 +4,13 @@
 
 An independent beauty retail strategy case combining source-aware SQLite analytics and simulated commercial planning. Catalog and review evidence flow through quality and price-eligibility filters. A simulated P&L links decisions on price, product mix, channel mix and promotion profitability to operating outcomes.
 
+[Live Streamlit dashboard](https://luxury-beauty-commercial-intelligence.streamlit.app/)
+
 ## LinkedIn Featured copy
 
 I built a beauty retail decision-support platform using Python, SQLite, Excel and Streamlit. The project pairs conservative product-level price comparison and data-quality audit outputs with a formula-driven financial model and a simulator for promotion ROI, breakeven and scenario planning. The financial case uses transparent illustrative assumptions.
+
+Live dashboard: https://luxury-beauty-commercial-intelligence.streamlit.app/
 
 ## Résumé draft
 

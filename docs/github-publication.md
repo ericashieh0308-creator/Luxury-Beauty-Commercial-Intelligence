@@ -1,6 +1,6 @@
 # GitHub publication handoff
 
-Publication materials are prepared on `build/commercial-intelligence-platform`. GitHub’s default branch is `main`. The updated landing page becomes the repository’s default view after an approved merge or a deliberate default-branch change.
+[Version 1.0.0](https://github.com/ericashieh0308-creator/Luxury-Beauty-Commercial-Intelligence/releases/tag/v1.0.0) is published, and the [live dashboard](https://luxury-beauty-commercial-intelligence.streamlit.app/) is hosted on Streamlit Community Cloud. The portfolio landing page is on `main`. The draft below records the original release copy.
 
 ## Repository presentation
 
@@ -37,11 +37,11 @@ Pin the repository on your GitHub profile after publication. Link the README fir
 - Ten-page optimized Power BI model with an independent fallback, a 15-sheet Excel model, and an interactive Streamlit demo.
 - Synthetic public catalog inputs and simulated financial values. The demo does not support cross-market or historical gaps or verified benchmark conclusions.
 
-## Publish after approval
+## Checklist for future releases
 
 1. On GitHub, verify repository visibility and review the [development branch against main](https://github.com/ericashieh0308-creator/Luxury-Beauty-Commercial-Intelligence/compare/main...build/commercial-intelligence-platform). Confirm the README, links, and figures render and the changed files contain no private data or PBIX.
 2. Create the pull request using the draft above. Review the changed files, then merge only after explicit approval.
-3. From **Releases → Draft a new release**, create `v1.0.0` targeting the approved commit, paste the release notes, verify its source and optional assets, then publish only after explicit approval. The repository already contains the simulated workbook and public preview assets.
+3. From **Releases → Draft a new release**, select a new version tag targeting the approved commit, verify the release notes, source and assets, then publish after approval. The repository already contains the simulated workbook and public preview assets.
 4. Verify the landing page and release from an unauthenticated browser if the intended audience is public. Pin the repository and add the approved link to LinkedIn Featured.
 
 Native Power BI screenshots are optional. The [screenshot checklist](../assets/portfolio/README.md#optional-power-bi-desktop-screenshots) covers capture and privacy. The current previews include genuine Streamlit screenshots and generated figures.

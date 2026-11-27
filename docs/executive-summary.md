@@ -1,5 +1,7 @@
 # Executive summary | Luxury & Beauty Commercial Intelligence
 
+[Launch the live Streamlit dashboard](https://luxury-beauty-commercial-intelligence.streamlit.app/)
+
 ## The decision
 
 A commercial team can use catalog evidence to decide which categories, brands, or price points deserve review. A finance team still needs to decide how much a proposed offer must sell to cover discounts, costs, and campaign spend. This independent case brings those workflows together while making the evidence behind each one explicit.

@@ -2,9 +2,18 @@
 
 **Advanced Commercial Decision Intelligence** · Independent portfolio case in commercial analytics, FP&A, merchandising, and business intelligence.
 
+[![Launch Live Dashboard](assets/portfolio/launch-live-dashboard.svg)](https://luxury-beauty-commercial-intelligence.streamlit.app/)
+
 A beauty retailer can see which products are listed, what they cost, and what customers review. Those signals can guide an assortment or pricing review. Funding a promotion also requires a view of unit response, costs, returns, and contribution. This project gives commercial, merchandising, and finance teams separate evidence for those decisions.
 
-[Executive summary](docs/executive-summary.md) · [Power BI project](dashboard/powerbi/README.md) · [Excel financial model](models/excel/Luxury_Beauty_Commercial_Financial_Model.xlsx) · [Visual portfolio](assets/portfolio/README.md)
+| Explore | What you’ll find |
+|---|---|
+| [Live Streamlit dashboard](https://luxury-beauty-commercial-intelligence.streamlit.app/) | Browser-based public demo with synthetic catalog data, scenario selection, and promotion decision support. |
+| [Power BI Desktop report](dashboard/powerbi/README.md) | Native ten-page report with an optimized project and independent fallback. |
+| [Excel financial model](models/excel/Luxury_Beauty_Commercial_Financial_Model.xlsx) | Editable scenario assumptions, formula-driven P&L, and reconciliation checks. |
+| [GitHub source code](https://github.com/ericashieh0308-creator/Luxury-Beauty-Commercial-Intelligence) · [v1.0.0 release](https://github.com/ericashieh0308-creator/Luxury-Beauty-Commercial-Intelligence/releases/tag/v1.0.0) | Python and SQL source, demo generator, tests, and the versioned release. |
+
+[Executive summary](docs/executive-summary.md) · [Visual portfolio](assets/portfolio/README.md)
 
 ## Executive highlights
 
@@ -101,7 +110,7 @@ $python = '.\.venv\Scripts\python.exe'
 & $python -m scripts.validate_powerbi
 ```
 
-**Streamlit.** Explore assortment and review evidence, change operating assumptions, compare scenarios, and test promotion sensitivity in the local browser.
+**Streamlit, local setup.** Explore assortment and review evidence, change operating assumptions, compare scenarios, and test promotion sensitivity in the local browser.
 
 ```powershell
 Remove-Item Env:BEAUTY_LOCAL_CATALOG_DIR -ErrorAction SilentlyContinue

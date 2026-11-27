@@ -19,6 +19,8 @@ python -m beauty.demo
 python -m scripts.build_portfolio_figures
 ```
 
+[Launch the live Streamlit dashboard](https://luxury-beauty-commercial-intelligence.streamlit.app/) to explore the public demo interactively.
+
 ## Optional Power BI Desktop screenshots
 
 The owner confirmed the optimized project opens and refreshes in Windows. The Desktop screenshots and locally saved PBIX are outside this repository. For a native preview, capture **Executive Overview**, **Financial Performance & P&L** with Base selected, and optionally **SKU, Channel & Promotion Profitability**. Keep the synthetic and simulated labels in frame. Crop machine paths, usernames, workspace names, and the Windows taskbar. Review every image before committing it.

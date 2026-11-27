@@ -26,19 +26,25 @@ Use the bullets that reflect your own contribution. Financial figures in this pr
 
 **Luxury & Beauty Commercial Intelligence Platform — Advanced Commercial Decision Intelligence**
 
-An independent case in retail commercial analytics and FP&A. The project uses Python and SQLite to build auditable assortment, pricing, review, and quality views. A separate Excel and Python planning model tests Base, Bull, and Bear scenarios, budget variance, SKU and channel contribution, and promotion break-even. The portfolio includes a ten-page Power BI report and a local Streamlit demo built around synthetic catalog data and simulated financial results.
+An independent case in retail commercial analytics and FP&A. The project uses Python and SQLite to build auditable assortment, pricing, review, and quality views. A separate Excel and Python planning model tests Base, Bull, and Bear scenarios, budget variance, SKU and channel contribution, and promotion break-even. The portfolio includes a ten-page Power BI report and a live Streamlit dashboard built around synthetic catalog data and simulated financial results.
+
+Live dashboard: https://luxury-beauty-commercial-intelligence.streamlit.app/
 
 ## LinkedIn Featured description
 
 A beauty retail analytics portfolio with a ten-page Power BI report, an Excel planning workbook, and an interactive Streamlit simulator. The public demo shows how to evaluate assortment coverage and whether a promotion earns its spend under explicit assumptions.
 
+Live dashboard: https://luxury-beauty-commercial-intelligence.streamlit.app/
+
 ## LinkedIn launch post
 
 I’m sharing an independent beauty retail analytics project built around a practical question: when does a promotion generate enough contribution to justify its cost?
 
-I built a Python and SQLite workflow for assortment, pricing, and review evidence, then created a separate planning model in Excel and Python. The ten-page Power BI report and local Streamlit demo make it possible to follow both workflows. In the illustrative campaign, a 15% discount with 20% assumed unit uplift increases modeled revenue while reducing contribution after campaign cost. The model makes that trade-off auditable.
+I built a Python and SQLite workflow for assortment, pricing, and review evidence, then created a separate planning model in Excel and Python. The ten-page Power BI report and live Streamlit dashboard make it possible to follow both workflows. In the illustrative campaign, a 15% discount with 20% assumed unit uplift increases modeled revenue while reducing contribution after campaign cost. The model makes that trade-off auditable.
 
 The public catalog is synthetic and all financial outcomes are simulated. I’ve included the methodology, portfolio visuals, and reproducibility instructions in the GitHub repository.
+
+Live dashboard: https://luxury-beauty-commercial-intelligence.streamlit.app/
 
 ## Interview introductions
 
