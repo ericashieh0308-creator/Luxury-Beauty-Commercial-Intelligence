@@ -142,26 +142,38 @@ Remove-Item Env:BEAUTY_LOCAL_CATALOG_DIR -ErrorAction SilentlyContinue
 & .\scripts\open-powerbi.ps1 -Candidate fallback
 ```
 
-## Data governance and limitations
+## Data Governance & Analytical Integrity
 
-The pipeline supports licensed local catalog and review archives. It tracks source hashes and row lineage, validates schema and currency, records invalid and missing values, and keeps match candidates separate from accepted pairs. The public workflow generates fictional inputs. Private files, derived outputs, local configuration, and caches stay outside Git. See the [source and KPI methodology](docs/methodology.md) and [external reference guide](docs/external-references.md).
+- Reproducible data pipelines with source tracking, schema validation, and data quality controls.
+- Public demonstrations use synthetic catalog data and simulated financial results.
+- Commercial findings are illustrative and do not represent actual company performance.
+- Analytical assumptions, validation scope, and evidence limitations are documented.
 
-- Catalog records describe sample coverage. Review signals and merchandising flags cannot establish sales, market share, or causal customer behavior.
-- The public demo has no usable cross-market or historical price gaps. It reports unavailable comparisons explicitly. No verified industry benchmarks, FX, or CPI values are included in the public demo.
-- Python tests, structural checks, and Microsoft TOM deserialization provide independent validation. Windows Power BI opening, refresh, and visual results are **user-reported**. Power BI Desktop screenshots and the local PBIX are outside the repository.
+[Data Methodology](docs/) · [Validation Report](portfolio/v3/Portfolio_Validation_Report.md)
 
-## Repository guide and skills demonstrated
+## Core Competencies
 
-```text
-beauty/            Ingestion, SQLite analytics, synthetic demo, and finance
-sql/               Schema, quality views, and analytical SQL
-models/excel/      Formula-driven financial workbook
-dashboard/powerbi/ Native report, semantic model, and stability fallback
-app.py             Interactive Streamlit dashboard and decision simulator
-assets/portfolio/  Generated figures and preview index
-docs/              Methodology, executive summary, and career materials
-scripts/           Power BI preparation and validation
-tests/             Pipeline, finance, dashboard, and release regression tests
+| Business & Commercial | Financial Analytics | Technical Analytics |
+|---|---|---|
+| Commercial Performance | Financial Modeling | Python |
+| Assortment Strategy | P&L Analysis | SQL & SQLite |
+| Brand Positioning | Budget Variance | Power BI & DAX |
+| Pricing Strategy | Scenario Planning | Advanced Excel |
+| Customer Intelligence | Profitability Analysis | Streamlit |
+| Merchandising Analytics | Promotion ROI | Data Quality & Validation |
+
+## Repository Structure
+
+| Component | Description |
+|---|---|
+| `beauty/` | Data pipelines and analytical models |
+| `sql/` | Database schema and analytical queries |
+| `models/excel/` | Financial modeling |
+| `dashboard/powerbi/` | Business intelligence dashboards |
+| `app.py` | Interactive commercial decision platform |
+| `portfolio/v3/` | Integrated case studies and executive reports |
+| `docs/` | Analytical methodology and documentation |
+| `tests/` | Automated validation and regression tests |
 ```
 
 Demonstrates commercial and merchandising analysis, financial modeling and FP&A, business intelligence, Python and SQL data engineering, Excel and Power BI reporting, scenario analysis, and analytical governance.
