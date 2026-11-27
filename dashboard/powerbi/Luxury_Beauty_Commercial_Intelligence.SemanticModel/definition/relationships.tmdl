@@ -1,0 +1,10 @@
+relationship a8f99832-c7ba-4852-abd5-f56991129f4a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: assortment_counts.snapshot
+	toColumn: LocalDateTable_d8680fe1-76eb-4ba0-82ec-6454d75870da.Date
+
+relationship c66d3bf8-6e39-4633-a528-3ad4ab7b7f0d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: portfolio.snapshot
+	toColumn: LocalDateTable_1bb60f14-eb4a-4541-bc92-fda6c4b6cdcf.Date
+

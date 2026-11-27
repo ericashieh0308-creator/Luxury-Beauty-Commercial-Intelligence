@@ -1,0 +1,147 @@
+table portfolio
+	lineageTag: 3b57bba9-5c9d-4f77-ad09-73cf061b1aaa
+
+	column vintage
+		dataType: string
+		lineageTag: 8af4b61c-730b-454c-bcfb-3610a4082c5e
+		summarizeBy: none
+		sourceColumn: vintage
+
+		annotation SummarizationSetBy = Automatic
+
+	column market
+		dataType: string
+		lineageTag: 6fe800c7-f370-4f7f-805b-9516130202e5
+		summarizeBy: none
+		sourceColumn: market
+
+		annotation SummarizationSetBy = Automatic
+
+	column snapshot
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 90400928-2405-4ed4-a091-67889c3df35b
+		summarizeBy: none
+		sourceColumn: snapshot
+
+		variation Variation
+			isDefault
+			relationship: c66d3bf8-6e39-4633-a528-3ad4ab7b7f0d
+			defaultHierarchy: LocalDateTable_1bb60f14-eb4a-4541-bc92-fda6c4b6cdcf.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column brand
+		dataType: string
+		lineageTag: 5c2f4042-3616-4c90-bb0a-f6056dc44fa0
+		summarizeBy: none
+		sourceColumn: brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		lineageTag: 990acb7b-fd9b-4c54-a35b-cba392fc128b
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column products
+		dataType: int64
+		formatString: 0
+		lineageTag: ce862880-f498-4fad-aa46-88159b077c27
+		summarizeBy: sum
+		sourceColumn: products
+
+		annotation SummarizationSetBy = Automatic
+
+	column mean_price
+		dataType: double
+		lineageTag: 4f82fc19-d1dc-46a2-8164-c83c6c983af7
+		summarizeBy: sum
+		sourceColumn: mean_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column mean_rating
+		dataType: double
+		lineageTag: afd8ea25-e2e4-4ecc-b47e-3ebea368e2a7
+		summarizeBy: sum
+		sourceColumn: mean_rating
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column bestsellers
+		dataType: int64
+		formatString: 0
+		lineageTag: ae126c81-41f3-45c2-82ff-bc1704adf2fc
+		summarizeBy: sum
+		sourceColumn: bestsellers
+
+		annotation SummarizationSetBy = Automatic
+
+	column bestseller_known
+		dataType: int64
+		formatString: 0
+		lineageTag: 96b698af-4285-496b-b713-6333379ec7fc
+		summarizeBy: sum
+		sourceColumn: bestseller_known
+
+		annotation SummarizationSetBy = Automatic
+
+	column new_arrivals
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a496f69-0b34-4859-9a0f-cdcb70567802
+		summarizeBy: sum
+		sourceColumn: new_arrivals
+
+		annotation SummarizationSetBy = Automatic
+
+	column new_arrival_known
+		dataType: int64
+		formatString: 0
+		lineageTag: accce3e2-374d-46e3-9b0e-279090fd3b2e
+		summarizeBy: sum
+		sourceColumn: new_arrival_known
+
+		annotation SummarizationSetBy = Automatic
+
+	column exclusive_products
+		dataType: int64
+		formatString: 0
+		lineageTag: 82799bdb-ebe2-4cd0-9462-64178272c6d4
+		summarizeBy: sum
+		sourceColumn: exclusive_products
+
+		annotation SummarizationSetBy = Automatic
+
+	column exclusive_known
+		dataType: int64
+		formatString: 0
+		lineageTag: ce2bc3a4-71b6-4e77-a964-137dc7e8c6ea
+		summarizeBy: sum
+		sourceColumn: exclusive_known
+
+		annotation SummarizationSetBy = Automatic
+
+	partition portfolio = m
+		mode: import
+		source =
+				let
+				    Source = PortfolioTables[portfolio],
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"vintage", type text}, {"market", type text}, {"brand", type text}, {"category", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

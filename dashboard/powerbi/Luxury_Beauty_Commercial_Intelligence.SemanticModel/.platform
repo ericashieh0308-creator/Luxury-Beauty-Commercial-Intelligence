@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Luxury_Beauty_Commercial_Intelligence"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "55822598-c8f4-423c-94fb-48377a2a022c"
+  }
+}

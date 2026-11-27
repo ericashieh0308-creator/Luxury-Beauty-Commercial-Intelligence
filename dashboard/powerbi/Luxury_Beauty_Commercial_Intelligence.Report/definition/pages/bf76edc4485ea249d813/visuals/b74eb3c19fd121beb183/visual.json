@@ -1,0 +1,74 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "name": "b74eb3c19fd121beb183",
+  "position": {
+    "x": 280.81475067777603,
+    "y": 477.90833345161883,
+    "z": 1,
+    "height": 168.36103655923679,
+    "width": 280.60172759872796,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "assortment_counts"
+                    }
+                  },
+                  "Property": "Historical Product Records"
+                }
+              },
+              "queryRef": "assortment_counts.Historical Product Records",
+              "nativeQueryRef": "Historical Product Records"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "value": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "36D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "64d2f298ff621a1eaa3f",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "assortment_counts"
+              }
+            },
+            "Property": "Historical Product Records"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

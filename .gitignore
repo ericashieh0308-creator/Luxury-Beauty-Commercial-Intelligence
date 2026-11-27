@@ -241,3 +241,8 @@ reviews_*.csv
 sephora-sample*
 
 sephora_sample*.csv
+
+# Power BI local files
+**/.pbi/
+*.pbix
+
