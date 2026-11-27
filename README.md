@@ -1,101 +1,143 @@
 # Luxury & Beauty Commercial Intelligence Platform
 
-**Version 1.0 · Retail assortment, pricing, and commercial finance**
+**Advanced Commercial Decision Intelligence** · Independent portfolio case in commercial analytics, FP&A, merchandising, and business intelligence.
 
-A retailer can see what is listed, priced, or reviewed in a catalog without knowing what sold. This project keeps those signals separate from a simulated P&L so a commercial team can assess assortment and pricing, then test whether a promotion justifies its campaign spend.
+A beauty retailer can see which products are listed, what they cost, and what customers review. Those signals can guide an assortment or pricing review. Funding a promotion also requires a view of unit response, costs, returns, and contribution. This project gives commercial, merchandising, and finance teams separate evidence for those decisions.
 
-| Business question | Deliverable |
-|---|---|
-| What is represented in the catalog? | Product/SKU counts, brand and category coverage, review topics, and field-level quality |
-| Where does the assortment sit on the price ladder? | Native-currency category tiers, brand positioning, eligible discount depth, and auditable match evidence |
-| Is a campaign worth funding? | Formula-driven Excel P&L, budget variance, SKU and channel profitability, and interactive promotion breakeven |
-| How can stakeholders reproduce it? | Python and SQLite pipeline, Streamlit public demo, and a Power BI Desktop project |
+[Executive summary](docs/executive-summary.md) · [Power BI project](dashboard/powerbi/README.md) · [Excel financial model](models/excel/Luxury_Beauty_Commercial_Financial_Model.xlsx) · [Visual portfolio](assets/portfolio/README.md)
+
+## Executive highlights
+
+- **Commercial intelligence.** Analyze product and SKU coverage, brand and category positioning, eligible discounts, and historical review signals. Scope price metrics by currency and surface insufficient evidence for price comparisons.
+- **Financial planning.** Reconcile a 12-month P&L, Base/Bull/Bear forecasts, budget variance, SKU and channel contribution, and a price–volume–mix bridge.
+- **Promotion decision.** A simulated 15% discount with 20% unit uplift raises net revenue by **USD 6,110** but lowers contribution by **USD 455**. At those assumptions, campaign ROI is **−30.3%** and contribution break-even requires **1,219 whole units**.
+- **Power BI delivery.** The optimized project has **10 pages, 76 visuals, 28 model tables, and 32 DAX measures**. The owner reported a successful Windows Desktop open and refresh, access to all ten pages, and matching Base results.
+
+The public catalog and reviews are synthetic. All financial inputs and results are simulated. The project has no affiliation with or endorsement from any retailer or brand.
 
 ## Dashboard previews
 
-Screenshots captured from the running Streamlit app. Catalog data are synthetic and all financial inputs and outputs are simulated.
+[![Streamlit executive overview with fictional catalog data](assets/streamlit-commercial-demo.png)](assets/streamlit-commercial-demo.png)
 
-[![Streamlit executive overview with synthetic assortment and comparison coverage](assets/streamlit-commercial-demo.png)](assets/streamlit-commercial-demo.png)
+*Screenshot captured from the running Streamlit demo. The [visual portfolio](assets/portfolio/README.md) includes a finance screenshot and five charts generated from public demo exports.*
 
-[![Streamlit simulated Bull-case financial dashboard](assets/streamlit-finance-demo.png)](assets/streamlit-finance-demo.png)
+[![Annual simulated operating profit for Bear, Base, and Bull scenarios](assets/portfolio/scenario-comparison.png)](assets/portfolio/scenario-comparison.png)
 
-## Architecture
+*Generated comparison chart sourced from the finance CSV export.*
+
+## Business questions and methods
+
+| Decision | Evidence and method |
+|---|---|
+| Where should we review assortment? | Scope source records, distinct products, and product–SKU keys by market and snapshot. Use brand and category ranks to prioritize follow-up. |
+| Where does an item sit on the price ladder? | Use native-currency list prices, category-relative tiers, and eligible discount depth. Use known-value denominators for merchandising flags. |
+| What feedback warrants qualitative review? | Summarize historical ratings and lexicon-based topics. Track missing review text and invalid ratings. |
+| Can we compare prices across markets or years? | Separate candidates from accepted pairs and usable gaps. Require comparable products and eligible prices, plus dated FX or CPI where applicable. |
+| How does performance change under a different plan? | Compare a simulated P&L, Base budget versus Bull simulated actual, scenario forecasts, and price–volume–mix effects. |
+| Is a SKU, channel, or offer worth further investment? | Evaluate modeled contribution, promotion ROI, and break-even units under explicit assumptions. |
+| Which results should we trust? | Review source lineage, completeness, parse validity, and quality exceptions before interpreting KPIs. |
+
+## System architecture
 
 ```mermaid
 flowchart LR
-    A[Licensed local files or synthetic generator] --> B[Python validation and normalization]
-    B --> C[SQLite lineage and facts]
-    C --> D[Commercial CSVs and quality reports]
-    D --> E[Streamlit catalog views or Power BI Desktop]
-    F[Simulated planning assumptions] --> G[Python P&L and scenarios]
-    F --> H[Formula-driven Excel workbook]
-    G --> E
+    A["Synthetic catalog or licensed local CSV/ZIP"] --> B["Python ingestion, validation and normalization"]
+    B --> C["SQLite catalog, reviews and source lineage"]
+    C --> D["Commercial analytics and CSV exports"]
+    E["Illustrative planning assumptions"] --> F["Python financial simulation and CSV exports"]
+    E --> G["Formula-driven Excel workbook"]
+    D --> H["Streamlit and Power BI"]
+    F --> H
+    F -. "Financial reconciliation" .-> G
+    G --> I["Assortment, pricing and contribution decisions"]
+    H --> I
 ```
-## Windows and PyCharm
 
-Open the repository folder in PyCharm. Use PowerShell in the project root and select `.venv\Scripts\python.exe` as the project interpreter.
+**Technology stack:** Python, SQL, SQLite, Excel, openpyxl, Power BI, Power Query, DAX, PBIR, TMDL, Streamlit, Git, and GitHub.
+
+## Financial intelligence
+
+The simulated P&L builds revenue from modeled units, prices, discounts, and returns, then applies COGS, variable expenses, and fixed costs. Gross and operating margins divide aggregate profit by aggregate revenue. The fixed Base-versus-Bull budget view and price–volume–mix bridge complement the selectable forecast. SKU and channel models use their own contribution drivers. The promotion grid varies the proposed discount and unit response.
+
+| Simulated annual scenario | Net revenue | Operating profit | Gross margin | Operating margin |
+|---|---:|---:|---:|---:|
+| Bear | USD 586,266.43 | USD 68,603.88 | 55.6% | 11.7% |
+| Base | USD 700,824.23 | USD 155,492.93 | 60.3% | 22.2% |
+| Bull | USD 771,141.05 | USD 204,021.55 | 61.9% | 26.5% |
+
+See the [finance methodology](docs/finance.md) and [illustrative decision brief](reports/illustrative-financial-case.md) for formulas and reconciliation.
+
+### Excel workbook
+
+The [15-sheet workbook](models/excel/Luxury_Beauty_Commercial_Financial_Model.xlsx) includes editable scenario controls and drivers, product economics, monthly P&L, budget variance, forecast, channel profitability, promotion ROI, price–volume–mix, sensitivity analysis, an executive view, and model checks. Choose a case on **01_Control_Panel**, review **02_Assumptions**, press **F9**, and confirm the five checks on **14_Model_Checks**.
+
+## Power BI dashboard
+
+| Report page | Purpose |
+|---|---|
+| Executive Overview | Review source coverage before drawing conclusions. |
+| Market & Assortment Intelligence | Compare catalog cohorts and distinguish records from distinct items. |
+| Brand & Category Performance | Rank assortment representation and review known merchandising flags. |
+| Pricing & Promotional Intelligence | Compare native-currency price positioning and eligible discount depth. |
+| Customer Reviews & Product Intelligence | Explore historical ratings and topic mentions with coverage caveats. |
+| Cross-Market & Historical Comparison | Monitor match queues and distinguish usable gaps from unavailable results. |
+| Financial Performance & P&L | Trace simulated monthly revenue, cost, contribution, and operating profit. |
+| Budget Variance & Scenario Forecasting | Compare forecasts and interpret fixed Base-versus-Bull variance and PVM. |
+| SKU, Channel & Promotion Profitability | Test contribution drivers, promotion ROI, and break-even hurdles. |
+| Data Quality & Methodology | Review completeness, severity, and analytical limitations. |
+
+The [optimized and fallback candidates](dashboard/powerbi/release-candidates.md) open in separate local sessions. The launcher generates synthetic inputs and sets the local `DemoRoot`. A local PBIX is outside the repository.
+
+## Quick start · Windows PowerShell
+
+From the repository root, set up Python 3.12 and validate the public demo:
 
 ```powershell
 py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m pytest -q
-.\.venv\Scripts\python.exe -m beauty.workbook
-.\.venv\Scripts\python.exe -m beauty.demo
-.\.venv\Scripts\python.exe -m streamlit run app.py
-```
-
-Open the [15-sheet Excel workbook](models/excel/Luxury_Beauty_Commercial_Financial_Model.xlsx), choose Base, Bull, or Bear, and recalculate with **F9** in Excel. Read the [illustrative financial case](reports/illustrative-financial-case.md) for a worked planning decision.
-
-## Run with licensed source files
-
-Place the licensed archives in the ignored `data/raw/` folder. The pipeline reads ZIP members directly and also accepts extracted directories. The default configuration selects `sephora_sample_2026-11-13.csv` and maps its reported columns. The diagnostic prints aggregate counts and ranges for local review.
-
-```powershell
 $python = '.\.venv\Scripts\python.exe'
-$recent = 'data/raw/sephora-sample-2026-11.zip'
-& $python -m beauty.pipeline --diagnose $recent
-& $python -m beauty.pipeline --historical 'data/raw/archive (1).zip' --recent $recent --benchmark 'data/external/benchmark_template.csv'
+& $python -m pip install -r requirements.txt
+& $python -m pytest -q
+& $python -m beauty.demo
+& $python -m scripts.validate_powerbi
 ```
 
-If you already have `config/sources.local.json`, refresh its recent schema from the tracked configuration and keep your verified historical, FX, and CPI settings:
+**Streamlit.** Explore assortment and review evidence, change operating assumptions, compare scenarios, and test promotion sensitivity in the local browser.
 
 ```powershell
-$defaults = Get-Content 'config/sources.json' -Raw | ConvertFrom-Json
-$localPath = 'config/sources.local.json'
-if (Test-Path $localPath) {
-    $local = Get-Content $localPath -Raw | ConvertFrom-Json
-    $local | Add-Member -NotePropertyName recent -NotePropertyValue $defaults.recent -Force
-    $local | ConvertTo-Json -Depth 20 | Set-Content $localPath -Encoding UTF8
-} else {
-    Copy-Item 'config/sources.json' $localPath
-}
-& $python -m beauty.pipeline --diagnose $recent --config $localPath
-& $python -m beauty.pipeline --historical 'data/raw/archive (1).zip' --recent $recent --config $localPath --benchmark 'data/external/benchmark_template.csv'
+Remove-Item Env:BEAUTY_LOCAL_CATALOG_DIR -ErrorAction SilentlyContinue
+& $python -m streamlit run app.py --server.address 127.0.0.1
 ```
 
-The recent snapshot date comes from the date in each ISO collection timestamp, retaining its supplied offset when present. Missing or invalid recent timestamps leave the snapshot date blank. Size, subcategory, observed promotion, and stockout are unavailable in the reported schema. Verify price definitions, actual value distributions, and dates locally before interpreting the results. Keep raw data, diagnostics saved under `output/`, and `data/processed/` local. Import exports following the [Power BI Desktop guide](dashboard/powerbi/README.md).
+**Power BI.** Run either command with Power BI Desktop installed, then refresh the prepared project.
 
-## Methodology and portfolio
+```powershell
+& .\scripts\open-powerbi.ps1 -Candidate optimized
+# If needed, launch the independent fallback
+& .\scripts\open-powerbi.ps1 -Candidate fallback
+```
 
-- [Architecture, data model, governance and KPI dictionary](docs/methodology.md)
-- [Financial model formula guide](docs/finance.md)
-- [SQL query library](sql/analysis.sql)
-- [Executive strategy report template](reports/executive-strategy-template.md)
-- [Learning and interview guide](docs/interviews.md)
-- [Portfolio copy and verification checklist](docs/portfolio.md)
+## Data governance and limitations
 
-The checkout contains synthetic test fixtures and simulated retailer planning assumptions. Real-source acquisition, licensing, date and schema checks, benchmark verification, and Power BI Desktop publication belong to the observed-data validation workflow. Sephora, LVMH, and Cartpie have no affiliation with this case study.
+The pipeline supports licensed local catalog and review archives. It tracks source hashes and row lineage, validates schema and currency, records invalid and missing values, and keeps match candidates separate from accepted pairs. The public workflow generates fictional inputs. Private files, derived outputs, local configuration, and caches stay outside Git. See the [source and KPI methodology](docs/methodology.md) and [external reference guide](docs/external-references.md).
 
-## Release validation
+- Catalog records describe sample coverage. Review signals and merchandising flags cannot establish sales, market share, or causal customer behavior.
+- The public demo has no usable cross-market or historical price gaps. It reports unavailable comparisons explicitly. No verified industry benchmarks, FX, or CPI values are included in the public demo.
+- Python tests, structural checks, and Microsoft TOM deserialization provide independent validation. Windows Power BI opening, refresh, and visual results are **user-reported**. Power BI Desktop screenshots and the local PBIX are outside the repository.
 
-Start with `quality_completeness.csv`, `quality_report.csv`, `assortment_counts.csv`, and `comparison_coverage.csv`. Those tables distinguish source records, usable field coverage, distinct items, and comparable price pairs. Use the [external reference guide](docs/external-references.md) to add reviewed FX, CPI and industry inputs and the [executive brief](reports/portfolio-executive-brief.md) for the publication checklist. The project owner's earlier Windows run confirmed licensed-archive ingestion on the prior schema release. The current audit changes use synthetic regression data.
+## Repository guide and skills demonstrated
 
-## Evidence and publication
+```text
+beauty/            Ingestion, SQLite analytics, synthetic demo, and finance
+sql/               Schema, quality views, and analytical SQL
+models/excel/      Formula-driven financial workbook
+dashboard/powerbi/ Native report, semantic model, and stability fallback
+app.py             Interactive Streamlit dashboard and decision simulator
+assets/portfolio/  Generated figures and preview index
+docs/              Methodology, executive summary, and career materials
+scripts/           Power BI preparation and validation
+tests/             Pipeline, finance, dashboard, and release regression tests
+```
 
-The owner’s Windows validation of the preceding release passed 22 tests and processed both licensed archives. The Version 1.0 suite covers the synthetic generator, dashboard navigation and native-currency switching alongside pipeline and finance regressions. The workbook uses simulated assumptions, and catalog coverage measures presence in the sourced sample. Cross-market and longitudinal price gaps are unavailable on the supplied archive validation. Confidence labels do not certify product specifications.
+Demonstrates commercial and merchandising analysis, financial modeling and FP&A, business intelligence, Python and SQL data engineering, Excel and Power BI reporting, scenario analysis, and analytical governance.
 
-The public Streamlit startup uses fictional records only. To explore private outputs on your own machine, set `$env:BEAUTY_LOCAL_CATALOG_DIR = (Resolve-Path 'data/processed').Path` and launch Streamlit with `--server.address 127.0.0.1`. Before running a public demo, clear that variable with `Remove-Item Env:BEAUTY_LOCAL_CATALOG_DIR -ErrorAction SilentlyContinue`. Keep licensed raw files, derived exports, private databases and local configuration out of the repo and release assets.
-
-The [release checklist](docs/release-checklist.md) covers the final Windows check, Desktop workflow, and GitHub release review.
-
-The [native Power BI project](dashboard/powerbi/README.md) contains ten report pages, a semantic model, and a portable synthetic demo configuration.
+[Career and interview materials](docs/career-portfolio.md) · [GitHub publication checklist](docs/github-publication.md)

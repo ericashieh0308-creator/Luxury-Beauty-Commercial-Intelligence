@@ -98,3 +98,16 @@ Nominal difference is right USD list minus left USD list. Relative gap divides t
 - `assortment_counts` reports physical retained records, distinct products, rows carrying SKU IDs and distinct product/SKU keys. Representative-product KPIs additionally exclude unresolved product groups. These counts describe source coverage.
 - `bridge_product_match` records ID equality, normalized-name similarity, verified matching size and variant, and declared scope evidence. Candidate classes are exact, high confidence, ambiguous, manual review, and rejected. Only mutually unique, verified pairs enter pricing eligibility. Distinct SKU/product grains cannot auto-match each other.
 - `comparison_coverage` reports source and candidate endpoint denominators, accepted shares, priced pairs, and usable gaps. `match_coverage` breaks candidate pairs down by status, method, confidence and reason. The same source row can enter several candidate groups, so group endpoint counts are not additive. Longitudinal coverage is the intersection of defensibly comparable records from two sampled catalogs. It cannot establish assortment growth, retailer inflation, or the proportion of all listings with higher prices.
+
+## Run the licensed pipeline locally
+
+Use only archives you are authorized to process. Keep the files and derived exports in ignored folders. The default historical snapshot date may need to be supplied in a local config from verified source information.
+
+```powershell
+$python = '.\.venv\Scripts\python.exe'
+$recent = 'data/raw/sephora-sample-2026-11.zip'
+$config = 'config/sources.local.json'
+if (-not (Test-Path $config)) { $config = 'config/sources.json' }
+& $python -m beauty.pipeline --diagnose $recent --config $config
+& $python -m beauty.pipeline --historical 'data/raw/archive (1).zip' --recent $recent --config $config --benchmark 'data/external/benchmark_template.csv'
+```
